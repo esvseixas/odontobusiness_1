@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, FileText, Plus, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ClipboardList, FileText, History, Plus, Receipt, ShieldCheck, Stethoscope, UserRound } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useSessao } from "@/hooks/useSessao";
@@ -470,6 +470,7 @@ function Prontuario() {
             </CardContent>
           </Card>
         </TabsContent>
+        </div>
       </Tabs>
 
       <Dialog open={!!denteSel} onOpenChange={(v) => !v && setDenteSel(null)}>
