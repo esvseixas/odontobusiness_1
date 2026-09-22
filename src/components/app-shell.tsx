@@ -30,6 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [aberto, setAberto] = useState(false);
+  const [menuOculto, setMenuOculto] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   async function sair() {
@@ -45,6 +46,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         className={cn(
           "fixed inset-y-0 left-0 z-40 w-64 shrink-0 border-r bg-card transition-transform md:static md:translate-x-0",
           aberto ? "translate-x-0" : "-translate-x-full",
+          menuOculto && "md:hidden",
         )}
       >
         <div className="flex h-16 items-center gap-2 border-b px-5">
@@ -89,9 +91,35 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
+      {aberto ? (
+        <button
+          type="button"
+          aria-label="Fechar menu principal"
+          className="fixed inset-0 z-30 bg-foreground/20 md:hidden"
+          onClick={() => setAberto(false)}
+        />
+      ) : null}
+
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-16 items-center gap-3 border-b bg-card px-4 md:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setAberto((v) => !v)}>
+        <header className="flex h-16 items-center gap-3 border-b bg-card px-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            aria-label={aberto ? "Fechar menu principal" : "Abrir menu principal"}
+            title={aberto ? "Fechar menu principal" : "Abrir menu principal"}
+            onClick={() => setAberto((v) => !v)}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hidden md:inline-flex"
+            aria-label={menuOculto ? "Mostrar menu principal" : "Esconder menu principal"}
+            title={menuOculto ? "Mostrar menu principal" : "Esconder menu principal"}
+            onClick={() => setMenuOculto((v) => !v)}
+          >
             <Menu className="h-5 w-5" />
           </Button>
           <span className="font-semibold">{sessao?.clinica?.nome ?? "Odonto"}</span>
