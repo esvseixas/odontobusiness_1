@@ -242,15 +242,29 @@ function Prontuario() {
         </div>
       </div>
 
-      <Tabs defaultValue="odontograma">
-        <TabsList className="flex-wrap">
-          <TabsTrigger value="odontograma">Odontograma</TabsTrigger>
-          <TabsTrigger value="orcamentos">Orçamentos</TabsTrigger>
-          <TabsTrigger value="evolucao">Evolução clínica</TabsTrigger>
-          <TabsTrigger value="documentos">Documentos</TabsTrigger>
-          <TabsTrigger value="historico">Histórico</TabsTrigger>
-          <TabsTrigger value="dados">Dados e anamnese</TabsTrigger>
+      <Tabs defaultValue="odontograma" className="flex flex-col gap-6 md:flex-row">
+        <TabsList className="h-fit w-full shrink-0 flex-col items-stretch justify-start gap-1 rounded-lg border bg-card p-2 md:w-56">
+          <TabsTrigger value="odontograma" className="justify-start gap-2 px-3">
+            <Stethoscope className="h-4 w-4" /> Odontograma
+          </TabsTrigger>
+          <TabsTrigger value="orcamentos" className="justify-start gap-2 px-3">
+            <Receipt className="h-4 w-4" /> Orçamentos
+          </TabsTrigger>
+          <TabsTrigger value="evolucao" className="justify-start gap-2 px-3">
+            <ClipboardList className="h-4 w-4" /> Evolução clínica
+          </TabsTrigger>
+          <TabsTrigger value="documentos" className="justify-start gap-2 px-3">
+            <FileText className="h-4 w-4" /> Documentos
+          </TabsTrigger>
+          <TabsTrigger value="historico" className="justify-start gap-2 px-3">
+            <History className="h-4 w-4" /> Histórico
+          </TabsTrigger>
+          <TabsTrigger value="dados" className="justify-start gap-2 px-3">
+            <UserRound className="h-4 w-4" /> Dados e anamnese
+          </TabsTrigger>
         </TabsList>
+
+        <div className="min-w-0 flex-1">
 
         <TabsContent value="odontograma">
           <Card>
