@@ -11,6 +11,17 @@ const ResumoInput = z.object({
 });
 
 function mensagemSegura(error: unknown) {
+  if (error != null && typeof error === "object" && "responseBody" in error) {
+    const responseBody = error.responseBody;
+    if (typeof responseBody === "string") {
+      try {
+        const payload = JSON.parse(responseBody) as { message?: unknown };
+        if (typeof payload.message === "string" && payload.message.trim()) return payload.message.trim();
+      } catch {
+        // The provider body was not JSON; fall through to the safe error message.
+      }
+    }
+  }
   if (!(error instanceof Error)) return "Não foi possível gerar o resumo clínico.";
   const mensagem = error.message.trim();
   return mensagem || "Não foi possível gerar o resumo clínico.";
