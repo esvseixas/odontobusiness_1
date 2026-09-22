@@ -234,8 +234,9 @@ function Prontuario() {
     mutationFn: async () => {
       const texto = resumoGerado.trim();
       if (!texto) throw new Error("Revise o resumo antes de registrar.");
+      if (!clinicaId) throw new Error("Clínica não encontrada.");
       const { error } = await supabase.from("evolucoes_clinicas").insert({
-        clinica_id: clinicaId!,
+        clinica_id: clinicaId,
         paciente_id: id,
         autor_id: sessao?.user.id,
         autor_nome: sessao?.profile?.nome ?? sessao?.user.email,
