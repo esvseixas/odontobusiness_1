@@ -87,7 +87,13 @@ function Configuracoes() {
   const salvarItem = mutacao("estoque_itens", () => setEstoque({ nome: "", quantidade: "0", estoque_minimo: "0", unidade_medida: "un", validade: "" }));
 
   const salvarClinica = useMutation({
-    mutationFn: async (valores: Record<string, string>) => {
+    mutationFn: async (valores: {
+      nome: string;
+      cnpj: string;
+      telefone: string;
+      endereco: string;
+      regime_tributario: string;
+    }) => {
       const { error } = await supabase.from("clinicas").update(valores).eq("id", clinicaId!);
       if (error) throw error;
     },
