@@ -79,19 +79,19 @@ function Onboarding() {
     if (!sessao?.user) return;
     setSalvando(true);
     try {
-      const { data: clinica, error: e1 } = await supabase
-        .from("clinicas")
-        .insert({
-          nome: form.nome,
-          cnpj: form.cnpj || null,
-          telefone: form.telefone || null,
-          endereco: form.endereco || null,
-          regime_tributario: form.regime,
-          email: sessao.user.email,
-        })
-        .select()
-        .single();
-      if (e1 || !clinica) throw e1;
+      // O id é gerado no cliente: a política de leitura só libera a clínica
+      // depois que o perfil estiver vinculado a ela.
+      const clinica = { id: crypto.randomUUID() };
+      const { error: e1 } = await supabase.from("clinicas").insert({
+        id: clinica.id,
+        nome: form.nome,
+        cnpj: form.cnpj || null,
+        telefone: form.telefone || null,
+        endereco: form.endereco || null,
+        regime_tributario: form.regime,
+        email: sessao.user.email,
+      });
+      if (e1) throw e1;
 
       const { error: e2 } = await supabase
         .from("profiles")
