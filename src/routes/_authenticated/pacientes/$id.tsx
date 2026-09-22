@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, ClipboardList, FileText, History, Plus, Receipt, ShieldCheck, Stethoscope, UserRound } from "lucide-react";
+import { Bot, Check, ChevronDown, ChevronLeft, ChevronRight, ClipboardList, FileText, History, Menu, Plus, Receipt, ShieldCheck, Sparkles, Stethoscope, UserRound } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useSessao } from "@/hooks/useSessao";
@@ -17,7 +18,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { brl, dataBR, horaBR, isoDia } from "@/lib/format";
+import { gerarResumoClinico } from "@/lib/resumo-clinico.functions";
+
+const SECOES = [
+  { valor: "odontograma", rotulo: "Odontograma", icone: Stethoscope },
+  { valor: "orcamentos", rotulo: "Orçamentos", icone: Receipt },
+  { valor: "evolucao", rotulo: "Evolução clínica", icone: ClipboardList },
+  { valor: "documentos", rotulo: "Documentos", icone: FileText },
+  { valor: "historico", rotulo: "Histórico", icone: History },
+  { valor: "dados", rotulo: "Dados e anamnese", icone: UserRound },
+] as const;
+
+type Secao = (typeof SECOES)[number]["valor"];
 
 export const Route = createFileRoute("/_authenticated/pacientes/$id")({
   head: () => ({
@@ -44,6 +61,12 @@ function Prontuario() {
   const [marca, setMarca] = useState({ face: "oclusal", condicao: "Cárie", procedimento_id: "", status: "planejado", observacao: "" });
   const [evolucao, setEvolucao] = useState("");
   const [doc, setDoc] = useState({ tipo: "atestado", titulo: "", conteudo: "" });
+  const [secao, setSecao] = useState<Secao>("odontograma");
+  const [menuAberto, setMenuAberto] = useState(false);
+  const [menuRecolhido, setMenuRecolhido] = useState(false);
+  const [anotacoesResumo, setAnotacoesResumo] = useState("");
+  const [resumoGerado, setResumoGerado] = useState("");
+  const gerarResumo = useServerFn(gerarResumoClinico);
 
   const dados = useQuery({
     enabled: !!clinicaId,
@@ -74,6 +97,7 @@ function Prontuario() {
   });
 
   const p = dados.data?.paciente;
+  const secaoAtual = SECOES.find((item) => item.valor === secao) ?? SECOES[0];
 
   const addMarcacao = useMutation({
     mutationFn: async () => {
@@ -192,6 +216,42 @@ function Prontuario() {
     },
   });
 
+  const resumirAtendimento = useMutation({
+    mutationFn: async () => {
+      const resultado = await gerarResumo({
+        data: { pacienteId: id, anotacoes: anotacoesResumo.trim() },
+      });
+      return resultado.resumo;
+    },
+    onSuccess: (resumo) => {
+      setResumoGerado(resumo);
+      toast.success("Resumo preparado para revisão.");
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
+  const registrarResumo = useMutation({
+    mutationFn: async () => {
+      const texto = resumoGerado.trim();
+      if (!texto) throw new Error("Revise o resumo antes de registrar.");
+      const { error } = await supabase.from("evolucoes_clinicas").insert({
+        clinica_id: clinicaId!,
+        paciente_id: id,
+        autor_id: sessao?.user.id,
+        autor_nome: sessao?.profile?.nome ?? sessao?.user.email,
+        texto: `[Resumo assistido por IA — revisado pelo profissional]\n${texto}`,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      setAnotacoesResumo("");
+      setResumoGerado("");
+      toast.success("Resumo revisado registrado na evolução clínica.");
+      queryClient.invalidateQueries({ queryKey: ["prontuario", id] });
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
   const emitirDoc = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.from("documentos_emitidos").insert({
@@ -221,9 +281,33 @@ function Prontuario() {
 
   return (
     <AppShell>
-      <Link to="/pacientes" className="mb-4 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Voltar para pacientes
-      </Link>
+      <Breadcrumb className="mb-4 min-w-0">
+        <BreadcrumbList className="flex-nowrap overflow-hidden">
+          <BreadcrumbItem className="min-w-0 shrink">
+            <BreadcrumbLink asChild>
+              <Link to="/dashboard" className="block max-w-28 truncate sm:max-w-44" title={sessao?.clinica?.nome ?? "Clínica"}>
+                {sessao?.clinica?.nome ?? "Clínica"}
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem className="shrink-0">
+            <BreadcrumbLink asChild><Link to="/pacientes">Pacientes</Link></BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem className="min-w-0 shrink">
+            <BreadcrumbLink asChild>
+              <button type="button" onClick={() => setSecao("dados")} className="block max-w-28 truncate transition-colors hover:text-foreground sm:max-w-48" title={p.nome}>
+                {p.nome}
+              </button>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem className="min-w-0 shrink">
+            <BreadcrumbPage className="block max-w-32 truncate sm:max-w-none">{secaoAtual.rotulo}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
@@ -242,27 +326,50 @@ function Prontuario() {
         </div>
       </div>
 
-      <Tabs defaultValue="odontograma" className="flex flex-col gap-6 md:flex-row">
-        <TabsList className="h-fit w-full shrink-0 flex-col items-stretch justify-start gap-1 rounded-lg border bg-card p-2 md:w-56">
-          <TabsTrigger value="odontograma" className="justify-start gap-2 px-3">
-            <Stethoscope className="h-4 w-4" /> Odontograma
-          </TabsTrigger>
-          <TabsTrigger value="orcamentos" className="justify-start gap-2 px-3">
-            <Receipt className="h-4 w-4" /> Orçamentos
-          </TabsTrigger>
-          <TabsTrigger value="evolucao" className="justify-start gap-2 px-3">
-            <ClipboardList className="h-4 w-4" /> Evolução clínica
-          </TabsTrigger>
-          <TabsTrigger value="documentos" className="justify-start gap-2 px-3">
-            <FileText className="h-4 w-4" /> Documentos
-          </TabsTrigger>
-          <TabsTrigger value="historico" className="justify-start gap-2 px-3">
-            <History className="h-4 w-4" /> Histórico
-          </TabsTrigger>
-          <TabsTrigger value="dados" className="justify-start gap-2 px-3">
-            <UserRound className="h-4 w-4" /> Dados e anamnese
-          </TabsTrigger>
-        </TabsList>
+      <Tabs value={secao} onValueChange={(valor) => setSecao(valor as Secao)} className="flex flex-col gap-4 lg:flex-row lg:gap-6">
+        <Collapsible open={menuAberto} onOpenChange={setMenuAberto} className="lg:hidden">
+          <CollapsibleTrigger asChild>
+            <Button variant="outline" className="w-full justify-between">
+              <span className="flex min-w-0 items-center gap-2">
+                <Menu className="h-4 w-4" />
+                <span className="truncate">{secaoAtual.rotulo}</span>
+              </span>
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="pt-2">
+            <TabsList className="h-fit w-full flex-col items-stretch justify-start gap-1 rounded-lg border bg-card p-2">
+              {SECOES.map(({ valor, rotulo, icone: Icone }) => (
+                <TabsTrigger key={valor} value={valor} onClick={() => setMenuAberto(false)} className="justify-start gap-2 px-3">
+                  <Icone className="h-4 w-4" /> {rotulo}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </CollapsibleContent>
+        </Collapsible>
+
+        <TooltipProvider>
+          <aside className={`hidden h-fit shrink-0 rounded-lg border bg-card p-2 transition-[width] lg:block ${menuRecolhido ? "w-14" : "w-56"}`}>
+            <div className={`mb-2 flex ${menuRecolhido ? "justify-center" : "justify-end"}`}>
+              <Button variant="ghost" size="icon" onClick={() => setMenuRecolhido((valor) => !valor)} aria-label={menuRecolhido ? "Expandir seções" : "Recolher seções"}>
+                {menuRecolhido ? <ChevronRight /> : <ChevronLeft />}
+              </Button>
+            </div>
+            <TabsList className="h-fit w-full flex-col items-stretch justify-start gap-1 bg-transparent p-0">
+              {SECOES.map(({ valor, rotulo, icone: Icone }) => (
+                <Tooltip key={valor}>
+                  <TooltipTrigger asChild>
+                    <TabsTrigger value={valor} aria-label={rotulo} className={`gap-2 px-3 ${menuRecolhido ? "justify-center" : "justify-start"}`}>
+                      <Icone className="h-4 w-4" />
+                      {!menuRecolhido ? <span>{rotulo}</span> : null}
+                    </TabsTrigger>
+                  </TooltipTrigger>
+                  {menuRecolhido ? <TooltipContent side="right">{rotulo}</TooltipContent> : null}
+                </Tooltip>
+              ))}
+            </TabsList>
+          </aside>
+        </TooltipProvider>
 
         <div className="min-w-0 flex-1">
 
@@ -340,6 +447,53 @@ function Prontuario() {
         </TabsContent>
 
         <TabsContent value="evolucao">
+          <Card className="mb-4">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base"><Bot className="h-4 w-4 text-primary" /> Resumo do atendimento</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="anotacoes-resumo">Anotações do profissional</Label>
+                <Textarea
+                  id="anotacoes-resumo"
+                  rows={4}
+                  maxLength={5000}
+                  placeholder="Registre achados, procedimentos realizados, conduta e orientações relevantes…"
+                  value={anotacoesResumo}
+                  onChange={(event) => setAnotacoesResumo(event.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">
+                  O resumo considera estas anotações, anamnese, odontograma, evoluções e atendimentos recentes.
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                disabled={anotacoesResumo.trim().length < 10 || resumirAtendimento.isPending}
+                onClick={() => resumirAtendimento.mutate()}
+              >
+                <Sparkles className="h-4 w-4" />
+                {resumirAtendimento.isPending ? "Preparando resumo…" : "Gerar resumo com IA"}
+              </Button>
+
+              {resumoGerado ? (
+                <div className="space-y-3 border-t pt-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="resumo-gerado">Resumo para revisão</Label>
+                    <Textarea id="resumo-gerado" rows={8} value={resumoGerado} onChange={(event) => setResumoGerado(event.target.value)} />
+                  </div>
+                  <Alert>
+                    <ShieldCheck className="h-4 w-4" />
+                    <AlertTitle>Revisão profissional obrigatória</AlertTitle>
+                    <AlertDescription>Confirme e ajuste o texto. Ele só será incluído no prontuário após o registro abaixo.</AlertDescription>
+                  </Alert>
+                  <Button disabled={!resumoGerado.trim() || registrarResumo.isPending} onClick={() => registrarResumo.mutate()}>
+                    <Check className="h-4 w-4" />
+                    {registrarResumo.isPending ? "Registrando…" : "Revisar e registrar no prontuário"}
+                  </Button>
+                </div>
+              ) : null}
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader><CardTitle className="text-base">Nova evolução clínica</CardTitle></CardHeader>
             <CardContent className="space-y-3">
