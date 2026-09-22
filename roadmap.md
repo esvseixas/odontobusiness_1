@@ -7,3 +7,4 @@
 - [x] Validar navegação, breadcrumbs e formulário do resumo em desktop e tela menor.
 - [ ] Testar a geração e o registro do resumo clínico com IA.
 - [x] Permitir esconder e reabrir o menu principal.
+- [ ] Exibir a anatomia de cada tipo de dente conforme a numeração FDI no odontograma.
