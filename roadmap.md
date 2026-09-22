@@ -6,4 +6,4 @@
 - [ ] Validar a geração e o registro do resumo após o administrador liberar o limite de IA do workspace.
 - [x] Validar navegação, breadcrumbs e formulário do resumo em desktop e tela menor.
 - [ ] Testar a geração e o registro do resumo clínico com IA.
-- [ ] Permitir esconder e reabrir o menu principal.
+- [x] Permitir esconder e reabrir o menu principal.
