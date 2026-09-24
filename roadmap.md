@@ -8,3 +8,5 @@
 - [ ] Testar a geração e o registro do resumo clínico com IA.
 - [x] Permitir esconder e reabrir o menu principal.
 - [x] Exibir a anatomia de cada tipo de dente conforme a numeração FDI no odontograma.
+
+- [x] Permitir instalar o app como atalho na tela inicial de dispositivos móveis (manifesto + ícones)
