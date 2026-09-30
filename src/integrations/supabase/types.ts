@@ -302,6 +302,67 @@ export type Database = {
           },
         ]
       }
+      estoque_lotes: {
+        Row: {
+          clinica_id: string
+          created_at: string
+          created_by: string | null
+          entrada_em: string
+          id: string
+          item_id: string
+          numero_lote: string | null
+          quantidade: number
+          unidade_id: string | null
+          validade: string | null
+        }
+        Insert: {
+          clinica_id: string
+          created_at?: string
+          created_by?: string | null
+          entrada_em?: string
+          id?: string
+          item_id: string
+          numero_lote?: string | null
+          quantidade?: number
+          unidade_id?: string | null
+          validade?: string | null
+        }
+        Update: {
+          clinica_id?: string
+          created_at?: string
+          created_by?: string | null
+          entrada_em?: string
+          id?: string
+          item_id?: string
+          numero_lote?: string | null
+          quantidade?: number
+          unidade_id?: string | null
+          validade?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estoque_lotes_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_lotes_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_itens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_lotes_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       estoque_movimentacoes: {
         Row: {
           clinica_id: string
