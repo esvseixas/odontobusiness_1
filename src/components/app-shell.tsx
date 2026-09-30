@@ -9,6 +9,15 @@ import {
   LogOut,
   Stethoscope,
   Menu,
+  ChevronDown,
+  Building2,
+  MapPin,
+  ClipboardList,
+  HeartHandshake,
+  UserCog,
+  ListTree,
+  PackageOpen,
+  ShieldCheck,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
@@ -22,7 +31,17 @@ const NAV = [
   { to: "/agenda", label: "Agenda", icon: CalendarDays },
   { to: "/pacientes", label: "Pacientes", icon: Users },
   { to: "/financeiro", label: "Financeiro", icon: Wallet },
-  { to: "/configuracoes", label: "Configurações", icon: Settings },
+] as const;
+
+const CONFIG_NAV = [
+  { to: "/configuracoes/clinica", label: "Clínica", icon: Building2 },
+  { to: "/configuracoes/unidades", label: "Unidades", icon: MapPin },
+  { to: "/configuracoes/procedimentos", label: "Procedimentos", icon: ClipboardList },
+  { to: "/configuracoes/convenios", label: "Convênios", icon: HeartHandshake },
+  { to: "/configuracoes/equipe", label: "Equipe", icon: UserCog },
+  { to: "/configuracoes/plano-contas", label: "Plano de contas", icon: ListTree },
+  { to: "/configuracoes/estoque", label: "Estoque", icon: PackageOpen },
+  { to: "/configuracoes/auditoria", label: "Auditoria", icon: ShieldCheck },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -32,6 +51,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [aberto, setAberto] = useState(false);
   const [menuOculto, setMenuOculto] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const configuracoesAtiva = pathname.startsWith("/configuracoes");
+  const [configuracoesAberta, setConfiguracoesAberta] = useState(configuracoesAtiva);
 
   async function sair() {
     await queryClient.cancelQueries();
@@ -79,6 +100,48 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
+          <div>
+            <Button
+              type="button"
+              variant="ghost"
+              className={cn(
+                "h-9 w-full justify-start gap-3 px-3 text-sm font-medium",
+                configuracoesAtiva ? "bg-secondary text-foreground" : "text-muted-foreground",
+              )}
+              aria-expanded={configuracoesAberta}
+              onClick={() => setConfiguracoesAberta((valor) => !valor)}
+            >
+              <Settings className="h-4 w-4" />
+              <span className="flex-1 text-left">Configurações</span>
+              <ChevronDown
+                className={cn("h-4 w-4 transition-transform", configuracoesAberta && "rotate-180")}
+              />
+            </Button>
+            {configuracoesAberta ? (
+              <div className="ml-5 mt-1 space-y-0.5 border-l pl-2">
+                {CONFIG_NAV.map((item) => {
+                  const Icon = item.icon;
+                  const ativo = pathname === item.to;
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setAberto(false)}
+                      className={cn(
+                        "flex items-center gap-2 rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
+                        ativo
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                      )}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         </nav>
         <div className="absolute inset-x-0 bottom-0 border-t p-3">
           <p className="truncate px-2 pb-2 text-xs text-muted-foreground">

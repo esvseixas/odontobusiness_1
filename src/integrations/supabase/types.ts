@@ -310,7 +310,6 @@ export type Database = {
           entrada_em: string
           id: string
           item_id: string
-          lote_id: string | null
           numero_lote: string | null
           quantidade: number
           unidade_id: string | null
@@ -323,7 +322,6 @@ export type Database = {
           entrada_em?: string
           id?: string
           item_id: string
-          lote_id: string | null
           numero_lote?: string | null
           quantidade?: number
           unidade_id?: string | null
@@ -336,7 +334,6 @@ export type Database = {
           entrada_em?: string
           id?: string
           item_id?: string
-          lote_id?: string | null
           numero_lote?: string | null
           quantidade?: number
           unidade_id?: string | null
@@ -366,61 +363,6 @@ export type Database = {
           },
         ]
       }
-      estoque_lotes: {
-        Row: {
-          clinica_id: string
-          created_at: string
-          id: string
-          item_id: string
-          lote_id: string | null
-          lote_codigo: string | null
-          quantidade: number
-          validade: string | null
-        }
-        Insert: {
-          clinica_id: string
-          created_at?: string
-          id?: string
-          item_id: string
-          lote_id: string | null
-          lote_codigo?: string | null
-          quantidade?: number
-          validade?: string | null
-        }
-        Update: {
-          clinica_id?: string
-          created_at?: string
-          id?: string
-          item_id?: string
-          lote_id?: string | null
-          lote_codigo?: string | null
-          quantidade?: number
-          validade?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "estoque_lotes_clinica_id_fkey"
-            columns: ["clinica_id"]
-            isOneToOne: false
-            referencedRelation: "clinicas"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "estoque_lotes_item_id_fkey"
-            columns: ["item_id"]
-            isOneToOne: false
-            referencedRelation: "estoque_itens"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "estoque_movimentacoes_lote_id_fkey"
-            columns: ["lote_id"]
-            isOneToOne: false
-            referencedRelation: "estoque_lotes"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       estoque_movimentacoes: {
         Row: {
           clinica_id: string
@@ -428,7 +370,6 @@ export type Database = {
           created_by: string | null
           id: string
           item_id: string
-          lote_id: string | null
           motivo: string | null
           quantidade: number
           tipo: string
@@ -439,7 +380,6 @@ export type Database = {
           created_by?: string | null
           id?: string
           item_id: string
-          lote_id: string | null
           motivo?: string | null
           quantidade: number
           tipo: string
@@ -450,7 +390,6 @@ export type Database = {
           created_by?: string | null
           id?: string
           item_id?: string
-          lote_id?: string | null
           motivo?: string | null
           quantidade?: number
           tipo?: string
