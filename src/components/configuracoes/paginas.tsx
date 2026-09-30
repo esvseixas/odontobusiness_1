@@ -583,12 +583,12 @@ export function EstoquePage() {
           {novoLoteAberto ? (
             <div className="grid gap-3 rounded-md border bg-muted/30 p-4 sm:grid-cols-2 lg:grid-cols-6">
               <div className="space-y-2 lg:col-span-2">
-                <Label>Produto</Label>
+                <Label htmlFor="lote-produto">Produto</Label>
                 <Select
                   value={lote.item_id}
                   onValueChange={(v) => setLote({ ...lote, item_id: v })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger id="lote-produto">
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
@@ -601,15 +601,17 @@ export function EstoquePage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Número do lote</Label>
+                <Label htmlFor="lote-numero">Número do lote</Label>
                 <Input
+                  id="lote-numero"
                   value={lote.numero_lote}
                   onChange={(e) => setLote({ ...lote, numero_lote: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Quantidade</Label>
+                <Label htmlFor="lote-quantidade">Quantidade</Label>
                 <Input
+                  id="lote-quantidade"
                   type="number"
                   min="0"
                   value={lote.quantidade}
@@ -617,30 +619,32 @@ export function EstoquePage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Validade</Label>
+                <Label htmlFor="lote-validade">Validade</Label>
                 <Input
+                  id="lote-validade"
                   type="date"
                   value={lote.validade}
                   onChange={(e) => setLote({ ...lote, validade: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Entrada</Label>
+                <Label htmlFor="lote-entrada">Entrada</Label>
                 <Input
+                  id="lote-entrada"
                   type="date"
                   value={lote.entrada_em}
                   onChange={(e) => setLote({ ...lote, entrada_em: e.target.value })}
                 />
               </div>
               <div className="space-y-2 sm:col-span-2 lg:col-span-3">
-                <Label>Unidade</Label>
+                <Label htmlFor="lote-unidade">Unidade</Label>
                 <Select
                   value={lote.unidade_id || "sem-unidade"}
                   onValueChange={(v) =>
                     setLote({ ...lote, unidade_id: v === "sem-unidade" ? "" : v })
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger id="lote-unidade">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
