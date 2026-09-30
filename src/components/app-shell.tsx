@@ -39,12 +39,12 @@ const NAV = [
 ] as const;
 
 const PACIENTE_NAV = [
-  { slug: "odontograma", label: "Odontograma", icon: Stethoscope },
-  { slug: "orcamentos", label: "Orçamentos", icon: Receipt },
-  { slug: "evolucao", label: "Evolução clínica", icon: ClipboardPlus },
-  { slug: "documentos", label: "Documentos", icon: FileText },
-  { slug: "historico", label: "Histórico", icon: History },
-  { slug: "dados", label: "Dados e anamnese", icon: UserRound },
+  { to: "/pacientes/$id/odontograma", slug: "odontograma", label: "Odontograma", icon: Stethoscope },
+  { to: "/pacientes/$id/orcamentos", slug: "orcamentos", label: "Orçamentos", icon: Receipt },
+  { to: "/pacientes/$id/evolucao", slug: "evolucao", label: "Evolução clínica", icon: ClipboardPlus },
+  { to: "/pacientes/$id/documentos", slug: "documentos", label: "Documentos", icon: FileText },
+  { to: "/pacientes/$id/historico", slug: "historico", label: "Histórico", icon: History },
+  { to: "/pacientes/$id/dados", slug: "dados", label: "Dados e anamnese", icon: UserRound },
 ] as const;
 
 const CONFIG_NAV = [
@@ -172,7 +172,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                       return (
                         <Link
                           key={item.slug}
-                          to={`/pacientes/$id/${item.slug}`}
+                          to={item.to}
                           params={{ id: pacienteId }}
                           onClick={() => setAberto(false)}
                           className={cn(
