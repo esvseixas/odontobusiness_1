@@ -1,12 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, ChevronRight, PackagePlus, Plus } from "lucide-react";
+import { ChevronRight, PackagePlus, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -457,6 +456,7 @@ export function EstoquePage() {
   const [produto, setProduto] = useState(produtoVazio);
   const [lote, setLote] = useState<LoteForm>(loteVazio());
   const [novoLoteAberto, setNovoLoteAberto] = useState(false);
+  const [produtoExpandido, setProdutoExpandido] = useState<string | null>(null);
   const dados = useQuery({
     queryKey: ["config-estoque", sessao?.clinicaId],
     enabled: !!sessao?.clinicaId,
@@ -696,20 +696,20 @@ export function EstoquePage() {
                   .sort();
                 const proxima = validos[0];
                 const baixo = total <= Number(item.estoque_minimo);
+                const expandido = produtoExpandido === item.id;
                 return (
-                  <Collapsible key={item.id} asChild>
-                    <>
+                    <tbody key={item.id} className="contents">
                       <TableRow>
                         <TableCell>
-                          <CollapsibleTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              aria-label={`Ver lotes de ${item.nome}`}
-                            >
-                              <ChevronRight className="h-4 w-4 transition-transform [[data-state=open]_&]:rotate-90" />
-                            </Button>
-                          </CollapsibleTrigger>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`${expandido ? "Ocultar" : "Ver"} lotes de ${item.nome}`}
+                            aria-expanded={expandido}
+                            onClick={() => setProdutoExpandido(expandido ? null : item.id)}
+                          >
+                            <ChevronRight className={`h-4 w-4 transition-transform ${expandido ? "rotate-90" : ""}`} />
+                          </Button>
                         </TableCell>
                         <TableCell className="font-medium">{item.nome}</TableCell>
                         <TableCell>{item.unidade_medida ?? "—"}</TableCell>
@@ -725,7 +725,7 @@ export function EstoquePage() {
                           )}
                         </TableCell>
                       </TableRow>
-                      <CollapsibleContent asChild>
+                      {expandido ? (
                         <tr>
                           <td colSpan={8} className="bg-muted/20 px-5 py-4">
                             <Table>
@@ -788,9 +788,8 @@ export function EstoquePage() {
                             </Table>
                           </td>
                         </tr>
-                      </CollapsibleContent>
-                    </>
-                  </Collapsible>
+                      ) : null}
+                    </tbody>
                 );
               })}
             </TableBody>
