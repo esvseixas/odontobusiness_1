@@ -1,0 +1,2 @@
+import { Navigate, createFileRoute } from "@tanstack/react-router";
+export const Route=createFileRoute("/_authenticated/configuracoes/")({head:()=>({meta:[{title:"Configurações | OdontoGestor"},{name:"description",content:"Administração da clínica."},{property:"og:title",content:"Configurações | OdontoGestor"},{property:"og:description",content:"Administração da clínica."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),component:()=> <Navigate to="/configuracoes/clinica" replace/>});

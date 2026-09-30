@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { ProcedimentosPage } from "@/components/configuracoes/paginas";
+export const Route=createFileRoute("/_authenticated/configuracoes/procedimentos")({head:()=>({meta:[{title:"Procedimentos | OdontoGestor"},{name:"description",content:"Tabela de procedimentos, categorias e valores."},{property:"og:title",content:"Procedimentos | OdontoGestor"},{property:"og:description",content:"Tabela de procedimentos, categorias e valores."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),component:ProcedimentosPage});

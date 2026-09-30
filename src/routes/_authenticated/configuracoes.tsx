@@ -40,13 +40,13 @@ function Configuracoes() {
   const [convenio, setConvenio] = useState({ nome: "", registro_ans: "" });
   const [prof, setProf] = useState({ nome: "", cro: "", especialidade: "", comissao_percentual: "0" });
   const [conta, setConta] = useState({ nome: "", tipo: "despesa", centro_custo: "" });
-  const [estoque, setEstoque] = useState({ nome: "", quantidade: "0", estoque_minimo: "0", unidade_medida: "un", validade: "" });
+  const [estoque, setEstoque] = useState({ nome: "", quantidade: "0", estoque_minimo: "0", unidade_medida: "un", validade: "", lote_codigo: "" });
 
   const dados = useQuery({
     enabled: !!clinicaId,
     queryKey: ["config", clinicaId],
     queryFn: async () => {
-      const [unidades, procedimentos, convenios, profissionais, contas, logs, equipe, itens] = await Promise.all([
+      const [unidades, procedimentos, convenios, profissionais, contas, logs, equipe, itens, lotes] = await Promise.all([
         supabase.from("unidades").select("*").order("nome"),
         supabase.from("procedimentos").select("*").order("categoria"),
         supabase.from("convenios").select("*").order("nome"),
@@ -55,6 +55,7 @@ function Configuracoes() {
         supabase.from("auditoria_logs").select("*").order("created_at", { ascending: false }).limit(50),
         supabase.from("profiles").select("*").eq("clinica_id", clinicaId!),
         supabase.from("estoque_itens").select("*").order("nome"),
+        supabase.from("estoque_lotes").select("*"),
       ]);
       return {
         unidades: unidades.data ?? [],
@@ -65,6 +66,7 @@ function Configuracoes() {
         logs: logs.data ?? [],
         equipe: equipe.data ?? [],
         itens: itens.data ?? [],
+        lotes: lotes.data ?? [],
       };
     },
   });
@@ -84,7 +86,29 @@ function Configuracoes() {
   const salvarConvenio = mutacao("convenios", () => setConvenio({ nome: "", registro_ans: "" }));
   const salvarProf = mutacao("profissionais", () => setProf({ nome: "", cro: "", especialidade: "", comissao_percentual: "0" }));
   const salvarConta = mutacao("plano_contas", () => setConta({ nome: "", tipo: "despesa", centro_custo: "" }));
-  const salvarItem = mutacao("estoque_itens", () => setEstoque({ nome: "", quantidade: "0", estoque_minimo: "0", unidade_medida: "un", validade: "" }));
+  const salvarItem = async () => {
+    if (!estoque.nome || !clinicaId) return;
+    const { data: item, error: itemErr } = await supabase.from("estoque_itens").insert({
+      nome: estoque.nome,
+      unidade_medida: estoque.unidade_medida,
+      estoque_minimo: Number(estoque.estoque_minimo || 0),
+      clinica_id: clinicaId
+    }).select().single();
+    if (itemErr) return toast.error(itemErr.message);
+    if (Number(estoque.quantidade) > 0 || estoque.validade) {
+      const { error: loteErr } = await supabase.from("estoque_lotes").insert({
+        item_id: item.id,
+        quantidade: Number(estoque.quantidade || 0),
+        validade: estoque.validade || null,
+        lote_codigo: estoque.lote_codigo || null,
+        clinica_id: clinicaId
+      });
+      if (loteErr) toast.error("Produto criado, mas erro no lote: " + loteErr.message);
+    }
+    setEstoque({ nome: "", quantidade: "0", estoque_minimo: "0", unidade_medida: "un", validade: "", lote_codigo: "" });
+    toast.success("Produto registrado.");
+    queryClient.invalidateQueries({ queryKey: ["config"] });
+  };
 
   const salvarClinica = useMutation({
     mutationFn: async (valores: {
@@ -282,31 +306,44 @@ function Configuracoes() {
               <div className="grid gap-3 sm:grid-cols-6">
                 <Input className="sm:col-span-2" placeholder="Material" value={estoque.nome} onChange={(e) => setEstoque({ ...estoque, nome: e.target.value })} />
                 <Input placeholder="Qtd." type="number" value={estoque.quantidade} onChange={(e) => setEstoque({ ...estoque, quantidade: e.target.value })} />
+                <Input placeholder="Lote" value={estoque.lote_codigo} onChange={(e) => setEstoque({ ...estoque, lote_codigo: e.target.value })} />
                 <Input placeholder="Mínimo" type="number" value={estoque.estoque_minimo} onChange={(e) => setEstoque({ ...estoque, estoque_minimo: e.target.value })} />
                 <Input type="date" value={estoque.validade} onChange={(e) => setEstoque({ ...estoque, validade: e.target.value })} />
-                <Button
-                  onClick={() => salvarItem({
-                    nome: estoque.nome,
-                    unidade_medida: estoque.unidade_medida,
-                    quantidade: Number(estoque.quantidade || 0),
-                    estoque_minimo: Number(estoque.estoque_minimo || 0),
-                    validade: estoque.validade || null,
-                  })}
+                <Button onClick={salvarItem} disabled={!estoque.nome}>
                   disabled={!estoque.nome}
                 >
                   Adicionar
                 </Button>
               </div>
               {dados.data?.itens.map((i) => {
-                const baixo = Number(i.quantidade) <= Number(i.estoque_minimo);
-                const vencendo = i.validade && new Date(i.validade).getTime() - Date.now() < 30 * 86400000;
+                const itemLotes = dados.data?.lotes.filter((l: any) => l.item_id === i.id) || [];
+                const totalQtd = itemLotes.reduce((acc: number, l: any) => acc + Number(l.quantidade), 0);
+                const baixo = totalQtd <= Number(i.estoque_minimo);
                 return (
-                  <div key={i.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border p-3 text-sm">
-                    <span>{i.nome} · {Number(i.quantidade)} {i.unidade_medida}</span>
-                    <div className="flex gap-2">
-                      {baixo ? <Badge variant="destructive">estoque mínimo</Badge> : null}
-                      {vencendo ? <Badge variant="outline">vence em {dataBR(i.validade)}</Badge> : null}
+                  <div key={i.id} className="rounded-md border p-3 text-sm">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="font-medium">{i.nome} · {totalQtd} {i.unidade_medida}</span>
+                      <div className="flex gap-2">
+                        {baixo ? <Badge variant="destructive">estoque mínimo</Badge> : null}
+                      </div>
                     </div>
+                    {itemLotes.length > 0 && (
+                      <div className="mt-2 space-y-1 border-t pt-2">
+                        {itemLotes.map((l: any) => {
+                          const vencendo = l.validade && new Date(l.validade).getTime() - Date.now() < 30 * 86400000;
+                          return (
+                            <div key={l.id} className="flex justify-between text-xs text-muted-foreground">
+                              <span>Lote: {l.lote_codigo || "—"} · {Number(l.quantidade)} {i.unidade_medida}</span>
+                              {l.validade && (
+                                <span className={vencendo ? "text-destructive font-medium" : ""}>
+                                  Val: {dataBR(l.validade)}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 );
               })}
