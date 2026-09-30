@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight, PackagePlus, Plus } from "lucide-react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -698,7 +698,7 @@ export function EstoquePage() {
                 const baixo = total <= Number(item.estoque_minimo);
                 const expandido = produtoExpandido === item.id;
                 return (
-                    <tbody key={item.id} className="contents">
+                    <Fragment key={item.id}>
                       <TableRow>
                         <TableCell>
                           <Button
@@ -789,7 +789,7 @@ export function EstoquePage() {
                           </td>
                         </tr>
                       ) : null}
-                    </tbody>
+                    </Fragment>
                 );
               })}
             </TableBody>
