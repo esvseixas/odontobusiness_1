@@ -113,7 +113,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <Settings className="h-4 w-4" />
               <span className="flex-1 text-left">Configurações</span>
-              <ChevronDown className={cn("h-4 w-4 transition-transform", configuracoesAberta && "rotate-180")} />
+              <ChevronDown
+                className={cn("h-4 w-4 transition-transform", configuracoesAberta && "rotate-180")}
+              />
             </Button>
             {configuracoesAberta ? (
               <div className="ml-5 mt-1 space-y-0.5 border-l pl-2">
