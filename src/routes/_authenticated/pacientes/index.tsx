@@ -274,7 +274,7 @@ function Pacientes() {
             pacientes.data?.map((p) => (
               <Link
                 key={p.id}
-                to="/pacientes/$id"
+                to="/pacientes/$id/odontograma"
                 params={{ id: p.id }}
                 className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3 transition-colors hover:bg-secondary"
               >

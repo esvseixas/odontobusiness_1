@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CalendarDays,
   LayoutDashboard,
@@ -18,8 +18,14 @@ import {
   ListTree,
   PackageOpen,
   ShieldCheck,
+  List,
+  Receipt,
+  ClipboardPlus,
+  FileText,
+  History,
+  UserRound,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useSessao } from "@/hooks/useSessao";
@@ -29,8 +35,16 @@ import { Button } from "@/components/ui/button";
 const NAV = [
   { to: "/dashboard", label: "Painel", icon: LayoutDashboard },
   { to: "/agenda", label: "Agenda", icon: CalendarDays },
-  { to: "/pacientes", label: "Pacientes", icon: Users },
   { to: "/financeiro", label: "Financeiro", icon: Wallet },
+] as const;
+
+const PACIENTE_NAV = [
+  { to: "/pacientes/$id/odontograma", slug: "odontograma", label: "Odontograma", icon: Stethoscope },
+  { to: "/pacientes/$id/orcamentos", slug: "orcamentos", label: "Orçamentos", icon: Receipt },
+  { to: "/pacientes/$id/evolucao", slug: "evolucao", label: "Evolução clínica", icon: ClipboardPlus },
+  { to: "/pacientes/$id/documentos", slug: "documentos", label: "Documentos", icon: FileText },
+  { to: "/pacientes/$id/historico", slug: "historico", label: "Histórico", icon: History },
+  { to: "/pacientes/$id/dados", slug: "dados", label: "Dados e anamnese", icon: UserRound },
 ] as const;
 
 const CONFIG_NAV = [
@@ -51,8 +65,24 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [aberto, setAberto] = useState(false);
   const [menuOculto, setMenuOculto] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pacientesAtiva = pathname.startsWith("/pacientes");
+  const pacienteId = pathname.match(/^\/pacientes\/([^/]+)/)?.[1];
+  const [pacientesAberta, setPacientesAberta] = useState(pacientesAtiva);
   const configuracoesAtiva = pathname.startsWith("/configuracoes");
   const [configuracoesAberta, setConfiguracoesAberta] = useState(configuracoesAtiva);
+
+  useEffect(() => {
+    if (pacientesAtiva) setPacientesAberta(true);
+  }, [pacientesAtiva, pacienteId]);
+
+  const pacienteAtual = useQuery({
+    enabled: !!pacienteId,
+    queryKey: ["menu-paciente", pacienteId],
+    queryFn: async () => {
+      const { data } = await supabase.from("pacientes").select("nome").eq("id", pacienteId ?? "").maybeSingle();
+      return data;
+    },
+  });
 
   async function sair() {
     await queryClient.cancelQueries();
@@ -100,6 +130,68 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
+          <div>
+            <Button
+              type="button"
+              variant="ghost"
+              className={cn(
+                "h-9 w-full justify-start gap-3 px-3 text-sm font-medium",
+                pacientesAtiva ? "bg-secondary text-foreground" : "text-muted-foreground",
+              )}
+              aria-expanded={pacientesAberta}
+              onClick={() => setPacientesAberta((valor) => !valor)}
+            >
+              <Users className="h-4 w-4" />
+              <span className="flex-1 text-left">Pacientes</span>
+              <ChevronDown className={cn("h-4 w-4 transition-transform", pacientesAberta && "rotate-180")} />
+            </Button>
+            {pacientesAberta ? (
+              <div className="ml-5 mt-1 space-y-0.5 border-l pl-2">
+                <Link
+                  to="/pacientes"
+                  activeOptions={{ exact: true }}
+                  onClick={() => setAberto(false)}
+                  className={cn(
+                    "flex items-center gap-2 rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
+                    pathname === "/pacientes" || pathname === "/pacientes/"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                  )}
+                >
+                  <List className="h-3.5 w-3.5" />
+                  Lista de pacientes
+                </Link>
+                {pacienteId ? (
+                  <>
+                    <p className="truncate px-2 pb-1 pt-2 text-xs font-semibold text-foreground" title={pacienteAtual.data?.nome ?? "Prontuário"}>
+                      {pacienteAtual.data?.nome ?? "Prontuário"}
+                    </p>
+                    {PACIENTE_NAV.map((item) => {
+                      const Icon = item.icon;
+                      const ativo = pathname === `/pacientes/${pacienteId}/${item.slug}`;
+                      return (
+                        <Link
+                          key={item.slug}
+                          to={item.to}
+                          params={{ id: pacienteId }}
+                          onClick={() => setAberto(false)}
+                          className={cn(
+                            "flex items-center gap-2 rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
+                            ativo
+                              ? "bg-primary text-primary-foreground"
+                              : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                          )}
+                        >
+                          <Icon className="h-3.5 w-3.5" />
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
           <div>
             <Button
               type="button"

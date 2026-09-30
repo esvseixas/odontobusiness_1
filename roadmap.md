@@ -13,3 +13,4 @@
 - [x] Transformar as abas de Configurações em submenus laterais com páginas próprias.
 - [x] Separar o cadastro de produtos do controle de lotes, quantidades e validades no estoque.
 - [x] Validar no navegador o cadastro de produto e a inclusão de lote, removendo os dados temporários ao final.
+- [x] Transformar Pacientes em submenu dinâmico com páginas próprias para o prontuário.

@@ -28,6 +28,13 @@ import { Route as AuthenticatedConfiguracoesEquipeRouteImport } from './routes/_
 import { Route as AuthenticatedConfiguracoesConveniosRouteImport } from './routes/_authenticated/configuracoes/convenios'
 import { Route as AuthenticatedConfiguracoesClinicaRouteImport } from './routes/_authenticated/configuracoes/clinica'
 import { Route as AuthenticatedConfiguracoesAuditoriaRouteImport } from './routes/_authenticated/configuracoes/auditoria'
+import { Route as AuthenticatedPacientesIdIndexRouteImport } from './routes/_authenticated/pacientes/$id/index'
+import { Route as AuthenticatedPacientesIdOrcamentosRouteImport } from './routes/_authenticated/pacientes/$id/orcamentos'
+import { Route as AuthenticatedPacientesIdOdontogramaRouteImport } from './routes/_authenticated/pacientes/$id/odontograma'
+import { Route as AuthenticatedPacientesIdHistoricoRouteImport } from './routes/_authenticated/pacientes/$id/historico'
+import { Route as AuthenticatedPacientesIdEvolucaoRouteImport } from './routes/_authenticated/pacientes/$id/evolucao'
+import { Route as AuthenticatedPacientesIdDocumentosRouteImport } from './routes/_authenticated/pacientes/$id/documentos'
+import { Route as AuthenticatedPacientesIdDadosRouteImport } from './routes/_authenticated/pacientes/$id/dados'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -135,6 +142,48 @@ const AuthenticatedConfiguracoesAuditoriaRoute =
     path: '/auditoria',
     getParentRoute: () => AuthenticatedConfiguracoesRoute,
   } as any)
+const AuthenticatedPacientesIdIndexRoute =
+  AuthenticatedPacientesIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdOrcamentosRoute =
+  AuthenticatedPacientesIdOrcamentosRouteImport.update({
+    id: '/orcamentos',
+    path: '/orcamentos',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdOdontogramaRoute =
+  AuthenticatedPacientesIdOdontogramaRouteImport.update({
+    id: '/odontograma',
+    path: '/odontograma',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdHistoricoRoute =
+  AuthenticatedPacientesIdHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdEvolucaoRoute =
+  AuthenticatedPacientesIdEvolucaoRouteImport.update({
+    id: '/evolucao',
+    path: '/evolucao',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdDocumentosRoute =
+  AuthenticatedPacientesIdDocumentosRouteImport.update({
+    id: '/documentos',
+    path: '/documentos',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdDadosRoute =
+  AuthenticatedPacientesIdDadosRouteImport.update({
+    id: '/dados',
+    path: '/dados',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -152,9 +201,16 @@ export interface FileRoutesByFullPath {
   '/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
   '/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
-  '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
+  '/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
+  '/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
+  '/pacientes/$id/evolucao': typeof AuthenticatedPacientesIdEvolucaoRoute
+  '/pacientes/$id/historico': typeof AuthenticatedPacientesIdHistoricoRoute
+  '/pacientes/$id/odontograma': typeof AuthenticatedPacientesIdOdontogramaRoute
+  '/pacientes/$id/orcamentos': typeof AuthenticatedPacientesIdOrcamentosRoute
+  '/pacientes/$id/': typeof AuthenticatedPacientesIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -171,9 +227,15 @@ export interface FileRoutesByTo {
   '/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
   '/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
-  '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
+  '/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
+  '/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
+  '/pacientes/$id/evolucao': typeof AuthenticatedPacientesIdEvolucaoRoute
+  '/pacientes/$id/historico': typeof AuthenticatedPacientesIdHistoricoRoute
+  '/pacientes/$id/odontograma': typeof AuthenticatedPacientesIdOdontogramaRoute
+  '/pacientes/$id/orcamentos': typeof AuthenticatedPacientesIdOrcamentosRoute
+  '/pacientes/$id': typeof AuthenticatedPacientesIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -193,9 +255,16 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
   '/_authenticated/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/_authenticated/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
-  '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
+  '/_authenticated/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
+  '/_authenticated/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
+  '/_authenticated/pacientes/$id/evolucao': typeof AuthenticatedPacientesIdEvolucaoRoute
+  '/_authenticated/pacientes/$id/historico': typeof AuthenticatedPacientesIdHistoricoRoute
+  '/_authenticated/pacientes/$id/odontograma': typeof AuthenticatedPacientesIdOdontogramaRoute
+  '/_authenticated/pacientes/$id/orcamentos': typeof AuthenticatedPacientesIdOrcamentosRoute
+  '/_authenticated/pacientes/$id/': typeof AuthenticatedPacientesIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -218,6 +287,13 @@ export interface FileRouteTypes {
     | '/pacientes/$id'
     | '/configuracoes/'
     | '/pacientes/'
+    | '/pacientes/$id/dados'
+    | '/pacientes/$id/documentos'
+    | '/pacientes/$id/evolucao'
+    | '/pacientes/$id/historico'
+    | '/pacientes/$id/odontograma'
+    | '/pacientes/$id/orcamentos'
+    | '/pacientes/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -234,9 +310,15 @@ export interface FileRouteTypes {
     | '/configuracoes/plano-contas'
     | '/configuracoes/procedimentos'
     | '/configuracoes/unidades'
-    | '/pacientes/$id'
     | '/configuracoes'
     | '/pacientes'
+    | '/pacientes/$id/dados'
+    | '/pacientes/$id/documentos'
+    | '/pacientes/$id/evolucao'
+    | '/pacientes/$id/historico'
+    | '/pacientes/$id/odontograma'
+    | '/pacientes/$id/orcamentos'
+    | '/pacientes/$id'
   id:
     | '__root__'
     | '/'
@@ -258,6 +340,13 @@ export interface FileRouteTypes {
     | '/_authenticated/pacientes/$id'
     | '/_authenticated/configuracoes/'
     | '/_authenticated/pacientes/'
+    | '/_authenticated/pacientes/$id/dados'
+    | '/_authenticated/pacientes/$id/documentos'
+    | '/_authenticated/pacientes/$id/evolucao'
+    | '/_authenticated/pacientes/$id/historico'
+    | '/_authenticated/pacientes/$id/odontograma'
+    | '/_authenticated/pacientes/$id/orcamentos'
+    | '/_authenticated/pacientes/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -401,6 +490,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConfiguracoesAuditoriaRouteImport
       parentRoute: typeof AuthenticatedConfiguracoesRoute
     }
+    '/_authenticated/pacientes/$id/': {
+      id: '/_authenticated/pacientes/$id/'
+      path: '/'
+      fullPath: '/pacientes/$id/'
+      preLoaderRoute: typeof AuthenticatedPacientesIdIndexRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/orcamentos': {
+      id: '/_authenticated/pacientes/$id/orcamentos'
+      path: '/orcamentos'
+      fullPath: '/pacientes/$id/orcamentos'
+      preLoaderRoute: typeof AuthenticatedPacientesIdOrcamentosRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/odontograma': {
+      id: '/_authenticated/pacientes/$id/odontograma'
+      path: '/odontograma'
+      fullPath: '/pacientes/$id/odontograma'
+      preLoaderRoute: typeof AuthenticatedPacientesIdOdontogramaRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/historico': {
+      id: '/_authenticated/pacientes/$id/historico'
+      path: '/historico'
+      fullPath: '/pacientes/$id/historico'
+      preLoaderRoute: typeof AuthenticatedPacientesIdHistoricoRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/evolucao': {
+      id: '/_authenticated/pacientes/$id/evolucao'
+      path: '/evolucao'
+      fullPath: '/pacientes/$id/evolucao'
+      preLoaderRoute: typeof AuthenticatedPacientesIdEvolucaoRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/documentos': {
+      id: '/_authenticated/pacientes/$id/documentos'
+      path: '/documentos'
+      fullPath: '/pacientes/$id/documentos'
+      preLoaderRoute: typeof AuthenticatedPacientesIdDocumentosRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/dados': {
+      id: '/_authenticated/pacientes/$id/dados'
+      path: '/dados'
+      fullPath: '/pacientes/$id/dados'
+      preLoaderRoute: typeof AuthenticatedPacientesIdDadosRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
   }
 }
 
@@ -442,13 +580,44 @@ const AuthenticatedConfiguracoesRouteWithChildren =
     AuthenticatedConfiguracoesRouteChildren,
   )
 
+interface AuthenticatedPacientesIdRouteChildren {
+  AuthenticatedPacientesIdDadosRoute: typeof AuthenticatedPacientesIdDadosRoute
+  AuthenticatedPacientesIdDocumentosRoute: typeof AuthenticatedPacientesIdDocumentosRoute
+  AuthenticatedPacientesIdEvolucaoRoute: typeof AuthenticatedPacientesIdEvolucaoRoute
+  AuthenticatedPacientesIdHistoricoRoute: typeof AuthenticatedPacientesIdHistoricoRoute
+  AuthenticatedPacientesIdOdontogramaRoute: typeof AuthenticatedPacientesIdOdontogramaRoute
+  AuthenticatedPacientesIdOrcamentosRoute: typeof AuthenticatedPacientesIdOrcamentosRoute
+  AuthenticatedPacientesIdIndexRoute: typeof AuthenticatedPacientesIdIndexRoute
+}
+
+const AuthenticatedPacientesIdRouteChildren: AuthenticatedPacientesIdRouteChildren =
+  {
+    AuthenticatedPacientesIdDadosRoute: AuthenticatedPacientesIdDadosRoute,
+    AuthenticatedPacientesIdDocumentosRoute:
+      AuthenticatedPacientesIdDocumentosRoute,
+    AuthenticatedPacientesIdEvolucaoRoute:
+      AuthenticatedPacientesIdEvolucaoRoute,
+    AuthenticatedPacientesIdHistoricoRoute:
+      AuthenticatedPacientesIdHistoricoRoute,
+    AuthenticatedPacientesIdOdontogramaRoute:
+      AuthenticatedPacientesIdOdontogramaRoute,
+    AuthenticatedPacientesIdOrcamentosRoute:
+      AuthenticatedPacientesIdOrcamentosRoute,
+    AuthenticatedPacientesIdIndexRoute: AuthenticatedPacientesIdIndexRoute,
+  }
+
+const AuthenticatedPacientesIdRouteWithChildren =
+  AuthenticatedPacientesIdRoute._addFileChildren(
+    AuthenticatedPacientesIdRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
-  AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
+  AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRouteWithChildren
   AuthenticatedPacientesIndexRoute: typeof AuthenticatedPacientesIndexRoute
 }
 
@@ -458,7 +627,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
-  AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
+  AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRouteWithChildren,
   AuthenticatedPacientesIndexRoute: AuthenticatedPacientesIndexRoute,
 }
 
