@@ -18,7 +18,16 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes/index'
+import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes/index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes/$id'
+import { Route as AuthenticatedConfiguracoesUnidadesRouteImport } from './routes/_authenticated/configuracoes/unidades'
+import { Route as AuthenticatedConfiguracoesProcedimentosRouteImport } from './routes/_authenticated/configuracoes/procedimentos'
+import { Route as AuthenticatedConfiguracoesPlanoContasRouteImport } from './routes/_authenticated/configuracoes/plano-contas'
+import { Route as AuthenticatedConfiguracoesEstoqueRouteImport } from './routes/_authenticated/configuracoes/estoque'
+import { Route as AuthenticatedConfiguracoesEquipeRouteImport } from './routes/_authenticated/configuracoes/equipe'
+import { Route as AuthenticatedConfiguracoesConveniosRouteImport } from './routes/_authenticated/configuracoes/convenios'
+import { Route as AuthenticatedConfiguracoesClinicaRouteImport } from './routes/_authenticated/configuracoes/clinica'
+import { Route as AuthenticatedConfiguracoesAuditoriaRouteImport } from './routes/_authenticated/configuracoes/auditoria'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -66,33 +75,104 @@ const AuthenticatedPacientesIndexRoute =
     path: '/pacientes/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedConfiguracoesIndexRoute =
+  AuthenticatedConfiguracoesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
 const AuthenticatedPacientesIdRoute =
   AuthenticatedPacientesIdRouteImport.update({
     id: '/pacientes/$id',
     path: '/pacientes/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedConfiguracoesUnidadesRoute =
+  AuthenticatedConfiguracoesUnidadesRouteImport.update({
+    id: '/unidades',
+    path: '/unidades',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesProcedimentosRoute =
+  AuthenticatedConfiguracoesProcedimentosRouteImport.update({
+    id: '/procedimentos',
+    path: '/procedimentos',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesPlanoContasRoute =
+  AuthenticatedConfiguracoesPlanoContasRouteImport.update({
+    id: '/plano-contas',
+    path: '/plano-contas',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesEstoqueRoute =
+  AuthenticatedConfiguracoesEstoqueRouteImport.update({
+    id: '/estoque',
+    path: '/estoque',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesEquipeRoute =
+  AuthenticatedConfiguracoesEquipeRouteImport.update({
+    id: '/equipe',
+    path: '/equipe',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesConveniosRoute =
+  AuthenticatedConfiguracoesConveniosRouteImport.update({
+    id: '/convenios',
+    path: '/convenios',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesClinicaRoute =
+  AuthenticatedConfiguracoesClinicaRouteImport.update({
+    id: '/clinica',
+    path: '/clinica',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesAuditoriaRoute =
+  AuthenticatedConfiguracoesAuditoriaRouteImport.update({
+    id: '/auditoria',
+    path: '/auditoria',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
-  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
+  '/configuracoes/clinica': typeof AuthenticatedConfiguracoesClinicaRoute
+  '/configuracoes/convenios': typeof AuthenticatedConfiguracoesConveniosRoute
+  '/configuracoes/equipe': typeof AuthenticatedConfiguracoesEquipeRoute
+  '/configuracoes/estoque': typeof AuthenticatedConfiguracoesEstoqueRoute
+  '/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
+  '/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
+  '/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
-  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
+  '/configuracoes/clinica': typeof AuthenticatedConfiguracoesClinicaRoute
+  '/configuracoes/convenios': typeof AuthenticatedConfiguracoesConveniosRoute
+  '/configuracoes/equipe': typeof AuthenticatedConfiguracoesEquipeRoute
+  '/configuracoes/estoque': typeof AuthenticatedConfiguracoesEstoqueRoute
+  '/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
+  '/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
+  '/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRoutesById {
@@ -101,11 +181,20 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
-  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
+  '/_authenticated/configuracoes/clinica': typeof AuthenticatedConfiguracoesClinicaRoute
+  '/_authenticated/configuracoes/convenios': typeof AuthenticatedConfiguracoesConveniosRoute
+  '/_authenticated/configuracoes/equipe': typeof AuthenticatedConfiguracoesEquipeRoute
+  '/_authenticated/configuracoes/estoque': typeof AuthenticatedConfiguracoesEstoqueRoute
+  '/_authenticated/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
+  '/_authenticated/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
+  '/_authenticated/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRouteTypes {
@@ -118,18 +207,35 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/financeiro'
     | '/onboarding'
+    | '/configuracoes/auditoria'
+    | '/configuracoes/clinica'
+    | '/configuracoes/convenios'
+    | '/configuracoes/equipe'
+    | '/configuracoes/estoque'
+    | '/configuracoes/plano-contas'
+    | '/configuracoes/procedimentos'
+    | '/configuracoes/unidades'
     | '/pacientes/$id'
+    | '/configuracoes/'
     | '/pacientes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/agenda'
-    | '/configuracoes'
     | '/dashboard'
     | '/financeiro'
     | '/onboarding'
+    | '/configuracoes/auditoria'
+    | '/configuracoes/clinica'
+    | '/configuracoes/convenios'
+    | '/configuracoes/equipe'
+    | '/configuracoes/estoque'
+    | '/configuracoes/plano-contas'
+    | '/configuracoes/procedimentos'
+    | '/configuracoes/unidades'
     | '/pacientes/$id'
+    | '/configuracoes'
     | '/pacientes'
   id:
     | '__root__'
@@ -141,7 +247,16 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
+    | '/_authenticated/configuracoes/auditoria'
+    | '/_authenticated/configuracoes/clinica'
+    | '/_authenticated/configuracoes/convenios'
+    | '/_authenticated/configuracoes/equipe'
+    | '/_authenticated/configuracoes/estoque'
+    | '/_authenticated/configuracoes/plano-contas'
+    | '/_authenticated/configuracoes/procedimentos'
+    | '/_authenticated/configuracoes/unidades'
     | '/_authenticated/pacientes/$id'
+    | '/_authenticated/configuracoes/'
     | '/_authenticated/pacientes/'
   fileRoutesById: FileRoutesById
 }
@@ -216,6 +331,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/configuracoes/': {
+      id: '/_authenticated/configuracoes/'
+      path: '/'
+      fullPath: '/configuracoes/'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesIndexRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
     '/_authenticated/pacientes/$id': {
       id: '/_authenticated/pacientes/$id'
       path: '/pacientes/$id'
@@ -223,12 +345,106 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/configuracoes/unidades': {
+      id: '/_authenticated/configuracoes/unidades'
+      path: '/unidades'
+      fullPath: '/configuracoes/unidades'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesUnidadesRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/procedimentos': {
+      id: '/_authenticated/configuracoes/procedimentos'
+      path: '/procedimentos'
+      fullPath: '/configuracoes/procedimentos'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesProcedimentosRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/plano-contas': {
+      id: '/_authenticated/configuracoes/plano-contas'
+      path: '/plano-contas'
+      fullPath: '/configuracoes/plano-contas'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesPlanoContasRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/estoque': {
+      id: '/_authenticated/configuracoes/estoque'
+      path: '/estoque'
+      fullPath: '/configuracoes/estoque'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesEstoqueRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/equipe': {
+      id: '/_authenticated/configuracoes/equipe'
+      path: '/equipe'
+      fullPath: '/configuracoes/equipe'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesEquipeRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/convenios': {
+      id: '/_authenticated/configuracoes/convenios'
+      path: '/convenios'
+      fullPath: '/configuracoes/convenios'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesConveniosRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/clinica': {
+      id: '/_authenticated/configuracoes/clinica'
+      path: '/clinica'
+      fullPath: '/configuracoes/clinica'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesClinicaRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/auditoria': {
+      id: '/_authenticated/configuracoes/auditoria'
+      path: '/auditoria'
+      fullPath: '/configuracoes/auditoria'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesAuditoriaRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
   }
 }
 
+interface AuthenticatedConfiguracoesRouteChildren {
+  AuthenticatedConfiguracoesAuditoriaRoute: typeof AuthenticatedConfiguracoesAuditoriaRoute
+  AuthenticatedConfiguracoesClinicaRoute: typeof AuthenticatedConfiguracoesClinicaRoute
+  AuthenticatedConfiguracoesConveniosRoute: typeof AuthenticatedConfiguracoesConveniosRoute
+  AuthenticatedConfiguracoesEquipeRoute: typeof AuthenticatedConfiguracoesEquipeRoute
+  AuthenticatedConfiguracoesEstoqueRoute: typeof AuthenticatedConfiguracoesEstoqueRoute
+  AuthenticatedConfiguracoesPlanoContasRoute: typeof AuthenticatedConfiguracoesPlanoContasRoute
+  AuthenticatedConfiguracoesProcedimentosRoute: typeof AuthenticatedConfiguracoesProcedimentosRoute
+  AuthenticatedConfiguracoesUnidadesRoute: typeof AuthenticatedConfiguracoesUnidadesRoute
+  AuthenticatedConfiguracoesIndexRoute: typeof AuthenticatedConfiguracoesIndexRoute
+}
+
+const AuthenticatedConfiguracoesRouteChildren: AuthenticatedConfiguracoesRouteChildren =
+  {
+    AuthenticatedConfiguracoesAuditoriaRoute:
+      AuthenticatedConfiguracoesAuditoriaRoute,
+    AuthenticatedConfiguracoesClinicaRoute:
+      AuthenticatedConfiguracoesClinicaRoute,
+    AuthenticatedConfiguracoesConveniosRoute:
+      AuthenticatedConfiguracoesConveniosRoute,
+    AuthenticatedConfiguracoesEquipeRoute:
+      AuthenticatedConfiguracoesEquipeRoute,
+    AuthenticatedConfiguracoesEstoqueRoute:
+      AuthenticatedConfiguracoesEstoqueRoute,
+    AuthenticatedConfiguracoesPlanoContasRoute:
+      AuthenticatedConfiguracoesPlanoContasRoute,
+    AuthenticatedConfiguracoesProcedimentosRoute:
+      AuthenticatedConfiguracoesProcedimentosRoute,
+    AuthenticatedConfiguracoesUnidadesRoute:
+      AuthenticatedConfiguracoesUnidadesRoute,
+    AuthenticatedConfiguracoesIndexRoute: AuthenticatedConfiguracoesIndexRoute,
+  }
+
+const AuthenticatedConfiguracoesRouteWithChildren =
+  AuthenticatedConfiguracoesRoute._addFileChildren(
+    AuthenticatedConfiguracoesRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
-  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
@@ -238,7 +454,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
-  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
