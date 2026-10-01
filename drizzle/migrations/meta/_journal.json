@@ -50,6 +50,13 @@
       "when": 1790876730071,
       "tag": "0006_fase1_plano_tratamento",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790876746150,
+      "tag": "0007_fix_atualizar_item_tratamento",
+      "breakpoints": true
     }
   ]
 }
