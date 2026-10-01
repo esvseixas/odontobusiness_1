@@ -1,7 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export type Papel = "owner" | "dentista" | "recepcao" | "financeiro";
+export type Papel =
+  | "owner"
+  | "admin"
+  | "dentista"
+  | "esteticista"
+  | "auxiliar"
+  | "recepcao"
+  | "financeiro"
+  | "estoque"
+  | "marketing";
 
 export function useSessao() {
   return useQuery({
@@ -17,10 +26,13 @@ export function useSessao() {
         .eq("id", user.id)
         .maybeSingle();
 
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id);
+      const { data: roles } = profile?.clinica_id
+        ? await supabase
+            .from("user_roles")
+            .select("role")
+            .eq("user_id", user.id)
+            .eq("clinica_id", profile.clinica_id)
+        : { data: [] as { role: string }[] };
 
       let clinica = null;
       if (profile?.clinica_id) {
