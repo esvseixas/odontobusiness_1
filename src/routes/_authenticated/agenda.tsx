@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
+import { mensagemErro } from "@/lib/erros";
+import { useAlertasPacientes, AlertaIcone } from "@/components/paciente/alertas";
 import { supabase } from "@/integrations/supabase/client";
 import { useSessao } from "@/hooks/useSessao";
 import { AppShell, PageHeader } from "@/components/app-shell";
@@ -130,7 +132,7 @@ function Agenda() {
       setAberto(false);
       queryClient.invalidateQueries({ queryKey: ["agenda"] });
     },
-    onError: (e: Error) => toast.error("Erro ao agendar: " + e.message),
+    onError: (e: Error) => toast.error(mensagemErro(e)),
   });
 
   const mudarStatus = useMutation({
@@ -142,7 +144,10 @@ function Agenda() {
       if (error) throw error;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["agenda"] }),
+    onError: (e: Error) => toast.error(mensagemErro(e)),
   });
+
+  const alertas = useAlertasPacientes((agenda.data ?? []).map((a) => a.paciente_id ?? ""));
 
   const lista = (agenda.data ?? []).filter(
     (a) => filtroProf === "todos" || a.profissional_id === filtroProf,
@@ -263,7 +268,8 @@ function Agenda() {
                   <div className="w-20 text-sm font-semibold">{horaBR(a.inicio)}</div>
                   <div>
                     <p className="font-medium">
-                      {a.pacientes?.nome ?? "Encaixe"}
+                      {a.pacientes?.nome ?? "Encaixe"}{" "}
+                      <AlertaIcone alertas={a.paciente_id ? alertas.data?.[a.paciente_id] : undefined} />
                       {a.pacientes?.elegibilidade_pendente ? (
                         <Badge variant="destructive" className="ml-2">convênio pendente</Badge>
                       ) : null}

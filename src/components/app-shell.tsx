@@ -18,6 +18,8 @@ import {
   ListTree,
   PackageOpen,
   ShieldCheck,
+  Images,
+  Tags,
   List,
   Receipt,
   ClipboardPlus,
@@ -45,6 +47,7 @@ const PACIENTE_NAV = [
   { to: "/pacientes/$id/evolucao", slug: "evolucao", label: "Evolução clínica", icon: ClipboardPlus },
   { to: "/pacientes/$id/documentos", slug: "documentos", label: "Documentos", icon: FileText },
   { to: "/pacientes/$id/historico", slug: "historico", label: "Histórico", icon: History },
+  { to: "/pacientes/$id/arquivos", slug: "arquivos", label: "Arquivos e imagens", icon: Images },
   { to: "/pacientes/$id/dados", slug: "dados", label: "Dados e anamnese", icon: UserRound },
 ] as const;
 
@@ -52,6 +55,7 @@ const CONFIG_NAV = [
   { to: "/configuracoes/clinica", label: "Clínica", icon: Building2 },
   { to: "/configuracoes/unidades", label: "Unidades", icon: MapPin },
   { to: "/configuracoes/procedimentos", label: "Procedimentos", icon: ClipboardList },
+  { to: "/configuracoes/tabelas-preco", label: "Tabelas de preço", icon: Tags },
   { to: "/configuracoes/convenios", label: "Convênios", icon: HeartHandshake },
   { to: "/configuracoes/equipe", label: "Equipe", icon: UserCog },
   { to: "/configuracoes/plano-contas", label: "Plano de contas", icon: ListTree },

@@ -65,15 +65,32 @@ function Pacientes() {
     queryFn: async () => (await supabase.from("convenios").select("*").eq("ativo", true).order("nome")).data ?? [],
   });
 
-  const pacientes = useQuery({
+  const [pagina, setPagina] = useState(0);
+  const POR_PAGINA = 20;
+  const pacientesQ = useQuery({
     enabled: !!clinicaId,
-    queryKey: ["pacientes", clinicaId, busca],
+    queryKey: ["pacientes", clinicaId, busca, pagina],
     queryFn: async () => {
-      let q = supabase.from("pacientes").select("*,convenios(nome)").eq("ativo", true).order("nome");
-      if (busca.trim()) q = q.ilike("nome", `%${busca.trim()}%`);
-      return (await q).data ?? [];
+      let q = supabase
+        .from("pacientes")
+        .select("id,nome,nome_social,telefone,data_nascimento,elegibilidade_pendente,consentimento_lgpd,tags,convenios(nome)", { count: "exact" })
+        .eq("ativo", true)
+        .order("nome")
+        .range(pagina * POR_PAGINA, pagina * POR_PAGINA + POR_PAGINA - 1);
+      const termo = busca.trim().replace(/[%,()*\\]/g, " ").trim();
+      if (termo) {
+        const digitos = termo.replace(/\D/g, "");
+        const filtros = [`nome.ilike.%${termo}%`, `nome_social.ilike.%${termo}%`];
+        if (digitos.length >= 3) filtros.push(`cpf.ilike.%${digitos}%`, `telefone.ilike.%${digitos}%`, `cpf.ilike.%${termo}%`, `telefone.ilike.%${termo}%`);
+        q = q.or(filtros.join(","));
+      }
+      const { data, count, error } = await q;
+      if (error) throw error;
+      return { itens: data ?? [], total: count ?? 0 };
     },
   });
+  const pacientes = { data: pacientesQ.data?.itens };
+  const totalPaginas = Math.max(1, Math.ceil((pacientesQ.data?.total ?? 0) / POR_PAGINA));
 
   const salvar = useMutation({
     mutationFn: async () => {
@@ -256,7 +273,7 @@ function Pacientes() {
 
       <div className="relative mb-4 max-w-sm">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input className="pl-9" placeholder="Buscar paciente…" value={busca} onChange={(e) => setBusca(e.target.value)} />
+        <Input className="pl-9" placeholder="Buscar por nome, CPF ou telefone…" aria-label="Buscar paciente" value={busca} onChange={(e) => { setBusca(e.target.value); setPagina(0); }} />
       </div>
 
       <Card>
@@ -272,7 +289,12 @@ function Pacientes() {
                 className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3 transition-colors hover:bg-secondary"
               >
                 <div>
-                  <p className="font-medium">{p.nome}</p>
+                  <p className="font-medium">
+                    {p.nome_social ? `${p.nome_social} (${p.nome})` : p.nome}
+                    {p.tags?.map((t) => (
+                      <Badge key={t} variant="secondary" className="ml-2">{t}</Badge>
+                    ))}
+                  </p>
                   <p className="text-xs text-muted-foreground">
                     {p.telefone ?? "sem telefone"} · nasc. {dataBR(p.data_nascimento)} ·{" "}
                     {p.convenios?.nome ?? "Particular"}
@@ -285,6 +307,13 @@ function Pacientes() {
               </Link>
             ))
           )}
+          <div className="flex items-center justify-between pt-2 text-sm text-muted-foreground">
+            <span>{pacientesQ.data?.total ?? 0} pacientes · página {pagina + 1} de {totalPaginas}</span>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" disabled={pagina === 0} onClick={() => setPagina(pagina - 1)}>Anterior</Button>
+              <Button size="sm" variant="outline" disabled={pagina + 1 >= totalPaginas} onClick={() => setPagina(pagina + 1)}>Próxima</Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </AppShell>

@@ -25,6 +25,7 @@ const TITULOS: Record<string, { titulo: string; descricao: string }> = {
   clinica: { titulo: "Clínica", descricao: "Dados cadastrais e fiscais." },
   unidades: { titulo: "Unidades", descricao: "Endereços e unidades da rede." },
   procedimentos: { titulo: "Procedimentos", descricao: "Tabela de serviços e valores." },
+  "tabelas-preco": { titulo: "Tabelas de preço", descricao: "Preços particulares, por convênio e por plano interno." },
   convenios: { titulo: "Convênios", descricao: "Planos e convênios aceitos." },
   equipe: { titulo: "Equipe", descricao: "Profissionais e usuários com acesso." },
   "plano-contas": {

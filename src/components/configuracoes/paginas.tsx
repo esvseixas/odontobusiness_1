@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -178,72 +179,323 @@ export function UnidadesPage() {
   );
 }
 
+const TIPO_PROC: Record<string, string> = { odontologico: "Odontológico", estetico: "Estético", outro: "Outro" };
+const PUBLICO: Record<string, string> = { unissex: "Unissex", feminino: "Feminino", masculino: "Masculino" };
+
 export function ProcedimentosPage() {
   const { data: sessao } = useSessao();
-  const vazio = { nome: "", codigo: "", categoria: "", valor: "", duracao_minutos: "30" };
+  const vazio = {
+    nome: "",
+    codigo: "",
+    codigo_tuss: "",
+    especialidade_id: "",
+    tipo: "odontologico",
+    publico: "unissex",
+    valor: "",
+    custo_estimado: "",
+    duracao_minutos: "30",
+    sessoes_previstas: "1",
+    intervalo_retorno_dias: "",
+    requer_termo: false,
+    exige_lote_aplicado: false,
+  };
   const [form, setForm] = useState(vazio);
+  const [novaEsp, setNovaEsp] = useState("");
   const dados = useQuery({
     queryKey: ["config-procedimentos", sessao?.clinicaId],
     enabled: !!sessao?.clinicaId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("procedimentos").select("*").order("categoria");
-      if (error) throw error;
-      return data;
+      const [p, e] = await Promise.all([
+        supabase.from("procedimentos").select("*,especialidades(nome)").order("nome"),
+        supabase.from("especialidades").select("*").eq("ativo", true).order("nome"),
+      ]);
+      if (p.error) throw p.error;
+      if (e.error) throw e.error;
+      return { procedimentos: p.data, especialidades: e.data };
     },
   });
   const criar = useCriarRegistro("procedimentos", "config-procedimentos", () => setForm(vazio));
+  const criarEsp = useCriarRegistro("especialidades", "config-procedimentos", () => setNovaEsp(""));
+  const esp = dados.data?.especialidades ?? [];
+  const num = (v: string) => (v === "" ? null : Number(v));
   return (
-    <Card>
-      <CardHeader>
-        <TituloCard>Tabela de procedimentos</TituloCard>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid gap-3 sm:grid-cols-6">
-          <Input
-            className="sm:col-span-2"
-            placeholder="Nome"
-            value={form.nome}
-            onChange={(e) => setForm({ ...form, nome: e.target.value })}
-          />
-          <Input
-            placeholder="Código"
-            value={form.codigo}
-            onChange={(e) => setForm({ ...form, codigo: e.target.value })}
-          />
-          <Input
-            placeholder="Categoria"
-            value={form.categoria}
-            onChange={(e) => setForm({ ...form, categoria: e.target.value })}
-          />
-          <Input
-            placeholder="Valor"
-            type="number"
-            value={form.valor}
-            onChange={(e) => setForm({ ...form, valor: e.target.value })}
-          />
-          <Button
-            onClick={() =>
-              criar.mutate({
-                ...form,
-                valor: Number(form.valor || 0),
-                duracao_minutos: Number(form.duracao_minutos),
-              })
-            }
-            disabled={!form.nome}
-          >
-            Adicionar
-          </Button>
-        </div>
-        {dados.data?.map((p) => (
-          <div key={p.id} className="flex justify-between rounded-md border p-3 text-sm">
-            <span>
-              {p.nome} <span className="text-muted-foreground">· {p.categoria ?? "—"}</span>
-            </span>
-            <span className="font-medium">{brl(Number(p.valor))}</span>
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <TituloCard>Novo procedimento</TituloCard>
+        </CardHeader>
+        <CardContent className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label htmlFor="proc-nome">Nome *</Label>
+            <Input id="proc-nome" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} />
           </div>
-        ))}
-      </CardContent>
-    </Card>
+          <div className="space-y-1.5">
+            <Label htmlFor="proc-esp">Especialidade</Label>
+            <Select value={form.especialidade_id} onValueChange={(v) => setForm({ ...form, especialidade_id: v })}>
+              <SelectTrigger id="proc-esp"><SelectValue placeholder="Escolha" /></SelectTrigger>
+              <SelectContent>
+                {esp.map((e) => <SelectItem key={e.id} value={e.id}>{e.nome}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="proc-tipo">Tipo</Label>
+            <Select value={form.tipo} onValueChange={(v) => setForm({ ...form, tipo: v })}>
+              <SelectTrigger id="proc-tipo"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {Object.entries(TIPO_PROC).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="proc-publico">Público</Label>
+            <Select value={form.publico} onValueChange={(v) => setForm({ ...form, publico: v })}>
+              <SelectTrigger id="proc-publico"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {Object.entries(PUBLICO).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          {([
+            ["codigo", "Código interno", "text"],
+            ["codigo_tuss", "Código TUSS", "text"],
+            ["valor", "Valor (R$)", "number"],
+            ["custo_estimado", "Custo estimado (R$)", "number"],
+            ["duracao_minutos", "Duração (min)", "number"],
+            ["sessoes_previstas", "Sessões previstas", "number"],
+            ["intervalo_retorno_dias", "Retorno (dias)", "number"],
+          ] as const).map(([k, rotulo, tipo]) => (
+            <div key={k} className="space-y-1.5">
+              <Label htmlFor={`proc-${k}`}>{rotulo}</Label>
+              <Input
+                id={`proc-${k}`}
+                type={tipo}
+                step={tipo === "number" ? "0.01" : undefined}
+                value={form[k]}
+                onChange={(e) => setForm({ ...form, [k]: e.target.value })}
+              />
+            </div>
+          ))}
+          <label className="flex items-center gap-2 text-sm">
+            <Checkbox checked={form.requer_termo} onCheckedChange={(v) => setForm({ ...form, requer_termo: !!v })} />
+            Requer termo de consentimento
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <Checkbox checked={form.exige_lote_aplicado} onCheckedChange={(v) => setForm({ ...form, exige_lote_aplicado: !!v })} />
+            Exige registro do lote aplicado
+          </label>
+          <Button
+            className="sm:col-span-2 lg:col-span-4"
+            disabled={!form.nome || criar.isPending}
+            onClick={() => {
+              const nomeEsp = esp.find((e) => e.id === form.especialidade_id)?.nome ?? null;
+              criar.mutate({
+                nome: form.nome,
+                codigo: form.codigo || null,
+                codigo_tuss: form.codigo_tuss || null,
+                especialidade_id: form.especialidade_id || null,
+                categoria: nomeEsp,
+                tipo: form.tipo,
+                publico: form.publico,
+                valor: Number(form.valor || 0),
+                custo_estimado: Number(form.custo_estimado || 0),
+                duracao_minutos: Number(form.duracao_minutos || 30),
+                sessoes_previstas: Number(form.sessoes_previstas || 1),
+                intervalo_retorno_dias: num(form.intervalo_retorno_dias),
+                requer_termo: form.requer_termo,
+                exige_lote_aplicado: form.exige_lote_aplicado,
+              });
+            }}
+          >
+            Adicionar procedimento
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <TituloCard>Tabela de procedimentos</TituloCard>
+        </CardHeader>
+        <CardContent className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Procedimento</TableHead>
+                <TableHead>Especialidade</TableHead>
+                <TableHead>Tipo</TableHead>
+                <TableHead>TUSS</TableHead>
+                <TableHead className="text-right">Duração</TableHead>
+                <TableHead className="text-right">Custo</TableHead>
+                <TableHead className="text-right">Valor</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {dados.data?.procedimentos.map((p) => (
+                <TableRow key={p.id}>
+                  <TableCell className="font-medium">
+                    {p.nome}
+                    {p.requer_termo ? <Badge variant="outline" className="ml-2">termo</Badge> : null}
+                  </TableCell>
+                  <TableCell>{p.especialidades?.nome ?? p.categoria ?? "—"}</TableCell>
+                  <TableCell>{TIPO_PROC[p.tipo] ?? p.tipo} · {PUBLICO[p.publico] ?? p.publico}</TableCell>
+                  <TableCell>{p.codigo_tuss ?? "—"}</TableCell>
+                  <TableCell className="text-right">{p.duracao_minutos} min{p.sessoes_previstas > 1 ? ` · ${p.sessoes_previstas}x` : ""}</TableCell>
+                  <TableCell className="text-right">{brl(Number(p.custo_estimado))}</TableCell>
+                  <TableCell className="text-right">{brl(Number(p.valor))}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <TituloCard>Especialidades</TituloCard>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex flex-wrap gap-2">
+            {esp.map((e) => <Badge key={e.id} variant="secondary">{e.nome}</Badge>)}
+          </div>
+          <div className="flex max-w-md gap-2">
+            <Input aria-label="Nova especialidade" placeholder="Nova especialidade" value={novaEsp} onChange={(e) => setNovaEsp(e.target.value)} />
+            <Button variant="outline" disabled={!novaEsp.trim()} onClick={() => criarEsp.mutate({ nome: novaEsp.trim() })}>
+              Adicionar
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export function TabelasPrecoPage() {
+  const { data: sessao } = useSessao();
+  const queryClient = useQueryClient();
+  const [nova, setNova] = useState({ nome: "", tipo: "particular", convenio_id: "" });
+  const [tabelaId, setTabelaId] = useState("");
+  const [valores, setValores] = useState<Record<string, string>>({});
+  const dados = useQuery({
+    queryKey: ["config-tabelas-preco", sessao?.clinicaId],
+    enabled: !!sessao?.clinicaId,
+    queryFn: async () => {
+      const [t, p, c, i] = await Promise.all([
+        supabase.from("tabelas_preco").select("*,convenios(nome)").order("nome"),
+        supabase.from("procedimentos").select("id,nome,valor").eq("ativo", true).order("nome"),
+        supabase.from("convenios").select("id,nome").eq("ativo", true).order("nome"),
+        supabase.from("tabela_preco_itens").select("*"),
+      ]);
+      for (const r of [t, p, c, i]) if (r.error) throw r.error;
+      return { tabelas: t.data ?? [], procedimentos: p.data ?? [], convenios: c.data ?? [], itens: i.data ?? [] };
+    },
+  });
+  const tabelas = dados.data?.tabelas ?? [];
+  const selecionada = tabelaId || tabelas[0]?.id || "";
+  const itensTabela = (dados.data?.itens ?? []).filter((i) => i.tabela_id === selecionada);
+  const criarTabela = useCriarRegistro("tabelas_preco", "config-tabelas-preco", () =>
+    setNova({ nome: "", tipo: "particular", convenio_id: "" }),
+  );
+  const salvarPrecos = useMutation({
+    mutationFn: async () => {
+      const linhas = Object.entries(valores)
+        .filter(([, v]) => v !== "")
+        .map(([procedimento_id, v]) => ({
+          clinica_id: sessao!.clinicaId!,
+          tabela_id: selecionada,
+          procedimento_id,
+          valor: Math.round(Number(v) * 100) / 100,
+        }));
+      if (!linhas.length) return;
+      const { error } = await supabase.from("tabela_preco_itens").upsert(linhas, { onConflict: "tabela_id,procedimento_id" });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Preços salvos.");
+      setValores({});
+      queryClient.invalidateQueries({ queryKey: ["config-tabelas-preco"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  return (
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <TituloCard>Nova tabela de preço</TituloCard>
+        </CardHeader>
+        <CardContent className="grid gap-3 sm:grid-cols-4">
+          <Input aria-label="Nome da tabela" placeholder="Nome (ex.: Plano Sorriso)" value={nova.nome} onChange={(e) => setNova({ ...nova, nome: e.target.value })} />
+          <Select value={nova.tipo} onValueChange={(v) => setNova({ ...nova, tipo: v })}>
+            <SelectTrigger aria-label="Tipo da tabela"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="particular">Particular</SelectItem>
+              <SelectItem value="convenio">Convênio</SelectItem>
+              <SelectItem value="plano_interno">Plano interno</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={nova.convenio_id} onValueChange={(v) => setNova({ ...nova, convenio_id: v })} disabled={nova.tipo !== "convenio"}>
+            <SelectTrigger aria-label="Convênio"><SelectValue placeholder="Convênio" /></SelectTrigger>
+            <SelectContent>
+              {dados.data?.convenios.map((c) => <SelectItem key={c.id} value={c.id}>{c.nome}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          <Button
+            disabled={!nova.nome.trim() || (nova.tipo === "convenio" && !nova.convenio_id)}
+            onClick={() => criarTabela.mutate({ nome: nova.nome.trim(), tipo: nova.tipo, convenio_id: nova.tipo === "convenio" ? nova.convenio_id : null })}
+          >
+            Criar tabela
+          </Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex-row flex-wrap items-center justify-between gap-2">
+          <TituloCard>Preços por procedimento</TituloCard>
+          <Select value={selecionada} onValueChange={(v) => { setTabelaId(v); setValores({}); }}>
+            <SelectTrigger className="w-64" aria-label="Tabela selecionada"><SelectValue placeholder="Escolha a tabela" /></SelectTrigger>
+            <SelectContent>
+              {tabelas.map((t) => (
+                <SelectItem key={t.id} value={t.id}>{t.nome}{t.convenios?.nome ? ` (${t.convenios.nome})` : ""}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardHeader>
+        <CardContent className="space-y-3 overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Procedimento</TableHead>
+                <TableHead className="text-right">Valor base</TableHead>
+                <TableHead className="w-40 text-right">Valor nesta tabela</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {dados.data?.procedimentos.map((p) => {
+                const atual = itensTabela.find((i) => i.procedimento_id === p.id);
+                return (
+                  <TableRow key={p.id}>
+                    <TableCell>{p.nome}</TableCell>
+                    <TableCell className="text-right text-muted-foreground">{brl(Number(p.valor))}</TableCell>
+                    <TableCell className="text-right">
+                      <Input
+                        aria-label={`Preço de ${p.nome}`}
+                        type="number"
+                        step="0.01"
+                        className="ml-auto w-32 text-right"
+                        placeholder={atual ? String(atual.valor) : "—"}
+                        value={valores[p.id] ?? ""}
+                        onChange={(e) => setValores({ ...valores, [p.id]: e.target.value })}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          <Button disabled={!selecionada || !Object.values(valores).some(Boolean) || salvarPrecos.isPending} onClick={() => salvarPrecos.mutate()}>
+            Salvar preços
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
