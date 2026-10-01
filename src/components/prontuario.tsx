@@ -346,7 +346,7 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
                     <div className="flex items-center gap-2">
                       <Badge variant={o.status === "aprovado" ? "default" : "secondary"}>{o.status}</Badge>
                       {o.status === "pendente" && (
-                        <AprovarOrcamento onAprovar={(parcelas) => aprovar.mutate({ orcamentoId: o.id, parcelas })} />
+                        <AprovarOrcamento onAprovar={(opcoes) => aprovar.mutate({ orcamentoId: o.id, ...opcoes })} />
                       )}
                     </div>
                   </CardHeader>
