@@ -31,29 +31,6 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
   component: Onboarding,
 });
 
-const PROCEDIMENTOS_PADRAO = [
-  { codigo: "81000103", nome: "Consulta odontológica inicial", categoria: "Clínica geral", valor: 150, duracao_minutos: 30 },
-  { codigo: "81000210", nome: "Profilaxia / limpeza", categoria: "Prevenção", valor: 180, duracao_minutos: 40 },
-  { codigo: "85100048", nome: "Restauração em resina composta", categoria: "Dentística", valor: 250, duracao_minutos: 50 },
-  { codigo: "84000031", nome: "Tratamento endodôntico", categoria: "Endodontia", valor: 900, duracao_minutos: 90 },
-  { codigo: "82000355", nome: "Raspagem periodontal", categoria: "Periodontia", valor: 320, duracao_minutos: 60 },
-  { codigo: "83000210", nome: "Exodontia simples", categoria: "Cirurgia", valor: 300, duracao_minutos: 45 },
-  { codigo: "87000212", nome: "Coroa em cerâmica", categoria: "Prótese", valor: 1600, duracao_minutos: 60 },
-  { codigo: "86000036", nome: "Manutenção ortodôntica", categoria: "Ortodontia", valor: 200, duracao_minutos: 30 },
-  { codigo: "85500062", nome: "Clareamento dental", categoria: "Estética", valor: 750, duracao_minutos: 60 },
-];
-
-const CONTAS_PADRAO = [
-  { nome: "Receita de procedimentos", tipo: "receita" as const },
-  { nome: "Receita de convênios", tipo: "receita" as const },
-  { nome: "Aluguel", tipo: "despesa" as const },
-  { nome: "Folha de pagamento", tipo: "despesa" as const },
-  { nome: "Materiais e insumos", tipo: "despesa" as const },
-  { nome: "Laboratório de prótese", tipo: "despesa" as const },
-  { nome: "Marketing", tipo: "despesa" as const },
-  { nome: "Impostos e taxas", tipo: "despesa" as const },
-];
-
 function Onboarding() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
