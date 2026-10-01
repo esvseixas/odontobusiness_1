@@ -135,7 +135,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
-          <div>
+          <div className={cn(!mostrarPacientes && "hidden")}>
             <Button
               type="button"
               variant="ghost"
@@ -197,7 +197,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </div>
             ) : null}
           </div>
-          <div>
+          <div className={cn(!mostrarConfig && "hidden")}>
             <Button
               type="button"
               variant="ghost"
