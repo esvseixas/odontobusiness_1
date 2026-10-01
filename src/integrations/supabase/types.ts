@@ -210,6 +210,66 @@ export type Database = {
           },
         ]
       }
+      convites: {
+        Row: {
+          aceito_em: string | null
+          aceito_por: string | null
+          clinica_id: string
+          created_at: string
+          criado_por: string | null
+          email: string
+          expira_em: string
+          id: string
+          papel: Database["public"]["Enums"]["app_role"]
+          revogado_em: string | null
+          token: string
+          unidade_id: string | null
+        }
+        Insert: {
+          aceito_em?: string | null
+          aceito_por?: string | null
+          clinica_id: string
+          created_at?: string
+          criado_por?: string | null
+          email: string
+          expira_em?: string
+          id?: string
+          papel: Database["public"]["Enums"]["app_role"]
+          revogado_em?: string | null
+          token?: string
+          unidade_id?: string | null
+        }
+        Update: {
+          aceito_em?: string | null
+          aceito_por?: string | null
+          clinica_id?: string
+          created_at?: string
+          criado_por?: string | null
+          email?: string
+          expira_em?: string
+          id?: string
+          papel?: Database["public"]["Enums"]["app_role"]
+          revogado_em?: string | null
+          token?: string
+          unidade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "convites_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "convites_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documentos_emitidos: {
         Row: {
           autor_id: string | null
@@ -478,6 +538,8 @@ export type Database = {
       }
       financeiro_pagamentos: {
         Row: {
+          cancelado_em: string | null
+          cancelado_motivo: string | null
           clinica_id: string
           conta_id: string | null
           created_at: string
@@ -491,6 +553,8 @@ export type Database = {
           vencimento: string
         }
         Insert: {
+          cancelado_em?: string | null
+          cancelado_motivo?: string | null
           clinica_id: string
           conta_id?: string | null
           created_at?: string
@@ -504,6 +568,8 @@ export type Database = {
           vencimento: string
         }
         Update: {
+          cancelado_em?: string | null
+          cancelado_motivo?: string | null
           clinica_id?: string
           conta_id?: string | null
           created_at?: string
@@ -542,6 +608,8 @@ export type Database = {
       }
       financeiro_recebimentos: {
         Row: {
+          cancelado_em: string | null
+          cancelado_motivo: string | null
           clinica_id: string
           conta_id: string | null
           created_at: string
@@ -560,6 +628,8 @@ export type Database = {
           vencimento: string
         }
         Insert: {
+          cancelado_em?: string | null
+          cancelado_motivo?: string | null
           clinica_id: string
           conta_id?: string | null
           created_at?: string
@@ -578,6 +648,8 @@ export type Database = {
           vencimento: string
         }
         Update: {
+          cancelado_em?: string | null
+          cancelado_motivo?: string | null
           clinica_id?: string
           conta_id?: string | null
           created_at?: string
@@ -780,6 +852,8 @@ export type Database = {
       }
       orcamentos: {
         Row: {
+          cancelado_em: string | null
+          cancelado_motivo: string | null
           clinica_id: string
           created_at: string
           created_by: string | null
@@ -793,6 +867,8 @@ export type Database = {
           versao: number
         }
         Insert: {
+          cancelado_em?: string | null
+          cancelado_motivo?: string | null
           clinica_id: string
           created_at?: string
           created_by?: string | null
@@ -806,6 +882,8 @@ export type Database = {
           versao?: number
         }
         Update: {
+          cancelado_em?: string | null
+          cancelado_motivo?: string | null
           clinica_id?: string
           created_at?: string
           created_by?: string | null
@@ -1207,13 +1285,60 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      current_clinica_id: { Args: never; Returns: string }
-      has_role: {
+      aceitar_convite: { Args: { p_token: string }; Returns: string }
+      aprovar_orcamento: {
         Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
+          p_dia_vencimento: number
+          p_entrada?: number
+          p_forma_pagamento?: string
+          p_orcamento: string
+          p_parcelas: number
         }
+        Returns: undefined
+      }
+      criar_clinica: {
+        Args: {
+          p_cnpj?: string
+          p_cro?: string
+          p_endereco?: string
+          p_nome: string
+          p_profissional?: string
+          p_regime?: string
+          p_telefone?: string
+          p_unidade?: string
+        }
+        Returns: string
+      }
+      current_clinica_id: { Args: never; Returns: string }
+      has_role:
+        | {
+            Args: {
+              _role: Database["public"]["Enums"]["app_role"]
+              _user_id: string
+            }
+            Returns: boolean
+          }
+        | {
+            Args: {
+              _clinica: string
+              _role: Database["public"]["Enums"]["app_role"]
+              _user_id: string
+            }
+            Returns: boolean
+          }
+      tem_papel: {
+        Args: { _roles: Database["public"]["Enums"]["app_role"][] }
         Returns: boolean
+      }
+      ver_convite: {
+        Args: { p_token: string }
+        Returns: {
+          clinica_nome: string
+          email: string
+          expira_em: string
+          papel: Database["public"]["Enums"]["app_role"]
+          valido: boolean
+        }[]
       }
     }
     Enums: {
