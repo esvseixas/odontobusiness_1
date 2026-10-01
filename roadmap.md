@@ -28,7 +28,7 @@
 - [x] 1. Pacientes: novos campos, busca pg_trgm, anamnese versionada com modelos, alertas, link público, edição de dados
 - [x] 2. Arquivos e imagens: bucket privado, paciente_arquivos, assinaturas no Storage
 - [x] 3. Especialidades, procedimentos ampliados, tabelas de preço
-- [ ] 4. Plano de tratamento (itens aprováveis, etapas, aceite, PDF)
+- [x] 4. Plano de tratamento (itens aprováveis, desconto R$/%, validade, etapas, aceite na tela/link, impressão/PDF)
 - [ ] 5. Periograma, ortodontia, implantes, laboratório
 - [ ] 6. Modelos de documentos e PDF
 - [x] 7a. Agenda: bloqueio de conflitos de profissional, paciente e cadeira; alertas clínicos na agenda

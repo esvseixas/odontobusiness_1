@@ -6,3 +6,4 @@
 - Clinical files live in the private `prontuario` Storage bucket under `{clinica_id}/{paciente_id}/...`; storage policies key off the first folder segment, and files are only archived (ativo=false), never deleted.
 - Anamneses are append-only versions (`anamneses`); alerts are computed in the database from question `alerta` flags, and patients answer via token links through SECURITY DEFINER RPCs.
 - Schedule conflicts are enforced by GiST exclusion constraints on `agendamentos`; UI translates them via `src/lib/erros.ts`.
+- Treatment plans: orçamento generation, adjustment, approval, item status and patient acceptance run only through SECURITY DEFINER RPCs; item status changes sync the linked odontogram marking.

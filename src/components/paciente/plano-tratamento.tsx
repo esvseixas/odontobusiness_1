@@ -92,6 +92,7 @@ function totais(o: Plano, aprovados: Set<string>, tipo: string, desconto: number
 
 function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
   const pendente = o.status === "pendente";
+  const ativo = ["aprovado", "em_execucao", "concluido"].includes(o.status);
   const [aprovados, setAprovados] = useState(new Set(o.orcamento_itens.filter((i) => i.aprovado).map((i) => i.id)));
   const [tipo, setTipo] = useState(o.desconto_tipo);
   const [desconto, setDesconto] = useState(String(o.desconto_tipo === "percentual" ? o.desconto_percentual : o.desconto));
@@ -162,7 +163,7 @@ function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
           <CardTitle className="text-base">Orçamento v{o.versao} · {brl(pendente ? t.liquido : Number(o.valor_total) - Number(o.desconto))}</CardTitle>
           <p className="text-xs text-muted-foreground">
             Criado em {dataBR(o.created_at)}{o.validade ? ` · válido até ${dataBR(o.validade)}` : ""}
-            {!pendente && totalAprov > 0 ? ` · ${concluidos}/${totalAprov} etapas concluídas` : ""}
+            {ativo && totalAprov > 0 ? ` · ${concluidos}/${totalAprov} etapas concluídas` : ""}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -193,7 +194,7 @@ function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
               </label>
               <div className="flex items-center gap-2">
                 <span className="tabular-nums">{brl(i.quantidade * Number(i.valor_unitario))}</span>
-                {!pendente && i.status !== "recusado" ? (
+                {ativo && i.aprovado && i.status !== "recusado" ? (
                   <Select value={i.status} onValueChange={(s) => status.mutate({ item: i.id, s })}>
                     <SelectTrigger className="h-8 w-36"><SelectValue /></SelectTrigger>
                     <SelectContent>
@@ -202,7 +203,7 @@ function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
                       ))}
                     </SelectContent>
                   </Select>
-                ) : !pendente ? <Badge variant="outline">Recusado</Badge> : null}
+                ) : i.status === "recusado" ? <Badge variant="outline">Recusado</Badge> : null}
               </div>
             </div>
           ))}
@@ -247,7 +248,7 @@ function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
               <Printer className="mr-1 h-4 w-4" /> Imprimir / PDF
             </Link>
           </Button>
-          {!o.aceito_em && (
+          {!o.aceito_em && o.status !== "recusado" && (
             <>
               <AceiteTela orcamentoId={o.id} onOk={onChange} />
               <Button size="sm" variant="outline" onClick={() => link.mutate()} disabled={link.isPending}>
