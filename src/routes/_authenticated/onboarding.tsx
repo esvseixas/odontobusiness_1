@@ -79,68 +79,18 @@ function Onboarding() {
     if (!sessao?.user) return;
     setSalvando(true);
     try {
-      // O id é gerado no cliente: a política de leitura só libera a clínica
-      // depois que o perfil estiver vinculado a ela.
-      const clinica = { id: crypto.randomUUID() };
-      const { error: e1 } = await supabase.from("clinicas").insert({
-        id: clinica.id,
-        nome: form.nome,
-        cnpj: form.cnpj || null,
-        telefone: form.telefone || null,
-        endereco: form.endereco || null,
-        regime_tributario: form.regime,
-        email: sessao.user.email,
+      // Tudo em uma transação no banco: clínica, vínculo, papel owner, unidade e cadastros padrão.
+      const { error } = await supabase.rpc("criar_clinica", {
+        p_nome: form.nome,
+        p_cnpj: form.cnpj,
+        p_telefone: form.telefone,
+        p_endereco: form.endereco,
+        p_regime: form.regime,
+        p_unidade: form.unidade,
+        p_profissional: form.profissional,
+        p_cro: form.cro,
       });
-      if (e1) throw e1;
-
-      const { error: e2 } = await supabase
-        .from("profiles")
-        .update({ clinica_id: clinica.id, nome: sessao.profile?.nome || sessao.user.email || "" })
-        .eq("id", sessao.user.id);
-      if (e2) throw e2;
-
-      await supabase.from("user_roles").insert({
-        user_id: sessao.user.id,
-        clinica_id: clinica.id,
-        role: "owner",
-      });
-
-      const { data: unidade } = await supabase
-        .from("unidades")
-        .insert({ clinica_id: clinica.id, nome: form.unidade })
-        .select()
-        .single();
-
-      if (unidade) {
-        await supabase.from("profiles").update({ unidade_id: unidade.id }).eq("id", sessao.user.id);
-      }
-
-      await supabase
-        .from("procedimentos")
-        .insert(PROCEDIMENTOS_PADRAO.map((p) => ({ ...p, clinica_id: clinica.id })));
-      await supabase
-        .from("plano_contas")
-        .insert(CONTAS_PADRAO.map((c) => ({ ...c, clinica_id: clinica.id })));
-
-      if (form.profissional) {
-        await supabase.from("profissionais").insert({
-          clinica_id: clinica.id,
-          unidade_id: unidade?.id ?? null,
-          user_id: sessao.user.id,
-          nome: form.profissional,
-          cro: form.cro || null,
-          comissao_percentual: 0,
-        });
-      }
-
-      await supabase.from("auditoria_logs").insert({
-        clinica_id: clinica.id,
-        usuario_id: sessao.user.id,
-        usuario_nome: sessao.profile?.nome ?? sessao.user.email,
-        acao: "criou a clínica",
-        tabela: "clinicas",
-        registro_id: clinica.id,
-      });
+      if (error) throw error;
 
       await queryClient.invalidateQueries();
       toast.success("Clínica criada com sucesso!");

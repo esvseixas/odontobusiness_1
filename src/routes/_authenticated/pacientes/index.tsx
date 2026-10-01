@@ -102,13 +102,6 @@ function Pacientes() {
         observacoes: form.observacoes || null,
       });
       if (error) throw error;
-      await supabase.from("auditoria_logs").insert({
-        clinica_id: clinicaId!,
-        usuario_id: sessao?.user.id,
-        usuario_nome: sessao?.profile?.nome,
-        acao: "cadastrou paciente",
-        tabela: "pacientes",
-      });
     },
     onSuccess: () => {
       toast.success("Paciente cadastrado.");
