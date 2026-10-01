@@ -25,10 +25,11 @@
 - [ ] Telas de cancelamento com motivo para orçamentos e lançamentos (colunas já criadas).
 
 ## Fase 1 — Núcleo clínico e agenda
-- [ ] 1. Pacientes: novos campos, busca pg_trgm, anamnese versionada com modelos, alertas, link público, edição de dados
-- [ ] 2. Arquivos e imagens: bucket privado, paciente_arquivos, assinaturas no Storage
-- [ ] 3. Especialidades, procedimentos ampliados, tabelas de preço
+- [x] 1. Pacientes: novos campos, busca pg_trgm, anamnese versionada com modelos, alertas, link público, edição de dados
+- [x] 2. Arquivos e imagens: bucket privado, paciente_arquivos, assinaturas no Storage
+- [x] 3. Especialidades, procedimentos ampliados, tabelas de preço
 - [ ] 4. Plano de tratamento (itens aprováveis, etapas, aceite, PDF)
 - [ ] 5. Periograma, ortodontia, implantes, laboratório
 - [ ] 6. Modelos de documentos e PDF
-- [ ] 7. Agenda (salas, expediente, bloqueios, conflitos, encaixe, espera, recorrência, lembretes, agendamento online)
+- [x] 7a. Agenda: bloqueio de conflitos de profissional, paciente e cadeira; alertas clínicos na agenda
+- [ ] 7b. Agenda (salas, expediente, bloqueios, conflitos, encaixe, espera, recorrência, lembretes, agendamento online)
