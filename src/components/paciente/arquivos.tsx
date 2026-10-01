@@ -160,12 +160,12 @@ export function ArquivosPaciente({ pacienteId }: { pacienteId: string }) {
             <div key={a.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border p-3">
               <div className="min-w-0">
                 <p className="truncate font-medium">{a.descricao || a.nome_arquivo}</p>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-xs text-muted-foreground">
                   <Badge variant="secondary" className="mr-1">{ROTULO[a.tipo] ?? a.tipo}</Badge>
                   {dataBR(a.data_exame)}
                   {a.dente ? ` · dente ${a.dente}` : ""}
                   {a.regiao ? ` · ${a.regiao}` : ""}
-                </p>
+                </div>
               </div>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={() => abrir(a.storage_path)}>
