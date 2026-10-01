@@ -42,11 +42,12 @@ export const gerarResumoClinico = createServerFn({ method: "POST" })
     const { data: roles, error: rolesError } = await context.supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", context.userId);
+      .eq("user_id", context.userId)
+      .eq("clinica_id", profile.clinica_id);
 
     if (rolesError) throw new Error("Não foi possível validar a permissão do profissional.");
-    const podeGerar = (roles ?? []).some(({ role }) => role === "owner" || role === "dentista");
-    if (!podeGerar) throw new Error("Somente proprietários e dentistas podem gerar resumos clínicos.");
+    const podeGerar = (roles ?? []).some(({ role }) => ["owner", "admin", "dentista", "esteticista"].includes(role));
+    if (!podeGerar) throw new Error("Somente proprietários, administradores, dentistas e esteticistas podem gerar resumos clínicos.");
 
     const [paciente, evolucoes, marcacoes, agendamentos] = await Promise.all([
       context.supabase

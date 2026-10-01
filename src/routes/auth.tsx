@@ -31,13 +31,22 @@ function AuthPage() {
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
 
+  function irPara(padrao: "/dashboard" | "/onboarding") {
+    const convite = sessionStorage.getItem("convite_pendente");
+    if (convite) {
+      navigate({ to: "/convite/$token", params: { token: convite } });
+      return;
+    }
+    navigate({ to: padrao });
+  }
+
   async function entrar(e: React.FormEvent) {
     e.preventDefault();
     setCarregando(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
     setCarregando(false);
     if (error) return toast.error("Não foi possível entrar: " + error.message);
-    navigate({ to: "/dashboard" });
+    irPara("/dashboard");
   }
 
   async function cadastrar(e: React.FormEvent) {
@@ -51,7 +60,7 @@ function AuthPage() {
     setCarregando(false);
     if (error) return toast.error("Não foi possível criar a conta: " + error.message);
     toast.success("Conta criada! Vamos configurar sua clínica.");
-    navigate({ to: "/onboarding" });
+    irPara("/onboarding");
   }
 
   return (

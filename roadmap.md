@@ -14,3 +14,12 @@
 - [x] Separar o cadastro de produtos do controle de lotes, quantidades e validades no estoque.
 - [x] Validar no navegador o cadastro de produto e a inclusão de lote, removendo os dados temporários ao final.
 - [x] Transformar Pacientes em submenu dinâmico com páginas próprias para o prontuário.
+
+## Fase 0 — Segurança e integridade
+- [x] Papéis ampliados e has_role por clínica; UNIQUE (user_id, clinica_id, role).
+- [x] Perfil não troca de clínica; papéis só por owner/admin; onboarding via criar_clinica.
+- [x] Convites de equipe (Configurações → Equipe) e página /convite/$token.
+- [x] RLS por papel; exclusões clínicas bloqueadas; auditoria por trigger.
+- [x] aprovar_orcamento transacional; resumo por IA valida papel na clínica atual.
+- [x] Menu e páginas filtrados por papel.
+- [ ] Telas de cancelamento com motivo para orçamentos e lançamentos (colunas já criadas).

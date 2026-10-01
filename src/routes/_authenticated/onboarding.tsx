@@ -31,29 +31,6 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
   component: Onboarding,
 });
 
-const PROCEDIMENTOS_PADRAO = [
-  { codigo: "81000103", nome: "Consulta odontológica inicial", categoria: "Clínica geral", valor: 150, duracao_minutos: 30 },
-  { codigo: "81000210", nome: "Profilaxia / limpeza", categoria: "Prevenção", valor: 180, duracao_minutos: 40 },
-  { codigo: "85100048", nome: "Restauração em resina composta", categoria: "Dentística", valor: 250, duracao_minutos: 50 },
-  { codigo: "84000031", nome: "Tratamento endodôntico", categoria: "Endodontia", valor: 900, duracao_minutos: 90 },
-  { codigo: "82000355", nome: "Raspagem periodontal", categoria: "Periodontia", valor: 320, duracao_minutos: 60 },
-  { codigo: "83000210", nome: "Exodontia simples", categoria: "Cirurgia", valor: 300, duracao_minutos: 45 },
-  { codigo: "87000212", nome: "Coroa em cerâmica", categoria: "Prótese", valor: 1600, duracao_minutos: 60 },
-  { codigo: "86000036", nome: "Manutenção ortodôntica", categoria: "Ortodontia", valor: 200, duracao_minutos: 30 },
-  { codigo: "85500062", nome: "Clareamento dental", categoria: "Estética", valor: 750, duracao_minutos: 60 },
-];
-
-const CONTAS_PADRAO = [
-  { nome: "Receita de procedimentos", tipo: "receita" as const },
-  { nome: "Receita de convênios", tipo: "receita" as const },
-  { nome: "Aluguel", tipo: "despesa" as const },
-  { nome: "Folha de pagamento", tipo: "despesa" as const },
-  { nome: "Materiais e insumos", tipo: "despesa" as const },
-  { nome: "Laboratório de prótese", tipo: "despesa" as const },
-  { nome: "Marketing", tipo: "despesa" as const },
-  { nome: "Impostos e taxas", tipo: "despesa" as const },
-];
-
 function Onboarding() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -79,68 +56,18 @@ function Onboarding() {
     if (!sessao?.user) return;
     setSalvando(true);
     try {
-      // O id é gerado no cliente: a política de leitura só libera a clínica
-      // depois que o perfil estiver vinculado a ela.
-      const clinica = { id: crypto.randomUUID() };
-      const { error: e1 } = await supabase.from("clinicas").insert({
-        id: clinica.id,
-        nome: form.nome,
-        cnpj: form.cnpj || null,
-        telefone: form.telefone || null,
-        endereco: form.endereco || null,
-        regime_tributario: form.regime,
-        email: sessao.user.email,
+      // Tudo em uma transação no banco: clínica, vínculo, papel owner, unidade e cadastros padrão.
+      const { error } = await supabase.rpc("criar_clinica", {
+        p_nome: form.nome,
+        p_cnpj: form.cnpj,
+        p_telefone: form.telefone,
+        p_endereco: form.endereco,
+        p_regime: form.regime,
+        p_unidade: form.unidade,
+        p_profissional: form.profissional,
+        p_cro: form.cro,
       });
-      if (e1) throw e1;
-
-      const { error: e2 } = await supabase
-        .from("profiles")
-        .update({ clinica_id: clinica.id, nome: sessao.profile?.nome || sessao.user.email || "" })
-        .eq("id", sessao.user.id);
-      if (e2) throw e2;
-
-      await supabase.from("user_roles").insert({
-        user_id: sessao.user.id,
-        clinica_id: clinica.id,
-        role: "owner",
-      });
-
-      const { data: unidade } = await supabase
-        .from("unidades")
-        .insert({ clinica_id: clinica.id, nome: form.unidade })
-        .select()
-        .single();
-
-      if (unidade) {
-        await supabase.from("profiles").update({ unidade_id: unidade.id }).eq("id", sessao.user.id);
-      }
-
-      await supabase
-        .from("procedimentos")
-        .insert(PROCEDIMENTOS_PADRAO.map((p) => ({ ...p, clinica_id: clinica.id })));
-      await supabase
-        .from("plano_contas")
-        .insert(CONTAS_PADRAO.map((c) => ({ ...c, clinica_id: clinica.id })));
-
-      if (form.profissional) {
-        await supabase.from("profissionais").insert({
-          clinica_id: clinica.id,
-          unidade_id: unidade?.id ?? null,
-          user_id: sessao.user.id,
-          nome: form.profissional,
-          cro: form.cro || null,
-          comissao_percentual: 0,
-        });
-      }
-
-      await supabase.from("auditoria_logs").insert({
-        clinica_id: clinica.id,
-        usuario_id: sessao.user.id,
-        usuario_nome: sessao.profile?.nome ?? sessao.user.email,
-        acao: "criou a clínica",
-        tabela: "clinicas",
-        registro_id: clinica.id,
-      });
+      if (error) throw error;
 
       await queryClient.invalidateQueries();
       toast.success("Clínica criada com sucesso!");

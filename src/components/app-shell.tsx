@@ -30,6 +30,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSessao } from "@/hooks/useSessao";
 import { cn } from "@/lib/utils";
+import { podeAcessar } from "@/lib/permissoes";
 import { Button } from "@/components/ui/button";
 
 const NAV = [
@@ -65,6 +66,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [aberto, setAberto] = useState(false);
   const [menuOculto, setMenuOculto] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const papeis = sessao?.papeis ?? [];
+  const mostrarPacientes = podeAcessar("/pacientes", papeis);
+  const mostrarConfig = CONFIG_NAV.some((item) => podeAcessar(item.to, papeis));
+  const permitido = !sessao || podeAcessar(pathname, papeis);
   const pacientesAtiva = pathname.startsWith("/pacientes");
   const pacienteId = pathname.match(/^\/pacientes\/([^/]+)/)?.[1];
   const [pacientesAberta, setPacientesAberta] = useState(pacientesAtiva);
@@ -110,7 +115,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </div>
         <nav className="space-y-1 p-3">
-          {NAV.map((item) => {
+          {NAV.filter((item) => podeAcessar(item.to, papeis)).map((item) => {
             const Icon = item.icon;
             const ativo = pathname.startsWith(item.to);
             return (
@@ -130,7 +135,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
-          <div>
+          <div className={cn(!mostrarPacientes && "hidden")}>
             <Button
               type="button"
               variant="ghost"
@@ -192,7 +197,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </div>
             ) : null}
           </div>
-          <div>
+          <div className={cn(!mostrarConfig && "hidden")}>
             <Button
               type="button"
               variant="ghost"
@@ -211,7 +216,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Button>
             {configuracoesAberta ? (
               <div className="ml-5 mt-1 space-y-0.5 border-l pl-2">
-                {CONFIG_NAV.map((item) => {
+                {CONFIG_NAV.filter((item) => podeAcessar(item.to, papeis)).map((item) => {
                   const Icon = item.icon;
                   const ativo = pathname === item.to;
                   return (
@@ -279,7 +284,19 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Button>
           <span className="font-semibold">{sessao?.clinica?.nome ?? "Odonto"}</span>
         </header>
-        <main className="flex-1 p-4 md:p-8">{children}</main>
+        <main className="flex-1 p-4 md:p-8">
+          {permitido ? (
+            children
+          ) : (
+            <div className="mx-auto max-w-md rounded-lg border bg-card p-8 text-center">
+              <ShieldCheck className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
+              <h1 className="text-lg font-semibold">Sem permissão</h1>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Seu papel na clínica não dá acesso a esta área. Fale com o proprietário ou administrador.
+              </p>
+            </div>
+          )}
+        </main>
       </div>
     </div>
   );

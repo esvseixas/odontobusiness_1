@@ -143,33 +143,15 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
   });
 
   const aprovar = useMutation({
-    mutationFn: async ({ orcamentoId, parcelas }: { orcamentoId: string; parcelas: number }) => {
-      const orc = dados.data?.orcamentos.find((o) => o.id === orcamentoId);
-      if (!orc) throw new Error("Orçamento não encontrado");
-      const valorTotal = Number(orc.valor_total) - Number(orc.desconto);
-      const valorParcela = Math.round((valorTotal / parcelas) * 100) / 100;
-
-      const lancamentos = Array.from({ length: parcelas }, (_, i) => {
-        const venc = new Date();
-        venc.setMonth(venc.getMonth() + i);
-        return {
-          clinica_id: clinicaId!,
-          paciente_id: id,
-          orcamento_id: orcamentoId,
-          descricao: `Orçamento v${orc.versao} — tratamento odontológico`,
-          parcela: i + 1,
-          total_parcelas: parcelas,
-          valor: valorParcela,
-          vencimento: isoDia(venc),
-          forma_pagamento: "A definir",
-        };
+    mutationFn: async ({ orcamentoId, ...opcoes }: { orcamentoId: string } & OpcoesAprovacao) => {
+      const { error } = await supabase.rpc("aprovar_orcamento", {
+        p_orcamento: orcamentoId,
+        p_parcelas: opcoes.parcelas,
+        p_dia_vencimento: opcoes.dia,
+        p_forma_pagamento: opcoes.forma,
+        p_entrada: opcoes.entrada,
       });
-      await supabase.from("financeiro_recebimentos").insert(lancamentos);
-      await supabase.from("orcamentos").update({ status: "aprovado" }).eq("id", orcamentoId);
-      await supabase.from("auditoria_logs").insert({
-        clinica_id: clinicaId!, usuario_id: sessao?.user.id, usuario_nome: sessao?.profile?.nome,
-        acao: "aprovou orçamento e gerou parcelas", tabela: "orcamentos", registro_id: orcamentoId,
-      });
+      if (error) throw error;
     },
     onSuccess: () => {
       toast.success("Orçamento aprovado e parcelas geradas no financeiro.");
@@ -364,7 +346,7 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
                     <div className="flex items-center gap-2">
                       <Badge variant={o.status === "aprovado" ? "default" : "secondary"}>{o.status}</Badge>
                       {o.status === "pendente" && (
-                        <AprovarOrcamento onAprovar={(parcelas) => aprovar.mutate({ orcamentoId: o.id, parcelas })} />
+                        <AprovarOrcamento onAprovar={(opcoes) => aprovar.mutate({ orcamentoId: o.id, ...opcoes })} />
                       )}
                     </div>
                   </CardHeader>
@@ -630,24 +612,52 @@ function Info({ rotulo, valor }: { rotulo: string; valor?: string | null }) {
   );
 }
 
-function AprovarOrcamento({ onAprovar }: { onAprovar: (parcelas: number) => void }) {
+type OpcoesAprovacao = { parcelas: number; dia: number; forma: string; entrada: number };
+
+function AprovarOrcamento({ onAprovar }: { onAprovar: (opcoes: OpcoesAprovacao) => void }) {
   const [aberto, setAberto] = useState(false);
   const [parcelas, setParcelas] = useState("1");
+  const [dia, setDia] = useState(String(new Date().getDate()));
+  const [forma, setForma] = useState("Pix");
+  const [entrada, setEntrada] = useState("0");
   return (
     <>
       <Button size="sm" onClick={() => setAberto(true)}>Aprovar</Button>
       <Dialog open={aberto} onOpenChange={setAberto}>
         <DialogContent>
           <DialogHeader><DialogTitle>Aprovar orçamento</DialogTitle></DialogHeader>
-          <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label>Número de parcelas</Label>
-              <Input type="number" min={1} max={24} value={parcelas} onChange={(e) => setParcelas(e.target.value)} />
+              <Label htmlFor="ap-parcelas">Número de parcelas</Label>
+              <Input id="ap-parcelas" type="number" min={1} max={48} value={parcelas} onChange={(e) => setParcelas(e.target.value)} />
             </div>
-            <p className="text-sm text-muted-foreground">
-              As parcelas serão geradas automaticamente em contas a receber, com vencimento mensal.
+            <div className="space-y-2">
+              <Label htmlFor="ap-dia">Dia de vencimento</Label>
+              <Input id="ap-dia" type="number" min={1} max={31} value={dia} onChange={(e) => setDia(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ap-forma">Forma de pagamento</Label>
+              <Input id="ap-forma" value={forma} onChange={(e) => setForma(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ap-entrada">Entrada (R$)</Label>
+              <Input id="ap-entrada" type="number" min={0} step="0.01" value={entrada} onChange={(e) => setEntrada(e.target.value)} />
+            </div>
+            <p className="text-sm text-muted-foreground sm:col-span-2">
+              Parcelas mensais sem perda de centavos (a última ajusta a diferença); dias inexistentes vão para o fim do mês.
             </p>
-            <Button onClick={() => { onAprovar(Number(parcelas) || 1); setAberto(false); }}>
+            <Button
+              className="sm:col-span-2"
+              onClick={() => {
+                onAprovar({
+                  parcelas: Number(parcelas) || 1,
+                  dia: Number(dia) || 1,
+                  forma: forma || "A definir",
+                  entrada: Number(entrada) || 0,
+                });
+                setAberto(false);
+              }}
+            >
               Aprovar e gerar parcelas
             </Button>
           </div>

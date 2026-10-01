@@ -23,7 +23,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSessao } from "@/hooks/useSessao";
+import { useSessao, type Papel } from "@/hooks/useSessao";
+import { NOME_PAPEL } from "@/lib/permissoes";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, dataBR, horaBR } from "@/lib/format";
 
@@ -372,8 +373,119 @@ export function EquipePage() {
             </div>
           ))}
         </div>
+        <Convites />
       </CardContent>
     </Card>
+  );
+}
+
+const PAPEIS_CONVITE: Papel[] = [
+  "admin",
+  "dentista",
+  "esteticista",
+  "auxiliar",
+  "recepcao",
+  "financeiro",
+  "estoque",
+  "marketing",
+];
+
+function Convites() {
+  const { data: sessao } = useSessao();
+  const queryClient = useQueryClient();
+  const [email, setEmail] = useState("");
+  const [papel, setPapel] = useState<Papel>("recepcao");
+  const lista = useQuery({
+    queryKey: ["config-convites", sessao?.clinicaId],
+    enabled: !!sessao?.clinicaId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("convites")
+        .select("*")
+        .is("aceito_em", null)
+        .is("revogado_em", null)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+  const atualizar = () => queryClient.invalidateQueries({ queryKey: ["config-convites"] });
+  const convidar = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from("convites")
+        .insert({ clinica_id: sessao?.clinicaId ?? "", email: email.trim().toLowerCase(), papel });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Convite criado. Copie o link e envie ao membro.");
+      setEmail("");
+      atualizar();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const revogar = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("convites")
+        .update({ revogado_em: new Date().toISOString() })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: atualizar,
+    onError: (e: Error) => toast.error(e.message),
+  });
+  function copiar(token: string) {
+    navigator.clipboard.writeText(`${window.location.origin}/convite/${token}`);
+    toast.success("Link copiado.");
+  }
+  return (
+    <div className="space-y-3 border-t pt-4">
+      <p className="text-sm font-medium">Convidar membro</p>
+      <div className="grid gap-3 sm:grid-cols-[1fr_200px_auto]">
+        <Input
+          aria-label="E-mail do convidado"
+          type="email"
+          placeholder="email@exemplo.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Select value={papel} onValueChange={(v) => setPapel(v as Papel)}>
+          <SelectTrigger aria-label="Papel do convidado">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {PAPEIS_CONVITE.map((p) => (
+              <SelectItem key={p} value={p}>
+                {NOME_PAPEL[p]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button onClick={() => convidar.mutate()} disabled={!email.includes("@") || convidar.isPending}>
+          Convidar
+        </Button>
+      </div>
+      <p className="text-xs text-muted-foreground">O link vale por 7 dias e só funciona para o e-mail convidado.</p>
+      {lista.data?.map((c) => (
+        <div key={c.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border p-3 text-sm">
+          <span>
+            {c.email} <Badge variant="secondary">{NOME_PAPEL[c.papel as Papel] ?? c.papel}</Badge>
+            <span className="ml-2 text-xs text-muted-foreground">
+              expira {new Date(c.expira_em).toLocaleDateString("pt-BR")}
+            </span>
+          </span>
+          <span className="flex gap-2">
+            <Button size="sm" variant="outline" onClick={() => copiar(c.token)}>
+              Copiar link
+            </Button>
+            <Button size="sm" variant="ghost" onClick={() => revogar.mutate(c.id)}>
+              Revogar
+            </Button>
+          </span>
+        </div>
+      ))}
+    </div>
   );
 }
 
