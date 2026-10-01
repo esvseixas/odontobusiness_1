@@ -15,6 +15,13 @@
       "when": 1790795875478,
       "tag": "0001_create_estoque_lotes",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790874680360,
+      "tag": "0002_fase0_novos_papeis",
+      "breakpoints": true
     }
   ]
 }

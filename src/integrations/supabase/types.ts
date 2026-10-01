@@ -1224,7 +1224,16 @@ export type Database = {
         | "atendido"
         | "faltou"
         | "cancelado"
-      app_role: "owner" | "dentista" | "recepcao" | "financeiro"
+      app_role:
+        | "owner"
+        | "dentista"
+        | "recepcao"
+        | "financeiro"
+        | "admin"
+        | "esteticista"
+        | "auxiliar"
+        | "estoque"
+        | "marketing"
       conta_tipo: "receita" | "despesa"
       lancamento_status: "pendente" | "pago" | "atrasado" | "cancelado"
       orcamento_status:
@@ -1368,7 +1377,17 @@ export const Constants = {
         "faltou",
         "cancelado",
       ],
-      app_role: ["owner", "dentista", "recepcao", "financeiro"],
+      app_role: [
+        "owner",
+        "dentista",
+        "recepcao",
+        "financeiro",
+        "admin",
+        "esteticista",
+        "auxiliar",
+        "estoque",
+        "marketing",
+      ],
       conta_tipo: ["receita", "despesa"],
       lancamento_status: ["pendente", "pago", "atrasado", "cancelado"],
       orcamento_status: [
