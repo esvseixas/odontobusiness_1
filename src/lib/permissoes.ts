@@ -7,6 +7,7 @@ const CLINICO: Papel[] = ["owner", "admin", "dentista", "esteticista", "auxiliar
 export const ACESSO: Array<{ prefixo: string; papeis: Papel[] }> = [
   { prefixo: "/financeiro", papeis: ["owner", "admin", "financeiro"] },
   { prefixo: "/configuracoes/estoque", papeis: ["owner", "admin", "estoque", "auxiliar"] },
+  { prefixo: "/configuracoes/tabelas-preco", papeis: ["owner", "admin", "financeiro"] },
   { prefixo: "/configuracoes/plano-contas", papeis: ["owner", "admin", "financeiro"] },
   { prefixo: "/configuracoes", papeis: GESTAO },
   { prefixo: "/pacientes", papeis: CLINICO },

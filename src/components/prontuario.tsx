@@ -6,6 +6,10 @@ import { toast } from "sonner";
 import { Bot, Check, FileText, Plus, ShieldCheck, Sparkles } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { AlertasClinicos } from "@/components/paciente/alertas";
+import { AnamnesePaciente } from "@/components/paciente/anamnese";
+import { ArquivosPaciente } from "@/components/paciente/arquivos";
+import { PacienteDados } from "@/components/paciente/dados";
 import { useSessao } from "@/hooks/useSessao";
 import { AppShell } from "@/components/app-shell";
 import { Odontograma, FACES, CONDICOES, type Marcacao } from "@/components/odontograma";
@@ -29,6 +33,7 @@ const SECOES = [
   { valor: "evolucao", rotulo: "Evolução clínica" },
   { valor: "documentos", rotulo: "Documentos" },
   { valor: "historico", rotulo: "Histórico" },
+  { valor: "arquivos", rotulo: "Arquivos e imagens" },
   { valor: "dados", rotulo: "Dados e anamnese" },
 ] as const;
 
@@ -289,6 +294,8 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
         </div>
       </div>
 
+      <AlertasClinicos pacienteId={id} />
+
       <Tabs value={secao}>
         <div className="min-w-0">
 
@@ -515,33 +522,13 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
           </Card>
         </TabsContent>
 
+        <TabsContent value="arquivos">
+          <ArquivosPaciente pacienteId={id} />
+        </TabsContent>
+
         <TabsContent value="dados">
-          <Card>
-            <CardHeader><CardTitle className="text-base">Dados cadastrais</CardTitle></CardHeader>
-            <CardContent className="grid gap-2 text-sm sm:grid-cols-2">
-              <Info rotulo="CPF" valor={p.cpf} />
-              <Info rotulo="E-mail" valor={p.email} />
-              <Info rotulo="Endereço" valor={[p.endereco, p.cidade, p.estado].filter(Boolean).join(", ")} />
-              <Info rotulo="Responsável financeiro" valor={p.responsavel_nome} />
-              <Info rotulo="Carteirinha" valor={p.numero_carteirinha} />
-              <Info rotulo="Consentimento LGPD" valor={p.consentimento_lgpd ? dataBR(p.consentimento_data) : "pendente"} />
-            </CardContent>
-          </Card>
-          <Card className="mt-4">
-            <CardHeader><CardTitle className="text-base">Anamnese</CardTitle></CardHeader>
-            <CardContent className="space-y-2 text-sm">
-              {Object.entries((p.anamnese ?? {}) as Record<string, string>).length === 0 ? (
-                <p className="text-muted-foreground">Anamnese não preenchida.</p>
-              ) : (
-                Object.entries((p.anamnese ?? {}) as Record<string, string>).map(([k, v]) => (
-                  <div key={k}>
-                    <p className="font-medium">{k}</p>
-                    <p className="text-muted-foreground">{v || "—"}</p>
-                  </div>
-                ))
-              )}
-            </CardContent>
-          </Card>
+          <PacienteDados paciente={p} />
+          <AnamnesePaciente pacienteId={id} />
         </TabsContent>
         </div>
       </Tabs>

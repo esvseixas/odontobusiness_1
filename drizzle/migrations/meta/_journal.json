@@ -29,6 +29,20 @@
       "when": 1790874796313,
       "tag": "0003_fase0_seguranca_integridade",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790875508937,
+      "tag": "0004_fase1_pacientes_arquivos_procedimentos_conflitos",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790875544980,
+      "tag": "0005_fase1_storage_prontuario_e_onboarding",
+      "breakpoints": true
     }
   ]
 }
