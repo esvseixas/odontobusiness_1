@@ -984,41 +984,101 @@ export type Database = {
           },
         ]
       }
+      orcamento_aceites: {
+        Row: {
+          assinatura_base64: string
+          canal: string
+          clinica_id: string
+          created_at: string
+          documento: string | null
+          id: string
+          nome: string
+          orcamento_id: string
+          registrado_por: string | null
+        }
+        Insert: {
+          assinatura_base64: string
+          canal: string
+          clinica_id: string
+          created_at?: string
+          documento?: string | null
+          id?: string
+          nome: string
+          orcamento_id: string
+          registrado_por?: string | null
+        }
+        Update: {
+          assinatura_base64?: string
+          canal?: string
+          clinica_id?: string
+          created_at?: string
+          documento?: string | null
+          id?: string
+          nome?: string
+          orcamento_id?: string
+          registrado_por?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orcamento_aceites_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orcamento_aceites_orcamento_id_fkey"
+            columns: ["orcamento_id"]
+            isOneToOne: false
+            referencedRelation: "orcamentos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orcamento_itens: {
         Row: {
+          aprovado: boolean
           clinica_id: string
           created_at: string
           dente: string | null
           descricao: string
           faces: string[] | null
           id: string
+          marcacao_id: string | null
           orcamento_id: string
           procedimento_id: string | null
           quantidade: number
+          status: string
           valor_unitario: number
         }
         Insert: {
+          aprovado?: boolean
           clinica_id: string
           created_at?: string
           dente?: string | null
           descricao: string
           faces?: string[] | null
           id?: string
+          marcacao_id?: string | null
           orcamento_id: string
           procedimento_id?: string | null
           quantidade?: number
+          status?: string
           valor_unitario?: number
         }
         Update: {
+          aprovado?: boolean
           clinica_id?: string
           created_at?: string
           dente?: string | null
           descricao?: string
           faces?: string[] | null
           id?: string
+          marcacao_id?: string | null
           orcamento_id?: string
           procedimento_id?: string | null
           quantidade?: number
+          status?: string
           valor_unitario?: number
         }
         Relationships: [
@@ -1027,6 +1087,13 @@ export type Database = {
             columns: ["clinica_id"]
             isOneToOne: false
             referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orcamento_itens_marcacao_id_fkey"
+            columns: ["marcacao_id"]
+            isOneToOne: false
+            referencedRelation: "odontograma_marcacoes"
             referencedColumns: ["id"]
           },
           {
@@ -1047,47 +1114,65 @@ export type Database = {
       }
       orcamentos: {
         Row: {
+          aceite_token: string | null
+          aceite_token_expira: string | null
+          aceito_em: string | null
           cancelado_em: string | null
           cancelado_motivo: string | null
           clinica_id: string
           created_at: string
           created_by: string | null
           desconto: number
+          desconto_percentual: number
+          desconto_tipo: string
           id: string
           observacoes: string | null
           paciente_id: string
           profissional_id: string | null
           status: Database["public"]["Enums"]["orcamento_status"]
+          validade: string | null
           valor_total: number
           versao: number
         }
         Insert: {
+          aceite_token?: string | null
+          aceite_token_expira?: string | null
+          aceito_em?: string | null
           cancelado_em?: string | null
           cancelado_motivo?: string | null
           clinica_id: string
           created_at?: string
           created_by?: string | null
           desconto?: number
+          desconto_percentual?: number
+          desconto_tipo?: string
           id?: string
           observacoes?: string | null
           paciente_id: string
           profissional_id?: string | null
           status?: Database["public"]["Enums"]["orcamento_status"]
+          validade?: string | null
           valor_total?: number
           versao?: number
         }
         Update: {
+          aceite_token?: string | null
+          aceite_token_expira?: string | null
+          aceito_em?: string | null
           cancelado_em?: string | null
           cancelado_motivo?: string | null
           clinica_id?: string
           created_at?: string
           created_by?: string | null
           desconto?: number
+          desconto_percentual?: number
+          desconto_tipo?: string
           id?: string
           observacoes?: string | null
           paciente_id?: string
           profissional_id?: string | null
           status?: Database["public"]["Enums"]["orcamento_status"]
+          validade?: string | null
           valor_total?: number
           versao?: number
         }
@@ -1648,6 +1733,67 @@ export type Database = {
           },
         ]
       }
+      tratamento_sessoes: {
+        Row: {
+          agendamento_id: string | null
+          clinica_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          numero: number
+          observacao: string | null
+          orcamento_item_id: string
+          realizado_em: string | null
+          status: string
+        }
+        Insert: {
+          agendamento_id?: string | null
+          clinica_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          numero?: number
+          observacao?: string | null
+          orcamento_item_id: string
+          realizado_em?: string | null
+          status?: string
+        }
+        Update: {
+          agendamento_id?: string | null
+          clinica_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          numero?: number
+          observacao?: string | null
+          orcamento_item_id?: string
+          realizado_em?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tratamento_sessoes_agendamento_id_fkey"
+            columns: ["agendamento_id"]
+            isOneToOne: false
+            referencedRelation: "agendamentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tratamento_sessoes_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tratamento_sessoes_orcamento_item_id_fkey"
+            columns: ["orcamento_item_id"]
+            isOneToOne: false
+            referencedRelation: "orcamento_itens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       unidades: {
         Row: {
           ativo: boolean
@@ -1721,6 +1867,25 @@ export type Database = {
     }
     Functions: {
       aceitar_convite: { Args: { p_token: string }; Returns: string }
+      aceitar_orcamento_link: {
+        Args: {
+          p_assinatura: string
+          p_documento: string
+          p_nome: string
+          p_token: string
+        }
+        Returns: undefined
+      }
+      ajustar_orcamento: {
+        Args: {
+          p_desconto: number
+          p_desconto_tipo: string
+          p_itens_aprovados: string[]
+          p_orcamento: string
+          p_validade: string
+        }
+        Returns: undefined
+      }
       aprovar_orcamento: {
         Args: {
           p_dia_vencimento: number
@@ -1729,6 +1894,10 @@ export type Database = {
           p_orcamento: string
           p_parcelas: number
         }
+        Returns: undefined
+      }
+      atualizar_item_tratamento: {
+        Args: { p_item: string; p_observacao?: string; p_status: string }
         Returns: undefined
       }
       calcular_alertas: {
@@ -1753,6 +1922,14 @@ export type Database = {
         Args: { p_respostas: Json; p_token: string }
         Returns: undefined
       }
+      gerar_link_aceite_orcamento: {
+        Args: { p_orcamento: string }
+        Returns: string
+      }
+      gerar_orcamento: {
+        Args: { p_paciente: string; p_validade_dias?: number }
+        Returns: string
+      }
       has_role:
         | {
             Args: {
@@ -1769,6 +1946,15 @@ export type Database = {
             }
             Returns: boolean
           }
+      registrar_aceite_orcamento: {
+        Args: {
+          p_assinatura: string
+          p_documento: string
+          p_nome: string
+          p_orcamento: string
+        }
+        Returns: undefined
+      }
       semear_padroes_clinicos: {
         Args: { p_clinica: string }
         Returns: undefined
@@ -1797,6 +1983,7 @@ export type Database = {
           valido: boolean
         }[]
       }
+      ver_orcamento_aceite: { Args: { p_token: string }; Returns: Json }
     }
     Enums: {
       agendamento_status:

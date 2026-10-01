@@ -43,6 +43,13 @@
       "when": 1790875544980,
       "tag": "0005_fase1_storage_prontuario_e_onboarding",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790876730071,
+      "tag": "0006_fase1_plano_tratamento",
+      "breakpoints": true
     }
   ]
 }
