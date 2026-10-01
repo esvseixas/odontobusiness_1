@@ -77,7 +77,7 @@ export function PlanoTratamento({ pacienteId }: { pacienteId: string }) {
           Nenhum orçamento. Marque procedimentos planejados no odontograma e gere um orçamento.
         </CardContent></Card>
       ) : (
-        planos.data!.map((o) => <CardPlano key={o.id} o={o} pacienteId={pacienteId} onChange={invalidar} />)
+        planos.data!.map((o) => <CardPlano key={o.id} o={o} onChange={invalidar} />)
       )}
     </div>
   );
@@ -90,7 +90,7 @@ function totais(o: Plano, aprovados: Set<string>, tipo: string, desconto: number
   return { bruto, desc, liquido: Math.max(bruto - desc, 0) };
 }
 
-function CardPlano({ o, pacienteId, onChange }: { o: Plano; pacienteId: string; onChange: () => void }) {
+function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
   const pendente = o.status === "pendente";
   const [aprovados, setAprovados] = useState(new Set(o.orcamento_itens.filter((i) => i.aprovado).map((i) => i.id)));
   const [tipo, setTipo] = useState(o.desconto_tipo);
@@ -261,7 +261,6 @@ function CardPlano({ o, pacienteId, onChange }: { o: Plano; pacienteId: string; 
             Aceite de {a.nome} ({a.canal === "tela" ? "assinado na clínica" : "por link"}) em {dataBR(a.created_at)}
           </p>
         ))}
-        <p className="sr-only">Paciente {pacienteId}</p>
       </CardContent>
     </Card>
   );

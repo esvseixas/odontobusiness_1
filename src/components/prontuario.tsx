@@ -10,6 +10,8 @@ import { AlertasClinicos } from "@/components/paciente/alertas";
 import { AnamnesePaciente } from "@/components/paciente/anamnese";
 import { ArquivosPaciente } from "@/components/paciente/arquivos";
 import { PacienteDados } from "@/components/paciente/dados";
+import { PlanoTratamento } from "@/components/paciente/plano-tratamento";
+import { mensagemErro } from "@/lib/erros";
 import { useSessao } from "@/hooks/useSessao";
 import { AppShell } from "@/components/app-shell";
 import { Odontograma, FACES, CONDICOES, type Marcacao } from "@/components/odontograma";
@@ -110,59 +112,15 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
 
   const gerarOrcamento = useMutation({
     mutationFn: async () => {
-      const planejadas = (dados.data?.marcacoes ?? []).filter(
-        (m) => m.ativo && m.status === "planejado" && (m as unknown as { procedimento_id: string | null }).procedimento_id && !(m as unknown as { orcamento_id: string | null }).orcamento_id,
-      );
-      if (planejadas.length === 0) throw new Error("Marque procedimentos planejados no odontograma primeiro.");
-
-      const versao = (dados.data?.orcamentos?.[0]?.versao ?? 0) + 1;
-      const itens = planejadas.map((m) => {
-        const raw = m as unknown as { procedimento_id: string };
-        const proc = dados.data!.procedimentos.find((x) => x.id === raw.procedimento_id)!;
-        return {
-          procedimento_id: proc.id,
-          descricao: `${proc.nome} — dente ${m.dente}`,
-          dente: m.dente,
-          faces: m.face ? [m.face] : null,
-          quantidade: 1,
-          valor_unitario: Number(proc.valor),
-        };
-      });
-      const totalValor = itens.reduce((s, i) => s + i.valor_unitario, 0);
-
-      const { data: orc, error } = await supabase
-        .from("orcamentos")
-        .insert({ clinica_id: clinicaId!, paciente_id: id, versao, valor_total: totalValor, created_by: sessao?.user.id })
-        .select().single();
-      if (error || !orc) throw error;
-
-      await supabase.from("orcamento_itens").insert(itens.map((i) => ({ ...i, clinica_id: clinicaId!, orcamento_id: orc.id })));
-      await supabase.from("odontograma_marcacoes").update({ orcamento_id: orc.id })
-        .in("id", planejadas.map((m) => m.id));
+      const { error } = await supabase.rpc("gerar_orcamento", { p_paciente: id, p_validade_dias: 30 });
+      if (error) throw error;
     },
     onSuccess: () => {
       toast.success("Orçamento gerado a partir do odontograma.");
       queryClient.invalidateQueries({ queryKey: ["prontuario", id] });
+      queryClient.invalidateQueries({ queryKey: ["planos", id] });
     },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
-  const aprovar = useMutation({
-    mutationFn: async ({ orcamentoId, ...opcoes }: { orcamentoId: string } & OpcoesAprovacao) => {
-      const { error } = await supabase.rpc("aprovar_orcamento", {
-        p_orcamento: orcamentoId,
-        p_parcelas: opcoes.parcelas,
-        p_dia_vencimento: opcoes.dia,
-        p_forma_pagamento: opcoes.forma,
-        p_entrada: opcoes.entrada,
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      toast.success("Orçamento aprovado e parcelas geradas no financeiro.");
-      queryClient.invalidateQueries();
-    },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toast.error(mensagemErro(e)),
   });
 
   const addEvolucao = useMutation({
@@ -338,38 +296,7 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
         </TabsContent>
 
         <TabsContent value="orcamentos">
-          <div className="space-y-4">
-            {(dados.data?.orcamentos ?? []).length === 0 ? (
-              <Card><CardContent className="py-8 text-center text-sm text-muted-foreground">
-                Nenhum orçamento. Gere um a partir do odontograma.
-              </CardContent></Card>
-            ) : (
-              dados.data?.orcamentos.map((o) => (
-                <Card key={o.id}>
-                  <CardHeader className="flex-row flex-wrap items-center justify-between gap-2">
-                    <CardTitle className="text-base">
-                      Orçamento v{o.versao} · {brl(Number(o.valor_total))}
-                    </CardTitle>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={o.status === "aprovado" ? "default" : "secondary"}>{o.status}</Badge>
-                      {o.status === "pendente" && (
-                        <AprovarOrcamento onAprovar={(opcoes) => aprovar.mutate({ orcamentoId: o.id, ...opcoes })} />
-                      )}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-1 text-sm">
-                    {o.orcamento_itens.map((i) => (
-                      <div key={i.id} className="flex justify-between border-b py-1 last:border-0">
-                        <span>{i.descricao}</span>
-                        <span>{brl(Number(i.valor_unitario))}</span>
-                      </div>
-                    ))}
-                    <p className="pt-2 text-xs text-muted-foreground">Criado em {dataBR(o.created_at)}</p>
-                  </CardContent>
-                </Card>
-              ))
-            )}
-          </div>
+          <PlanoTratamento pacienteId={id} />
         </TabsContent>
 
         <TabsContent value="evolucao">
@@ -596,60 +523,5 @@ function Info({ rotulo, valor }: { rotulo: string; valor?: string | null }) {
       <p className="text-xs text-muted-foreground">{rotulo}</p>
       <p>{valor || "—"}</p>
     </div>
-  );
-}
-
-type OpcoesAprovacao = { parcelas: number; dia: number; forma: string; entrada: number };
-
-function AprovarOrcamento({ onAprovar }: { onAprovar: (opcoes: OpcoesAprovacao) => void }) {
-  const [aberto, setAberto] = useState(false);
-  const [parcelas, setParcelas] = useState("1");
-  const [dia, setDia] = useState(String(new Date().getDate()));
-  const [forma, setForma] = useState("Pix");
-  const [entrada, setEntrada] = useState("0");
-  return (
-    <>
-      <Button size="sm" onClick={() => setAberto(true)}>Aprovar</Button>
-      <Dialog open={aberto} onOpenChange={setAberto}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Aprovar orçamento</DialogTitle></DialogHeader>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="ap-parcelas">Número de parcelas</Label>
-              <Input id="ap-parcelas" type="number" min={1} max={48} value={parcelas} onChange={(e) => setParcelas(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="ap-dia">Dia de vencimento</Label>
-              <Input id="ap-dia" type="number" min={1} max={31} value={dia} onChange={(e) => setDia(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="ap-forma">Forma de pagamento</Label>
-              <Input id="ap-forma" value={forma} onChange={(e) => setForma(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="ap-entrada">Entrada (R$)</Label>
-              <Input id="ap-entrada" type="number" min={0} step="0.01" value={entrada} onChange={(e) => setEntrada(e.target.value)} />
-            </div>
-            <p className="text-sm text-muted-foreground sm:col-span-2">
-              Parcelas mensais sem perda de centavos (a última ajusta a diferença); dias inexistentes vão para o fim do mês.
-            </p>
-            <Button
-              className="sm:col-span-2"
-              onClick={() => {
-                onAprovar({
-                  parcelas: Number(parcelas) || 1,
-                  dia: Number(dia) || 1,
-                  forma: forma || "A definir",
-                  entrada: Number(entrada) || 0,
-                });
-                setAberto(false);
-              }}
-            >
-              Aprovar e gerar parcelas
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
   );
 }
