@@ -414,7 +414,7 @@ function Convites() {
     mutationFn: async () => {
       const { error } = await supabase
         .from("convites")
-        .insert({ clinica_id: sessao!.clinicaId!, email: email.trim().toLowerCase(), papel });
+        .insert({ clinica_id: sessao?.clinicaId ?? "", email: email.trim().toLowerCase(), papel });
       if (error) throw error;
     },
     onSuccess: () => {
