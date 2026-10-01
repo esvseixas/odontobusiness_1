@@ -23,7 +23,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSessao } from "@/hooks/useSessao";
+import { useSessao, type Papel } from "@/hooks/useSessao";
+import { NOME_PAPEL } from "@/lib/permissoes";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, dataBR, horaBR } from "@/lib/format";
 
