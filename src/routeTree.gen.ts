@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
 import { Route as AnamneseTokenRouteImport } from './routes/anamnese.$token'
+import { Route as AceiteTokenRouteImport } from './routes/aceite.$token'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -39,6 +40,7 @@ import { Route as AuthenticatedPacientesIdEvolucaoRouteImport } from './routes/_
 import { Route as AuthenticatedPacientesIdDocumentosRouteImport } from './routes/_authenticated/pacientes/$id/documentos'
 import { Route as AuthenticatedPacientesIdDadosRouteImport } from './routes/_authenticated/pacientes/$id/dados'
 import { Route as AuthenticatedPacientesIdArquivosRouteImport } from './routes/_authenticated/pacientes/$id/arquivos'
+import { Route as AuthenticatedImpressaoOrcamentoIdRouteImport } from './routes/_authenticated/impressao/orcamento.$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -62,6 +64,11 @@ const ConviteTokenRoute = ConviteTokenRouteImport.update({
 const AnamneseTokenRoute = AnamneseTokenRouteImport.update({
   id: '/anamnese/$token',
   path: '/anamnese/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AceiteTokenRoute = AceiteTokenRouteImport.update({
+  id: '/aceite/$token',
+  path: '/aceite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
@@ -210,6 +217,12 @@ const AuthenticatedPacientesIdArquivosRoute =
     path: '/arquivos',
     getParentRoute: () => AuthenticatedPacientesIdRoute,
   } as any)
+const AuthenticatedImpressaoOrcamentoIdRoute =
+  AuthenticatedImpressaoOrcamentoIdRouteImport.update({
+    id: '/impressao/orcamento/$id',
+    path: '/impressao/orcamento/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -219,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/aceite/$token': typeof AceiteTokenRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
   '/convite/$token': typeof ConviteTokenRoute
   '/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
@@ -233,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
+  '/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
   '/pacientes/$id/arquivos': typeof AuthenticatedPacientesIdArquivosRoute
   '/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
   '/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
@@ -249,6 +264,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/aceite/$token': typeof AceiteTokenRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
   '/convite/$token': typeof ConviteTokenRoute
   '/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
@@ -262,6 +278,7 @@ export interface FileRoutesByTo {
   '/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
+  '/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
   '/pacientes/$id/arquivos': typeof AuthenticatedPacientesIdArquivosRoute
   '/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
   '/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
@@ -281,6 +298,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/aceite/$token': typeof AceiteTokenRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
   '/convite/$token': typeof ConviteTokenRoute
   '/_authenticated/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
@@ -295,6 +313,7 @@ export interface FileRoutesById {
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
+  '/_authenticated/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
   '/_authenticated/pacientes/$id/arquivos': typeof AuthenticatedPacientesIdArquivosRoute
   '/_authenticated/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
   '/_authenticated/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
@@ -314,6 +333,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/financeiro'
     | '/onboarding'
+    | '/aceite/$token'
     | '/anamnese/$token'
     | '/convite/$token'
     | '/configuracoes/auditoria'
@@ -328,6 +348,7 @@ export interface FileRouteTypes {
     | '/pacientes/$id'
     | '/configuracoes/'
     | '/pacientes/'
+    | '/impressao/orcamento/$id'
     | '/pacientes/$id/arquivos'
     | '/pacientes/$id/dados'
     | '/pacientes/$id/documentos'
@@ -344,6 +365,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/financeiro'
     | '/onboarding'
+    | '/aceite/$token'
     | '/anamnese/$token'
     | '/convite/$token'
     | '/configuracoes/auditoria'
@@ -357,6 +379,7 @@ export interface FileRouteTypes {
     | '/configuracoes/unidades'
     | '/configuracoes'
     | '/pacientes'
+    | '/impressao/orcamento/$id'
     | '/pacientes/$id/arquivos'
     | '/pacientes/$id/dados'
     | '/pacientes/$id/documentos'
@@ -375,6 +398,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
+    | '/aceite/$token'
     | '/anamnese/$token'
     | '/convite/$token'
     | '/_authenticated/configuracoes/auditoria'
@@ -389,6 +413,7 @@ export interface FileRouteTypes {
     | '/_authenticated/pacientes/$id'
     | '/_authenticated/configuracoes/'
     | '/_authenticated/pacientes/'
+    | '/_authenticated/impressao/orcamento/$id'
     | '/_authenticated/pacientes/$id/arquivos'
     | '/_authenticated/pacientes/$id/dados'
     | '/_authenticated/pacientes/$id/documentos'
@@ -403,6 +428,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AceiteTokenRoute: typeof AceiteTokenRoute
   AnamneseTokenRoute: typeof AnamneseTokenRoute
   ConviteTokenRoute: typeof ConviteTokenRoute
 }
@@ -442,6 +468,13 @@ declare module '@tanstack/react-router' {
       path: '/anamnese/$token'
       fullPath: '/anamnese/$token'
       preLoaderRoute: typeof AnamneseTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aceite/$token': {
+      id: '/aceite/$token'
+      path: '/aceite/$token'
+      fullPath: '/aceite/$token'
+      preLoaderRoute: typeof AceiteTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/onboarding': {
@@ -619,6 +652,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIdArquivosRouteImport
       parentRoute: typeof AuthenticatedPacientesIdRoute
     }
+    '/_authenticated/impressao/orcamento/$id': {
+      id: '/_authenticated/impressao/orcamento/$id'
+      path: '/impressao/orcamento/$id'
+      fullPath: '/impressao/orcamento/$id'
+      preLoaderRoute: typeof AuthenticatedImpressaoOrcamentoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -705,6 +745,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRouteWithChildren
   AuthenticatedPacientesIndexRoute: typeof AuthenticatedPacientesIndexRoute
+  AuthenticatedImpressaoOrcamentoIdRoute: typeof AuthenticatedImpressaoOrcamentoIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -715,6 +756,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRouteWithChildren,
   AuthenticatedPacientesIndexRoute: AuthenticatedPacientesIndexRoute,
+  AuthenticatedImpressaoOrcamentoIdRoute:
+    AuthenticatedImpressaoOrcamentoIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -724,6 +767,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  AceiteTokenRoute: AceiteTokenRoute,
   AnamneseTokenRoute: AnamneseTokenRoute,
   ConviteTokenRoute: ConviteTokenRoute,
 }
