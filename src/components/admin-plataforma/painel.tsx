@@ -98,7 +98,7 @@ export function PainelAdminPlataforma() {
   const clientes = useQuery({
     queryKey: ["plataforma-clientes"],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("listar_clientes_plataforma", { p_busca: null });
+      const { data, error } = await supabase.rpc("listar_clientes_plataforma", { p_busca: undefined });
       if (error) throw error;
       return (data ?? []) as Cliente[];
     },
@@ -149,9 +149,9 @@ export function PainelAdminPlataforma() {
         p_status: form.status,
         p_ciclo: form.ciclo,
         p_valor: Number(form.valor),
-        p_trial_ate: form.trial || null,
-        p_proxima_cobranca: form.cobranca || null,
-        p_motivo: form.motivo || null,
+        p_trial_ate: form.trial || undefined,
+        p_proxima_cobranca: form.cobranca || undefined,
+        p_motivo: form.motivo || undefined,
       });
       if (error) throw error;
       if (nota.trim()) {
