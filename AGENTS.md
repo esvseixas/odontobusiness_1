@@ -7,3 +7,5 @@
 - Anamneses are append-only versions (`anamneses`); alerts are computed in the database from question `alerta` flags, and patients answer via token links through SECURITY DEFINER RPCs.
 - Schedule conflicts are enforced by GiST exclusion constraints on `agendamentos`; UI translates them via `src/lib/erros.ts`.
 - Treatment plans: orçamento generation, adjustment, approval, item status and patient acceptance run only through SECURITY DEFINER RPCs; item status changes sync the linked odontogram marking.
+- Schedule rules beyond conflicts (working hours, blocks) are enforced by the `validar_agendamento` trigger; creation, recurrence, "atendido" billing and public booking/confirmation go through SECURITY DEFINER RPCs.
+- Document templates use `{{var}}` placeholders resolved client-side before emission; emitted documents are immutable.
