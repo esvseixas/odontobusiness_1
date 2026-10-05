@@ -18,45 +18,57 @@ export type Database = {
         Row: {
           cadeira: string | null
           clinica_id: string
+          confirmacao_token: string
           created_at: string
           created_by: string | null
+          encaixe: boolean
           fim: string
           id: string
           inicio: string
           observacoes: string | null
+          origem: string
           paciente_id: string | null
           procedimento_id: string | null
           profissional_id: string | null
+          recorrencia_id: string | null
           status: Database["public"]["Enums"]["agendamento_status"]
           unidade_id: string | null
         }
         Insert: {
           cadeira?: string | null
           clinica_id: string
+          confirmacao_token?: string
           created_at?: string
           created_by?: string | null
+          encaixe?: boolean
           fim: string
           id?: string
           inicio: string
           observacoes?: string | null
+          origem?: string
           paciente_id?: string | null
           procedimento_id?: string | null
           profissional_id?: string | null
+          recorrencia_id?: string | null
           status?: Database["public"]["Enums"]["agendamento_status"]
           unidade_id?: string | null
         }
         Update: {
           cadeira?: string | null
           clinica_id?: string
+          confirmacao_token?: string
           created_at?: string
           created_by?: string | null
+          encaixe?: boolean
           fim?: string
           id?: string
           inicio?: string
           observacoes?: string | null
+          origem?: string
           paciente_id?: string | null
           procedimento_id?: string | null
           profissional_id?: string | null
+          recorrencia_id?: string | null
           status?: Database["public"]["Enums"]["agendamento_status"]
           unidade_id?: string | null
         }
@@ -305,8 +317,54 @@ export type Database = {
           },
         ]
       }
+      bloqueios_agenda: {
+        Row: {
+          clinica_id: string
+          created_at: string
+          fim: string
+          id: string
+          inicio: string
+          motivo: string
+          profissional_id: string | null
+        }
+        Insert: {
+          clinica_id: string
+          created_at?: string
+          fim: string
+          id?: string
+          inicio: string
+          motivo: string
+          profissional_id?: string | null
+        }
+        Update: {
+          clinica_id?: string
+          created_at?: string
+          fim?: string
+          id?: string
+          inicio?: string
+          motivo?: string
+          profissional_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bloqueios_agenda_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bloqueios_agenda_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clinicas: {
         Row: {
+          agendamento_online: boolean
           cnpj: string | null
           created_at: string
           email: string | null
@@ -317,6 +375,7 @@ export type Database = {
           telefone: string | null
         }
         Insert: {
+          agendamento_online?: boolean
           cnpj?: string | null
           created_at?: string
           email?: string | null
@@ -327,6 +386,7 @@ export type Database = {
           telefone?: string | null
         }
         Update: {
+          agendamento_online?: boolean
           cnpj?: string | null
           created_at?: string
           email?: string | null
@@ -433,34 +493,81 @@ export type Database = {
           },
         ]
       }
+      documento_modelos: {
+        Row: {
+          ativo: boolean
+          clinica_id: string
+          conteudo: string
+          created_at: string
+          id: string
+          tipo: string
+          titulo: string
+        }
+        Insert: {
+          ativo?: boolean
+          clinica_id: string
+          conteudo: string
+          created_at?: string
+          id?: string
+          tipo: string
+          titulo: string
+        }
+        Update: {
+          ativo?: boolean
+          clinica_id?: string
+          conteudo?: string
+          created_at?: string
+          id?: string
+          tipo?: string
+          titulo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documento_modelos_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documentos_emitidos: {
         Row: {
+          assinatura_digital: Json | null
           autor_id: string | null
           clinica_id: string
           conteudo: string
           created_at: string
           id: string
+          modelo_id: string | null
           paciente_id: string
+          profissional_id: string | null
           tipo: string
           titulo: string
         }
         Insert: {
+          assinatura_digital?: Json | null
           autor_id?: string | null
           clinica_id: string
           conteudo: string
           created_at?: string
           id?: string
+          modelo_id?: string | null
           paciente_id: string
+          profissional_id?: string | null
           tipo: string
           titulo: string
         }
         Update: {
+          assinatura_digital?: Json | null
           autor_id?: string | null
           clinica_id?: string
           conteudo?: string
           created_at?: string
           id?: string
+          modelo_id?: string | null
           paciente_id?: string
+          profissional_id?: string | null
           tipo?: string
           titulo?: string
         }
@@ -473,10 +580,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "documentos_emitidos_modelo_id_fkey"
+            columns: ["modelo_id"]
+            isOneToOne: false
+            referencedRelation: "documento_modelos"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "documentos_emitidos_paciente_id_fkey"
             columns: ["paciente_id"]
             isOneToOne: false
             referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documentos_emitidos_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
             referencedColumns: ["id"]
           },
         ]
@@ -907,6 +1028,226 @@ export type Database = {
           },
         ]
       }
+      horarios_profissional: {
+        Row: {
+          clinica_id: string
+          created_at: string
+          dia_semana: number
+          fim: string
+          id: string
+          inicio: string
+          intervalo_fim: string | null
+          intervalo_inicio: string | null
+          profissional_id: string
+        }
+        Insert: {
+          clinica_id: string
+          created_at?: string
+          dia_semana: number
+          fim: string
+          id?: string
+          inicio: string
+          intervalo_fim?: string | null
+          intervalo_inicio?: string | null
+          profissional_id: string
+        }
+        Update: {
+          clinica_id?: string
+          created_at?: string
+          dia_semana?: number
+          fim?: string
+          id?: string
+          inicio?: string
+          intervalo_fim?: string | null
+          intervalo_inicio?: string | null
+          profissional_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "horarios_profissional_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "horarios_profissional_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      implantes: {
+        Row: {
+          ativo: boolean
+          clinica_id: string
+          componentes: string | null
+          comprimento: number | null
+          created_at: string
+          created_by: string | null
+          dente: string
+          diametro: number | null
+          id: string
+          instalado_em: string | null
+          lote: string | null
+          marca: string | null
+          modelo: string | null
+          observacao: string | null
+          paciente_id: string
+        }
+        Insert: {
+          ativo?: boolean
+          clinica_id: string
+          componentes?: string | null
+          comprimento?: number | null
+          created_at?: string
+          created_by?: string | null
+          dente: string
+          diametro?: number | null
+          id?: string
+          instalado_em?: string | null
+          lote?: string | null
+          marca?: string | null
+          modelo?: string | null
+          observacao?: string | null
+          paciente_id: string
+        }
+        Update: {
+          ativo?: boolean
+          clinica_id?: string
+          componentes?: string | null
+          comprimento?: number | null
+          created_at?: string
+          created_by?: string | null
+          dente?: string
+          diametro?: number | null
+          id?: string
+          instalado_em?: string | null
+          lote?: string | null
+          marca?: string | null
+          modelo?: string | null
+          observacao?: string | null
+          paciente_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "implantes_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "implantes_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      laboratorios: {
+        Row: {
+          ativo: boolean
+          clinica_id: string
+          created_at: string
+          email: string | null
+          id: string
+          nome: string
+          telefone: string | null
+        }
+        Insert: {
+          ativo?: boolean
+          clinica_id: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          nome: string
+          telefone?: string | null
+        }
+        Update: {
+          ativo?: boolean
+          clinica_id?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          nome?: string
+          telefone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "laboratorios_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lista_espera: {
+        Row: {
+          clinica_id: string
+          created_at: string
+          id: string
+          paciente_id: string
+          preferencia: string | null
+          procedimento_id: string | null
+          profissional_id: string | null
+          status: string
+        }
+        Insert: {
+          clinica_id: string
+          created_at?: string
+          id?: string
+          paciente_id: string
+          preferencia?: string | null
+          procedimento_id?: string | null
+          profissional_id?: string | null
+          status?: string
+        }
+        Update: {
+          clinica_id?: string
+          created_at?: string
+          id?: string
+          paciente_id?: string
+          preferencia?: string | null
+          procedimento_id?: string | null
+          profissional_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lista_espera_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lista_espera_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lista_espera_procedimento_id_fkey"
+            columns: ["procedimento_id"]
+            isOneToOne: false
+            referencedRelation: "procedimentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lista_espera_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       odontograma_marcacoes: {
         Row: {
           ativo: boolean
@@ -1200,6 +1541,207 @@ export type Database = {
           },
         ]
       }
+      ordens_laboratorio: {
+        Row: {
+          clinica_id: string
+          cor: string | null
+          created_at: string
+          created_by: string | null
+          custo: number
+          dente: string | null
+          enviado_em: string
+          id: string
+          laboratorio_id: string
+          observacao: string | null
+          paciente_id: string
+          pagamento_id: string | null
+          prazo: string | null
+          retornado_em: string | null
+          status: string
+          trabalho: string
+        }
+        Insert: {
+          clinica_id: string
+          cor?: string | null
+          created_at?: string
+          created_by?: string | null
+          custo?: number
+          dente?: string | null
+          enviado_em?: string
+          id?: string
+          laboratorio_id: string
+          observacao?: string | null
+          paciente_id: string
+          pagamento_id?: string | null
+          prazo?: string | null
+          retornado_em?: string | null
+          status?: string
+          trabalho: string
+        }
+        Update: {
+          clinica_id?: string
+          cor?: string | null
+          created_at?: string
+          created_by?: string | null
+          custo?: number
+          dente?: string | null
+          enviado_em?: string
+          id?: string
+          laboratorio_id?: string
+          observacao?: string | null
+          paciente_id?: string
+          pagamento_id?: string | null
+          prazo?: string | null
+          retornado_em?: string | null
+          status?: string
+          trabalho?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ordens_laboratorio_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ordens_laboratorio_laboratorio_id_fkey"
+            columns: ["laboratorio_id"]
+            isOneToOne: false
+            referencedRelation: "laboratorios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ordens_laboratorio_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ordens_laboratorio_pagamento_id_fkey"
+            columns: ["pagamento_id"]
+            isOneToOne: false
+            referencedRelation: "financeiro_pagamentos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orto_contratos: {
+        Row: {
+          aparelho: string
+          clinica_id: string
+          created_at: string
+          created_by: string | null
+          dia_vencimento: number
+          id: string
+          inicio: string
+          mensalidade: number
+          meses: number
+          observacao: string | null
+          paciente_id: string
+          profissional_id: string | null
+          status: string
+        }
+        Insert: {
+          aparelho: string
+          clinica_id: string
+          created_at?: string
+          created_by?: string | null
+          dia_vencimento: number
+          id?: string
+          inicio?: string
+          mensalidade: number
+          meses: number
+          observacao?: string | null
+          paciente_id: string
+          profissional_id?: string | null
+          status?: string
+        }
+        Update: {
+          aparelho?: string
+          clinica_id?: string
+          created_at?: string
+          created_by?: string | null
+          dia_vencimento?: number
+          id?: string
+          inicio?: string
+          mensalidade?: number
+          meses?: number
+          observacao?: string | null
+          paciente_id?: string
+          profissional_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orto_contratos_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orto_contratos_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orto_contratos_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orto_manutencoes: {
+        Row: {
+          autor_id: string | null
+          clinica_id: string
+          contrato_id: string
+          created_at: string
+          descricao: string
+          id: string
+          realizada_em: string
+        }
+        Insert: {
+          autor_id?: string | null
+          clinica_id: string
+          contrato_id: string
+          created_at?: string
+          descricao: string
+          id?: string
+          realizada_em?: string
+        }
+        Update: {
+          autor_id?: string | null
+          clinica_id?: string
+          contrato_id?: string
+          created_at?: string
+          descricao?: string
+          id?: string
+          realizada_em?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orto_manutencoes_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orto_manutencoes_contrato_id_fkey"
+            columns: ["contrato_id"]
+            isOneToOne: false
+            referencedRelation: "orto_contratos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       paciente_arquivos: {
         Row: {
           ativo: boolean
@@ -1418,6 +1960,51 @@ export type Database = {
           },
         ]
       }
+      periogramas: {
+        Row: {
+          autor_id: string | null
+          clinica_id: string
+          created_at: string
+          dados: Json
+          id: string
+          observacao: string | null
+          paciente_id: string
+        }
+        Insert: {
+          autor_id?: string | null
+          clinica_id: string
+          created_at?: string
+          dados?: Json
+          id?: string
+          observacao?: string | null
+          paciente_id: string
+        }
+        Update: {
+          autor_id?: string | null
+          clinica_id?: string
+          created_at?: string
+          dados?: Json
+          id?: string
+          observacao?: string | null
+          paciente_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "periogramas_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "periogramas_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       plano_contas: {
         Row: {
           centro_custo: string | null
@@ -1632,6 +2219,48 @@ export type Database = {
           },
           {
             foreignKeyName: "profissionais_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salas: {
+        Row: {
+          ativo: boolean
+          clinica_id: string
+          created_at: string
+          id: string
+          nome: string
+          unidade_id: string | null
+        }
+        Insert: {
+          ativo?: boolean
+          clinica_id: string
+          created_at?: string
+          id?: string
+          nome: string
+          unidade_id?: string | null
+        }
+        Update: {
+          ativo?: boolean
+          clinica_id?: string
+          created_at?: string
+          id?: string
+          nome?: string
+          unidade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salas_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "salas_unidade_id_fkey"
             columns: ["unidade_id"]
             isOneToOne: false
             referencedRelation: "unidades"
@@ -1876,6 +2505,19 @@ export type Database = {
         }
         Returns: undefined
       }
+      agenda_publica_info: { Args: { p_clinica: string }; Returns: Json }
+      agendar_online: {
+        Args: {
+          p_clinica: string
+          p_email?: string
+          p_inicio: string
+          p_nome: string
+          p_procedimento: string
+          p_profissional: string
+          p_telefone: string
+        }
+        Returns: Json
+      }
       ajustar_orcamento: {
         Args: {
           p_desconto: number
@@ -1904,6 +2546,22 @@ export type Database = {
         Args: { p_perguntas: Json; p_respostas: Json }
         Returns: string[]
       }
+      criar_agendamentos: {
+        Args: {
+          p_cadeira: string
+          p_duracao: number
+          p_encaixe?: boolean
+          p_inicio: string
+          p_intervalo_dias?: number
+          p_observacoes?: string
+          p_paciente: string
+          p_procedimento: string
+          p_profissional: string
+          p_repeticoes?: number
+          p_unidade: string
+        }
+        Returns: number
+      }
       criar_clinica: {
         Args: {
           p_cnpj?: string
@@ -1914,6 +2572,32 @@ export type Database = {
           p_regime?: string
           p_telefone?: string
           p_unidade?: string
+        }
+        Returns: string
+      }
+      criar_contrato_orto: {
+        Args: {
+          p_aparelho: string
+          p_dia: number
+          p_inicio: string
+          p_mensalidade: number
+          p_meses: number
+          p_observacao?: string
+          p_paciente: string
+          p_profissional: string
+        }
+        Returns: string
+      }
+      criar_ordem_laboratorio: {
+        Args: {
+          p_cor: string
+          p_custo: number
+          p_dente: string
+          p_laboratorio: string
+          p_observacao?: string
+          p_paciente: string
+          p_prazo: string
+          p_trabalho: string
         }
         Returns: string
       }
@@ -1946,6 +2630,19 @@ export type Database = {
             }
             Returns: boolean
           }
+      horarios_livres: {
+        Args: {
+          p_clinica: string
+          p_dia: string
+          p_procedimento: string
+          p_profissional: string
+        }
+        Returns: string[]
+      }
+      marcar_atendido: {
+        Args: { p_agendamento: string; p_cobrar?: boolean }
+        Returns: Json
+      }
       registrar_aceite_orcamento: {
         Args: {
           p_assinatura: string
@@ -1953,6 +2650,14 @@ export type Database = {
           p_nome: string
           p_orcamento: string
         }
+        Returns: undefined
+      }
+      responder_confirmacao: {
+        Args: { p_confirmar: boolean; p_token: string }
+        Returns: string
+      }
+      semear_modelos_documentos: {
+        Args: { p_clinica: string }
         Returns: undefined
       }
       semear_padroes_clinicos: {
@@ -1973,6 +2678,7 @@ export type Database = {
           valido: boolean
         }[]
       }
+      ver_confirmacao: { Args: { p_token: string }; Returns: Json }
       ver_convite: {
         Args: { p_token: string }
         Returns: {

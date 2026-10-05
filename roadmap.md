@@ -29,7 +29,8 @@
 - [x] 2. Arquivos e imagens: bucket privado, paciente_arquivos, assinaturas no Storage
 - [x] 3. Especialidades, procedimentos ampliados, tabelas de preço
 - [x] 4. Plano de tratamento (itens aprováveis, desconto R$/%, validade, etapas, aceite na tela/link, impressão/PDF)
-- [ ] 5. Periograma, ortodontia, implantes, laboratório
-- [ ] 6. Modelos de documentos e PDF
+- [x] 5. Periograma, ortodontia (contrato + mensalidades), implantes, laboratório (ordem → contas a pagar)
+- [x] 6. Modelos de documentos com variáveis, impressão/PDF, envio WhatsApp/e-mail, campo ICP-Brasil reservado
 - [x] 7a. Agenda: bloqueio de conflitos de profissional, paciente e cadeira; alertas clínicos na agenda
-- [ ] 7b. Agenda (salas, expediente, bloqueios, conflitos, encaixe, espera, recorrência, lembretes, agendamento online)
+- [x] 7b. Agenda: dia/semana/mês, por profissional/sala, salas, expediente, bloqueios, encaixe, espera, recorrência, arrastar e soltar, confirmação por link/WhatsApp, agendamento online, atendido → evolução/cobrança
+- [ ] 7c. Lembretes automáticos por e-mail 24h/2h (aguardando domínio de e-mail configurado)

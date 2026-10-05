@@ -57,6 +57,13 @@
       "when": 1790876746150,
       "tag": "0007_fix_atualizar_item_tratamento",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791208257799,
+      "tag": "0008_fase1_especialidades_documentos_agenda",
+      "breakpoints": true
     }
   ]
 }

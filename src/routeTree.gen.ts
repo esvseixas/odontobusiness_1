@@ -13,7 +13,9 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
+import { Route as ConfirmarTokenRouteImport } from './routes/confirmar.$token'
 import { Route as AnamneseTokenRouteImport } from './routes/anamnese.$token'
+import { Route as AgendarClinicaRouteImport } from './routes/agendar.$clinica'
 import { Route as AceiteTokenRouteImport } from './routes/aceite.$token'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
@@ -27,20 +29,25 @@ import { Route as AuthenticatedConfiguracoesUnidadesRouteImport } from './routes
 import { Route as AuthenticatedConfiguracoesTabelasPrecoRouteImport } from './routes/_authenticated/configuracoes/tabelas-preco'
 import { Route as AuthenticatedConfiguracoesProcedimentosRouteImport } from './routes/_authenticated/configuracoes/procedimentos'
 import { Route as AuthenticatedConfiguracoesPlanoContasRouteImport } from './routes/_authenticated/configuracoes/plano-contas'
+import { Route as AuthenticatedConfiguracoesModelosRouteImport } from './routes/_authenticated/configuracoes/modelos'
+import { Route as AuthenticatedConfiguracoesLaboratoriosRouteImport } from './routes/_authenticated/configuracoes/laboratorios'
 import { Route as AuthenticatedConfiguracoesEstoqueRouteImport } from './routes/_authenticated/configuracoes/estoque'
 import { Route as AuthenticatedConfiguracoesEquipeRouteImport } from './routes/_authenticated/configuracoes/equipe'
 import { Route as AuthenticatedConfiguracoesConveniosRouteImport } from './routes/_authenticated/configuracoes/convenios'
 import { Route as AuthenticatedConfiguracoesClinicaRouteImport } from './routes/_authenticated/configuracoes/clinica'
 import { Route as AuthenticatedConfiguracoesAuditoriaRouteImport } from './routes/_authenticated/configuracoes/auditoria'
+import { Route as AuthenticatedConfiguracoesAgendaRouteImport } from './routes/_authenticated/configuracoes/agenda'
 import { Route as AuthenticatedPacientesIdIndexRouteImport } from './routes/_authenticated/pacientes/$id/index'
 import { Route as AuthenticatedPacientesIdOrcamentosRouteImport } from './routes/_authenticated/pacientes/$id/orcamentos'
 import { Route as AuthenticatedPacientesIdOdontogramaRouteImport } from './routes/_authenticated/pacientes/$id/odontograma'
 import { Route as AuthenticatedPacientesIdHistoricoRouteImport } from './routes/_authenticated/pacientes/$id/historico'
 import { Route as AuthenticatedPacientesIdEvolucaoRouteImport } from './routes/_authenticated/pacientes/$id/evolucao'
+import { Route as AuthenticatedPacientesIdEspecialidadesRouteImport } from './routes/_authenticated/pacientes/$id/especialidades'
 import { Route as AuthenticatedPacientesIdDocumentosRouteImport } from './routes/_authenticated/pacientes/$id/documentos'
 import { Route as AuthenticatedPacientesIdDadosRouteImport } from './routes/_authenticated/pacientes/$id/dados'
 import { Route as AuthenticatedPacientesIdArquivosRouteImport } from './routes/_authenticated/pacientes/$id/arquivos'
 import { Route as AuthenticatedImpressaoOrcamentoIdRouteImport } from './routes/_authenticated/impressao/orcamento.$id'
+import { Route as AuthenticatedImpressaoDocumentoIdRouteImport } from './routes/_authenticated/impressao/documento.$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -61,9 +68,19 @@ const ConviteTokenRoute = ConviteTokenRouteImport.update({
   path: '/convite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfirmarTokenRoute = ConfirmarTokenRouteImport.update({
+  id: '/confirmar/$token',
+  path: '/confirmar/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnamneseTokenRoute = AnamneseTokenRouteImport.update({
   id: '/anamnese/$token',
   path: '/anamnese/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendarClinicaRoute = AgendarClinicaRouteImport.update({
+  id: '/agendar/$clinica',
+  path: '/agendar/$clinica',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AceiteTokenRoute = AceiteTokenRouteImport.update({
@@ -139,6 +156,18 @@ const AuthenticatedConfiguracoesPlanoContasRoute =
     path: '/plano-contas',
     getParentRoute: () => AuthenticatedConfiguracoesRoute,
   } as any)
+const AuthenticatedConfiguracoesModelosRoute =
+  AuthenticatedConfiguracoesModelosRouteImport.update({
+    id: '/modelos',
+    path: '/modelos',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesLaboratoriosRoute =
+  AuthenticatedConfiguracoesLaboratoriosRouteImport.update({
+    id: '/laboratorios',
+    path: '/laboratorios',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
 const AuthenticatedConfiguracoesEstoqueRoute =
   AuthenticatedConfiguracoesEstoqueRouteImport.update({
     id: '/estoque',
@@ -167,6 +196,12 @@ const AuthenticatedConfiguracoesAuditoriaRoute =
   AuthenticatedConfiguracoesAuditoriaRouteImport.update({
     id: '/auditoria',
     path: '/auditoria',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesAgendaRoute =
+  AuthenticatedConfiguracoesAgendaRouteImport.update({
+    id: '/agenda',
+    path: '/agenda',
     getParentRoute: () => AuthenticatedConfiguracoesRoute,
   } as any)
 const AuthenticatedPacientesIdIndexRoute =
@@ -199,6 +234,12 @@ const AuthenticatedPacientesIdEvolucaoRoute =
     path: '/evolucao',
     getParentRoute: () => AuthenticatedPacientesIdRoute,
   } as any)
+const AuthenticatedPacientesIdEspecialidadesRoute =
+  AuthenticatedPacientesIdEspecialidadesRouteImport.update({
+    id: '/especialidades',
+    path: '/especialidades',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
 const AuthenticatedPacientesIdDocumentosRoute =
   AuthenticatedPacientesIdDocumentosRouteImport.update({
     id: '/documentos',
@@ -223,6 +264,12 @@ const AuthenticatedImpressaoOrcamentoIdRoute =
     path: '/impressao/orcamento/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedImpressaoDocumentoIdRoute =
+  AuthenticatedImpressaoDocumentoIdRouteImport.update({
+    id: '/impressao/documento/$id',
+    path: '/impressao/documento/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -233,13 +280,18 @@ export interface FileRoutesByFullPath {
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/aceite/$token': typeof AceiteTokenRoute
+  '/agendar/$clinica': typeof AgendarClinicaRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
+  '/confirmar/$token': typeof ConfirmarTokenRoute
   '/convite/$token': typeof ConviteTokenRoute
+  '/configuracoes/agenda': typeof AuthenticatedConfiguracoesAgendaRoute
   '/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
   '/configuracoes/clinica': typeof AuthenticatedConfiguracoesClinicaRoute
   '/configuracoes/convenios': typeof AuthenticatedConfiguracoesConveniosRoute
   '/configuracoes/equipe': typeof AuthenticatedConfiguracoesEquipeRoute
   '/configuracoes/estoque': typeof AuthenticatedConfiguracoesEstoqueRoute
+  '/configuracoes/laboratorios': typeof AuthenticatedConfiguracoesLaboratoriosRoute
+  '/configuracoes/modelos': typeof AuthenticatedConfiguracoesModelosRoute
   '/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
   '/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/configuracoes/tabelas-preco': typeof AuthenticatedConfiguracoesTabelasPrecoRoute
@@ -247,10 +299,12 @@ export interface FileRoutesByFullPath {
   '/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
+  '/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
   '/pacientes/$id/arquivos': typeof AuthenticatedPacientesIdArquivosRoute
   '/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
   '/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
+  '/pacientes/$id/especialidades': typeof AuthenticatedPacientesIdEspecialidadesRoute
   '/pacientes/$id/evolucao': typeof AuthenticatedPacientesIdEvolucaoRoute
   '/pacientes/$id/historico': typeof AuthenticatedPacientesIdHistoricoRoute
   '/pacientes/$id/odontograma': typeof AuthenticatedPacientesIdOdontogramaRoute
@@ -265,23 +319,30 @@ export interface FileRoutesByTo {
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/aceite/$token': typeof AceiteTokenRoute
+  '/agendar/$clinica': typeof AgendarClinicaRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
+  '/confirmar/$token': typeof ConfirmarTokenRoute
   '/convite/$token': typeof ConviteTokenRoute
+  '/configuracoes/agenda': typeof AuthenticatedConfiguracoesAgendaRoute
   '/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
   '/configuracoes/clinica': typeof AuthenticatedConfiguracoesClinicaRoute
   '/configuracoes/convenios': typeof AuthenticatedConfiguracoesConveniosRoute
   '/configuracoes/equipe': typeof AuthenticatedConfiguracoesEquipeRoute
   '/configuracoes/estoque': typeof AuthenticatedConfiguracoesEstoqueRoute
+  '/configuracoes/laboratorios': typeof AuthenticatedConfiguracoesLaboratoriosRoute
+  '/configuracoes/modelos': typeof AuthenticatedConfiguracoesModelosRoute
   '/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
   '/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/configuracoes/tabelas-preco': typeof AuthenticatedConfiguracoesTabelasPrecoRoute
   '/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
+  '/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
   '/pacientes/$id/arquivos': typeof AuthenticatedPacientesIdArquivosRoute
   '/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
   '/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
+  '/pacientes/$id/especialidades': typeof AuthenticatedPacientesIdEspecialidadesRoute
   '/pacientes/$id/evolucao': typeof AuthenticatedPacientesIdEvolucaoRoute
   '/pacientes/$id/historico': typeof AuthenticatedPacientesIdHistoricoRoute
   '/pacientes/$id/odontograma': typeof AuthenticatedPacientesIdOdontogramaRoute
@@ -299,13 +360,18 @@ export interface FileRoutesById {
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/aceite/$token': typeof AceiteTokenRoute
+  '/agendar/$clinica': typeof AgendarClinicaRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
+  '/confirmar/$token': typeof ConfirmarTokenRoute
   '/convite/$token': typeof ConviteTokenRoute
+  '/_authenticated/configuracoes/agenda': typeof AuthenticatedConfiguracoesAgendaRoute
   '/_authenticated/configuracoes/auditoria': typeof AuthenticatedConfiguracoesAuditoriaRoute
   '/_authenticated/configuracoes/clinica': typeof AuthenticatedConfiguracoesClinicaRoute
   '/_authenticated/configuracoes/convenios': typeof AuthenticatedConfiguracoesConveniosRoute
   '/_authenticated/configuracoes/equipe': typeof AuthenticatedConfiguracoesEquipeRoute
   '/_authenticated/configuracoes/estoque': typeof AuthenticatedConfiguracoesEstoqueRoute
+  '/_authenticated/configuracoes/laboratorios': typeof AuthenticatedConfiguracoesLaboratoriosRoute
+  '/_authenticated/configuracoes/modelos': typeof AuthenticatedConfiguracoesModelosRoute
   '/_authenticated/configuracoes/plano-contas': typeof AuthenticatedConfiguracoesPlanoContasRoute
   '/_authenticated/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/_authenticated/configuracoes/tabelas-preco': typeof AuthenticatedConfiguracoesTabelasPrecoRoute
@@ -313,10 +379,12 @@ export interface FileRoutesById {
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
+  '/_authenticated/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/_authenticated/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
   '/_authenticated/pacientes/$id/arquivos': typeof AuthenticatedPacientesIdArquivosRoute
   '/_authenticated/pacientes/$id/dados': typeof AuthenticatedPacientesIdDadosRoute
   '/_authenticated/pacientes/$id/documentos': typeof AuthenticatedPacientesIdDocumentosRoute
+  '/_authenticated/pacientes/$id/especialidades': typeof AuthenticatedPacientesIdEspecialidadesRoute
   '/_authenticated/pacientes/$id/evolucao': typeof AuthenticatedPacientesIdEvolucaoRoute
   '/_authenticated/pacientes/$id/historico': typeof AuthenticatedPacientesIdHistoricoRoute
   '/_authenticated/pacientes/$id/odontograma': typeof AuthenticatedPacientesIdOdontogramaRoute
@@ -334,13 +402,18 @@ export interface FileRouteTypes {
     | '/financeiro'
     | '/onboarding'
     | '/aceite/$token'
+    | '/agendar/$clinica'
     | '/anamnese/$token'
+    | '/confirmar/$token'
     | '/convite/$token'
+    | '/configuracoes/agenda'
     | '/configuracoes/auditoria'
     | '/configuracoes/clinica'
     | '/configuracoes/convenios'
     | '/configuracoes/equipe'
     | '/configuracoes/estoque'
+    | '/configuracoes/laboratorios'
+    | '/configuracoes/modelos'
     | '/configuracoes/plano-contas'
     | '/configuracoes/procedimentos'
     | '/configuracoes/tabelas-preco'
@@ -348,10 +421,12 @@ export interface FileRouteTypes {
     | '/pacientes/$id'
     | '/configuracoes/'
     | '/pacientes/'
+    | '/impressao/documento/$id'
     | '/impressao/orcamento/$id'
     | '/pacientes/$id/arquivos'
     | '/pacientes/$id/dados'
     | '/pacientes/$id/documentos'
+    | '/pacientes/$id/especialidades'
     | '/pacientes/$id/evolucao'
     | '/pacientes/$id/historico'
     | '/pacientes/$id/odontograma'
@@ -366,23 +441,30 @@ export interface FileRouteTypes {
     | '/financeiro'
     | '/onboarding'
     | '/aceite/$token'
+    | '/agendar/$clinica'
     | '/anamnese/$token'
+    | '/confirmar/$token'
     | '/convite/$token'
+    | '/configuracoes/agenda'
     | '/configuracoes/auditoria'
     | '/configuracoes/clinica'
     | '/configuracoes/convenios'
     | '/configuracoes/equipe'
     | '/configuracoes/estoque'
+    | '/configuracoes/laboratorios'
+    | '/configuracoes/modelos'
     | '/configuracoes/plano-contas'
     | '/configuracoes/procedimentos'
     | '/configuracoes/tabelas-preco'
     | '/configuracoes/unidades'
     | '/configuracoes'
     | '/pacientes'
+    | '/impressao/documento/$id'
     | '/impressao/orcamento/$id'
     | '/pacientes/$id/arquivos'
     | '/pacientes/$id/dados'
     | '/pacientes/$id/documentos'
+    | '/pacientes/$id/especialidades'
     | '/pacientes/$id/evolucao'
     | '/pacientes/$id/historico'
     | '/pacientes/$id/odontograma'
@@ -399,13 +481,18 @@ export interface FileRouteTypes {
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
     | '/aceite/$token'
+    | '/agendar/$clinica'
     | '/anamnese/$token'
+    | '/confirmar/$token'
     | '/convite/$token'
+    | '/_authenticated/configuracoes/agenda'
     | '/_authenticated/configuracoes/auditoria'
     | '/_authenticated/configuracoes/clinica'
     | '/_authenticated/configuracoes/convenios'
     | '/_authenticated/configuracoes/equipe'
     | '/_authenticated/configuracoes/estoque'
+    | '/_authenticated/configuracoes/laboratorios'
+    | '/_authenticated/configuracoes/modelos'
     | '/_authenticated/configuracoes/plano-contas'
     | '/_authenticated/configuracoes/procedimentos'
     | '/_authenticated/configuracoes/tabelas-preco'
@@ -413,10 +500,12 @@ export interface FileRouteTypes {
     | '/_authenticated/pacientes/$id'
     | '/_authenticated/configuracoes/'
     | '/_authenticated/pacientes/'
+    | '/_authenticated/impressao/documento/$id'
     | '/_authenticated/impressao/orcamento/$id'
     | '/_authenticated/pacientes/$id/arquivos'
     | '/_authenticated/pacientes/$id/dados'
     | '/_authenticated/pacientes/$id/documentos'
+    | '/_authenticated/pacientes/$id/especialidades'
     | '/_authenticated/pacientes/$id/evolucao'
     | '/_authenticated/pacientes/$id/historico'
     | '/_authenticated/pacientes/$id/odontograma'
@@ -429,7 +518,9 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   AceiteTokenRoute: typeof AceiteTokenRoute
+  AgendarClinicaRoute: typeof AgendarClinicaRoute
   AnamneseTokenRoute: typeof AnamneseTokenRoute
+  ConfirmarTokenRoute: typeof ConfirmarTokenRoute
   ConviteTokenRoute: typeof ConviteTokenRoute
 }
 
@@ -463,11 +554,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConviteTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/confirmar/$token': {
+      id: '/confirmar/$token'
+      path: '/confirmar/$token'
+      fullPath: '/confirmar/$token'
+      preLoaderRoute: typeof ConfirmarTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/anamnese/$token': {
       id: '/anamnese/$token'
       path: '/anamnese/$token'
       fullPath: '/anamnese/$token'
       preLoaderRoute: typeof AnamneseTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agendar/$clinica': {
+      id: '/agendar/$clinica'
+      path: '/agendar/$clinica'
+      fullPath: '/agendar/$clinica'
+      preLoaderRoute: typeof AgendarClinicaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aceite/$token': {
@@ -561,6 +666,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConfiguracoesPlanoContasRouteImport
       parentRoute: typeof AuthenticatedConfiguracoesRoute
     }
+    '/_authenticated/configuracoes/modelos': {
+      id: '/_authenticated/configuracoes/modelos'
+      path: '/modelos'
+      fullPath: '/configuracoes/modelos'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesModelosRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/laboratorios': {
+      id: '/_authenticated/configuracoes/laboratorios'
+      path: '/laboratorios'
+      fullPath: '/configuracoes/laboratorios'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesLaboratoriosRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
     '/_authenticated/configuracoes/estoque': {
       id: '/_authenticated/configuracoes/estoque'
       path: '/estoque'
@@ -594,6 +713,13 @@ declare module '@tanstack/react-router' {
       path: '/auditoria'
       fullPath: '/configuracoes/auditoria'
       preLoaderRoute: typeof AuthenticatedConfiguracoesAuditoriaRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/agenda': {
+      id: '/_authenticated/configuracoes/agenda'
+      path: '/agenda'
+      fullPath: '/configuracoes/agenda'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesAgendaRouteImport
       parentRoute: typeof AuthenticatedConfiguracoesRoute
     }
     '/_authenticated/pacientes/$id/': {
@@ -631,6 +757,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIdEvolucaoRouteImport
       parentRoute: typeof AuthenticatedPacientesIdRoute
     }
+    '/_authenticated/pacientes/$id/especialidades': {
+      id: '/_authenticated/pacientes/$id/especialidades'
+      path: '/especialidades'
+      fullPath: '/pacientes/$id/especialidades'
+      preLoaderRoute: typeof AuthenticatedPacientesIdEspecialidadesRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
     '/_authenticated/pacientes/$id/documentos': {
       id: '/_authenticated/pacientes/$id/documentos'
       path: '/documentos'
@@ -659,15 +792,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImpressaoOrcamentoIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/impressao/documento/$id': {
+      id: '/_authenticated/impressao/documento/$id'
+      path: '/impressao/documento/$id'
+      fullPath: '/impressao/documento/$id'
+      preLoaderRoute: typeof AuthenticatedImpressaoDocumentoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedConfiguracoesRouteChildren {
+  AuthenticatedConfiguracoesAgendaRoute: typeof AuthenticatedConfiguracoesAgendaRoute
   AuthenticatedConfiguracoesAuditoriaRoute: typeof AuthenticatedConfiguracoesAuditoriaRoute
   AuthenticatedConfiguracoesClinicaRoute: typeof AuthenticatedConfiguracoesClinicaRoute
   AuthenticatedConfiguracoesConveniosRoute: typeof AuthenticatedConfiguracoesConveniosRoute
   AuthenticatedConfiguracoesEquipeRoute: typeof AuthenticatedConfiguracoesEquipeRoute
   AuthenticatedConfiguracoesEstoqueRoute: typeof AuthenticatedConfiguracoesEstoqueRoute
+  AuthenticatedConfiguracoesLaboratoriosRoute: typeof AuthenticatedConfiguracoesLaboratoriosRoute
+  AuthenticatedConfiguracoesModelosRoute: typeof AuthenticatedConfiguracoesModelosRoute
   AuthenticatedConfiguracoesPlanoContasRoute: typeof AuthenticatedConfiguracoesPlanoContasRoute
   AuthenticatedConfiguracoesProcedimentosRoute: typeof AuthenticatedConfiguracoesProcedimentosRoute
   AuthenticatedConfiguracoesTabelasPrecoRoute: typeof AuthenticatedConfiguracoesTabelasPrecoRoute
@@ -677,6 +820,8 @@ interface AuthenticatedConfiguracoesRouteChildren {
 
 const AuthenticatedConfiguracoesRouteChildren: AuthenticatedConfiguracoesRouteChildren =
   {
+    AuthenticatedConfiguracoesAgendaRoute:
+      AuthenticatedConfiguracoesAgendaRoute,
     AuthenticatedConfiguracoesAuditoriaRoute:
       AuthenticatedConfiguracoesAuditoriaRoute,
     AuthenticatedConfiguracoesClinicaRoute:
@@ -687,6 +832,10 @@ const AuthenticatedConfiguracoesRouteChildren: AuthenticatedConfiguracoesRouteCh
       AuthenticatedConfiguracoesEquipeRoute,
     AuthenticatedConfiguracoesEstoqueRoute:
       AuthenticatedConfiguracoesEstoqueRoute,
+    AuthenticatedConfiguracoesLaboratoriosRoute:
+      AuthenticatedConfiguracoesLaboratoriosRoute,
+    AuthenticatedConfiguracoesModelosRoute:
+      AuthenticatedConfiguracoesModelosRoute,
     AuthenticatedConfiguracoesPlanoContasRoute:
       AuthenticatedConfiguracoesPlanoContasRoute,
     AuthenticatedConfiguracoesProcedimentosRoute:
@@ -707,6 +856,7 @@ interface AuthenticatedPacientesIdRouteChildren {
   AuthenticatedPacientesIdArquivosRoute: typeof AuthenticatedPacientesIdArquivosRoute
   AuthenticatedPacientesIdDadosRoute: typeof AuthenticatedPacientesIdDadosRoute
   AuthenticatedPacientesIdDocumentosRoute: typeof AuthenticatedPacientesIdDocumentosRoute
+  AuthenticatedPacientesIdEspecialidadesRoute: typeof AuthenticatedPacientesIdEspecialidadesRoute
   AuthenticatedPacientesIdEvolucaoRoute: typeof AuthenticatedPacientesIdEvolucaoRoute
   AuthenticatedPacientesIdHistoricoRoute: typeof AuthenticatedPacientesIdHistoricoRoute
   AuthenticatedPacientesIdOdontogramaRoute: typeof AuthenticatedPacientesIdOdontogramaRoute
@@ -721,6 +871,8 @@ const AuthenticatedPacientesIdRouteChildren: AuthenticatedPacientesIdRouteChildr
     AuthenticatedPacientesIdDadosRoute: AuthenticatedPacientesIdDadosRoute,
     AuthenticatedPacientesIdDocumentosRoute:
       AuthenticatedPacientesIdDocumentosRoute,
+    AuthenticatedPacientesIdEspecialidadesRoute:
+      AuthenticatedPacientesIdEspecialidadesRoute,
     AuthenticatedPacientesIdEvolucaoRoute:
       AuthenticatedPacientesIdEvolucaoRoute,
     AuthenticatedPacientesIdHistoricoRoute:
@@ -745,6 +897,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRouteWithChildren
   AuthenticatedPacientesIndexRoute: typeof AuthenticatedPacientesIndexRoute
+  AuthenticatedImpressaoDocumentoIdRoute: typeof AuthenticatedImpressaoDocumentoIdRoute
   AuthenticatedImpressaoOrcamentoIdRoute: typeof AuthenticatedImpressaoOrcamentoIdRoute
 }
 
@@ -756,6 +909,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRouteWithChildren,
   AuthenticatedPacientesIndexRoute: AuthenticatedPacientesIndexRoute,
+  AuthenticatedImpressaoDocumentoIdRoute:
+    AuthenticatedImpressaoDocumentoIdRoute,
   AuthenticatedImpressaoOrcamentoIdRoute:
     AuthenticatedImpressaoOrcamentoIdRoute,
 }
@@ -768,7 +923,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   AceiteTokenRoute: AceiteTokenRoute,
+  AgendarClinicaRoute: AgendarClinicaRoute,
   AnamneseTokenRoute: AnamneseTokenRoute,
+  ConfirmarTokenRoute: ConfirmarTokenRoute,
   ConviteTokenRoute: ConviteTokenRoute,
 }
 export const routeTree = rootRouteImport

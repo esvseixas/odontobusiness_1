@@ -26,6 +26,10 @@ import {
   FileText,
   History,
   UserRound,
+  Microscope,
+  CalendarClock,
+  FileSignature,
+  FlaskConical,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -45,6 +49,7 @@ const PACIENTE_NAV = [
   { to: "/pacientes/$id/odontograma", slug: "odontograma", label: "Odontograma", icon: Stethoscope },
   { to: "/pacientes/$id/orcamentos", slug: "orcamentos", label: "Orçamentos", icon: Receipt },
   { to: "/pacientes/$id/evolucao", slug: "evolucao", label: "Evolução clínica", icon: ClipboardPlus },
+  { to: "/pacientes/$id/especialidades", slug: "especialidades", label: "Especialidades", icon: Microscope },
   { to: "/pacientes/$id/documentos", slug: "documentos", label: "Documentos", icon: FileText },
   { to: "/pacientes/$id/historico", slug: "historico", label: "Histórico", icon: History },
   { to: "/pacientes/$id/arquivos", slug: "arquivos", label: "Arquivos e imagens", icon: Images },
@@ -56,6 +61,9 @@ const CONFIG_NAV = [
   { to: "/configuracoes/unidades", label: "Unidades", icon: MapPin },
   { to: "/configuracoes/procedimentos", label: "Procedimentos", icon: ClipboardList },
   { to: "/configuracoes/tabelas-preco", label: "Tabelas de preço", icon: Tags },
+  { to: "/configuracoes/agenda", label: "Agenda e horários", icon: CalendarClock },
+  { to: "/configuracoes/modelos", label: "Modelos de documentos", icon: FileSignature },
+  { to: "/configuracoes/laboratorios", label: "Laboratórios", icon: FlaskConical },
   { to: "/configuracoes/convenios", label: "Convênios", icon: HeartHandshake },
   { to: "/configuracoes/equipe", label: "Equipe", icon: UserCog },
   { to: "/configuracoes/plano-contas", label: "Plano de contas", icon: ListTree },
