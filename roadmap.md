@@ -49,3 +49,4 @@
 - [x] Definir período de teste, planos e valores para clínica única e redes.
 - [x] Criar área exclusiva do administrador geral para gerenciar clientes assinantes.
 - [x] Validar isolamento, permissões e fluxos administrativos no navegador.
+- [x] Confirmar o administrador geral e adicionar recuperação e redefinição segura de senha.
