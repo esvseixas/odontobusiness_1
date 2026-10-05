@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AssinaturaRouteImport } from './routes/assinatura'
 import { Route as PlatformAdminRouteRouteImport } from './routes/_platform-admin/route'
@@ -61,6 +62,11 @@ import { Route as AuthenticatedPacientesIdArquivosRouteImport } from './routes/_
 import { Route as AuthenticatedImpressaoOrcamentoIdRouteImport } from './routes/_authenticated/impressao/orcamento.$id'
 import { Route as AuthenticatedImpressaoDocumentoIdRouteImport } from './routes/_authenticated/impressao/documento.$id'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -354,6 +360,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/assinatura': typeof AssinaturaRoute
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -405,6 +412,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/assinatura': typeof AssinaturaRoute
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
@@ -456,6 +464,7 @@ export interface FileRoutesById {
   '/_platform-admin': typeof PlatformAdminRouteRouteWithChildren
   '/assinatura': typeof AssinaturaRoute
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -509,6 +518,7 @@ export interface FileRouteTypes {
     | '/'
     | '/assinatura'
     | '/auth'
+    | '/reset-password'
     | '/agenda'
     | '/configuracoes'
     | '/dashboard'
@@ -560,6 +570,7 @@ export interface FileRouteTypes {
     | '/'
     | '/assinatura'
     | '/auth'
+    | '/reset-password'
     | '/agenda'
     | '/dashboard'
     | '/financeiro'
@@ -610,6 +621,7 @@ export interface FileRouteTypes {
     | '/_platform-admin'
     | '/assinatura'
     | '/auth'
+    | '/reset-password'
     | '/_authenticated/agenda'
     | '/_authenticated/configuracoes'
     | '/_authenticated/dashboard'
@@ -664,6 +676,7 @@ export interface RootRouteChildren {
   PlatformAdminRouteRoute: typeof PlatformAdminRouteRouteWithChildren
   AssinaturaRoute: typeof AssinaturaRoute
   AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   AceiteTokenRoute: typeof AceiteTokenRoute
   AgendarClinicaRoute: typeof AgendarClinicaRoute
   AnamneseTokenRoute: typeof AnamneseTokenRoute
@@ -673,6 +686,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -1194,6 +1214,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlatformAdminRouteRoute: PlatformAdminRouteRouteWithChildren,
   AssinaturaRoute: AssinaturaRoute,
   AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   AceiteTokenRoute: AceiteTokenRoute,
   AgendarClinicaRoute: AgendarClinicaRoute,
   AnamneseTokenRoute: AnamneseTokenRoute,
