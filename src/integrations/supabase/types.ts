@@ -273,6 +273,59 @@ export type Database = {
           },
         ]
       }
+      assinaturas_plataforma: {
+        Row: {
+          atualizado_por: string | null
+          ciclo: string
+          clinica_id: string
+          created_at: string
+          id: string
+          motivo_status: string | null
+          plano: string
+          proxima_cobranca: string | null
+          status: string
+          trial_ate: string | null
+          updated_at: string
+          valor_mensal: number
+        }
+        Insert: {
+          atualizado_por?: string | null
+          ciclo?: string
+          clinica_id: string
+          created_at?: string
+          id?: string
+          motivo_status?: string | null
+          plano?: string
+          proxima_cobranca?: string | null
+          status?: string
+          trial_ate?: string | null
+          updated_at?: string
+          valor_mensal?: number
+        }
+        Update: {
+          atualizado_por?: string | null
+          ciclo?: string
+          clinica_id?: string
+          created_at?: string
+          id?: string
+          motivo_status?: string | null
+          plano?: string
+          proxima_cobranca?: string | null
+          status?: string
+          trial_ate?: string | null
+          updated_at?: string
+          valor_mensal?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assinaturas_plataforma_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: true
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       auditoria_logs: {
         Row: {
           acao: string
@@ -310,6 +363,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "auditoria_logs_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auditoria_plataforma: {
+        Row: {
+          acao: string
+          clinica_id: string
+          created_at: string
+          detalhes: Json
+          id: string
+          usuario_id: string
+        }
+        Insert: {
+          acao: string
+          clinica_id: string
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          usuario_id: string
+        }
+        Update: {
+          acao?: string
+          clinica_id?: string
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          usuario_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auditoria_plataforma_clinica_id_fkey"
             columns: ["clinica_id"]
             isOneToOne: false
             referencedRelation: "clinicas"
@@ -2659,6 +2747,27 @@ export type Database = {
           },
         ]
       }
+      platform_admins: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          nome: string
+          user_id: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          nome?: string
+          user_id: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          nome?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       procedimento_insumos: {
         Row: {
           clinica_id: string
@@ -2939,6 +3048,38 @@ export type Database = {
             columns: ["unidade_id"]
             isOneToOne: false
             referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      suporte_notas: {
+        Row: {
+          autor_id: string
+          clinica_id: string
+          created_at: string
+          id: string
+          nota: string
+        }
+        Insert: {
+          autor_id: string
+          clinica_id: string
+          created_at?: string
+          id?: string
+          nota: string
+        }
+        Update: {
+          autor_id?: string
+          clinica_id?: string
+          created_at?: string
+          id?: string
+          nota?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "suporte_notas_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
             referencedColumns: ["id"]
           },
         ]
@@ -3274,6 +3415,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      adicionar_nota_suporte: {
+        Args: { p_clinica: string; p_nota: string }
+        Returns: string
+      }
       agenda_publica_info: { Args: { p_clinica: string }; Returns: Json }
       agendar_online: {
         Args: {
@@ -3417,6 +3562,19 @@ export type Database = {
         Args: { p_paciente: string; p_validade_dias?: number }
         Returns: string
       }
+      gerenciar_assinatura: {
+        Args: {
+          p_ciclo: string
+          p_clinica: string
+          p_motivo?: string
+          p_plano: string
+          p_proxima_cobranca?: string
+          p_status: string
+          p_trial_ate?: string
+          p_valor: number
+        }
+        Returns: undefined
+      }
       has_role:
         | {
             Args: {
@@ -3441,6 +3599,29 @@ export type Database = {
           p_profissional: string
         }
         Returns: string[]
+      }
+      is_platform_admin: { Args: { _user_id?: string }; Returns: boolean }
+      listar_clientes_plataforma: {
+        Args: { p_busca?: string }
+        Returns: {
+          ciclo: string
+          clinica_id: string
+          clinica_nome: string
+          cnpj: string
+          contato_email: string
+          contato_telefone: string
+          criado_em: string
+          motivo_status: string
+          plano: string
+          proxima_cobranca: string
+          responsavel: string
+          responsavel_email: string
+          status: string
+          trial_ate: string
+          unidades: number
+          usuarios: number
+          valor_mensal: number
+        }[]
       }
       marcar_atendido: {
         Args: { p_agendamento: string; p_cobrar?: boolean }
@@ -3507,6 +3688,7 @@ export type Database = {
         Args: { p_confirmar: boolean; p_token: string }
         Returns: string
       }
+      resumo_admin_plataforma: { Args: never; Returns: Json }
       semear_modelos_documentos: {
         Args: { p_clinica: string }
         Returns: undefined
@@ -3566,6 +3748,7 @@ export type Database = {
         }[]
       }
       ver_orcamento_aceite: { Args: { p_token: string }; Returns: Json }
+      verificar_acesso_clinica: { Args: never; Returns: Json }
     }
     Enums: {
       agendamento_status:
