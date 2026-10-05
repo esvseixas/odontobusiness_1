@@ -48,4 +48,4 @@
 - [x] Redesenhar a landing page com apresentação profissional e benefícios detalhados.
 - [x] Definir período de teste, planos e valores para clínica única e redes.
 - [x] Criar área exclusiva do administrador geral para gerenciar clientes assinantes.
-- [ ] Validar isolamento, permissões e fluxos administrativos no navegador.
+- [x] Validar isolamento, permissões e fluxos administrativos no navegador.

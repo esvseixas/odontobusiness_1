@@ -143,7 +143,7 @@ export function PainelAdminPlataforma() {
   const salvar = useMutation({
     mutationFn: async () => {
       if (!selecionado) return;
-      const { error } = await supabase.rpc("gerenciar_assinatura", {
+      const { error } = await supabase.rpc("administrar_cliente_plataforma", {
         p_clinica: selecionado.clinica_id,
         p_plano: form.plano,
         p_status: form.status,
@@ -152,15 +152,9 @@ export function PainelAdminPlataforma() {
         p_trial_ate: form.trial || undefined,
         p_proxima_cobranca: form.cobranca || undefined,
         p_motivo: form.motivo || undefined,
+        p_nota: nota.trim() || undefined,
       });
       if (error) throw error;
-      if (nota.trim()) {
-        const { error: notaError } = await supabase.rpc("adicionar_nota_suporte", {
-          p_clinica: selecionado.clinica_id,
-          p_nota: nota.trim(),
-        });
-        if (notaError) throw notaError;
-      }
     },
     onSuccess: async () => {
       toast.success("Assinatura atualizada");
@@ -211,7 +205,7 @@ export function PainelAdminPlataforma() {
             <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground"><ShieldCheck className="h-5 w-5" /></span>
             OdontoGestor <span className="hidden text-xs font-medium text-background/60 sm:inline">Administração geral</span>
           </Link>
-          <Button variant="ghost" className="text-background hover:bg-background/10 hover:text-background" onClick={sair}><LogOut /> Sair</Button>
+          <div className="flex items-center gap-1"><Button variant="ghost" className="hidden text-background hover:bg-background/10 hover:text-background sm:inline-flex" asChild><Link to="/dashboard"><Building2 /> Abrir clínica</Link></Button><Button variant="ghost" className="text-background hover:bg-background/10 hover:text-background" onClick={sair}><LogOut /> Sair</Button></div>
         </div>
       </header>
 
@@ -221,9 +215,9 @@ export function PainelAdminPlataforma() {
           <Badge variant="outline" className="gap-2 bg-card px-3 py-2"><ShieldCheck className="h-4 w-4 text-primary" /> Ambiente restrito</Badge>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 xl:grid-cols-6">
           {indicadores.map(({ label, valor, icon: Icon }) => (
-            <Card key={label} className="rounded-md shadow-sm"><CardContent className="p-4"><Icon className="mb-4 h-5 w-5 text-primary" /><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 text-xl font-semibold">{valor}</p></CardContent></Card>
+            <Card key={label} className="rounded-md shadow-sm"><CardContent className="p-4"><Icon className="mb-3 h-5 w-5 text-primary" /><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 text-xl font-semibold">{valor}</p></CardContent></Card>
           ))}
         </div>
 
@@ -232,7 +226,7 @@ export function PainelAdminPlataforma() {
             <div><h2 className="font-display text-lg font-semibold">Base de clientes</h2><p className="text-sm text-muted-foreground">Planos, situação, estrutura e responsável de cada conta.</p></div>
             <div className="relative w-full sm:w-80"><Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" /><Input className="pl-9" placeholder="Buscar clínica, CNPJ ou responsável" value={busca} onChange={(event) => setBusca(event.target.value)} /></div>
           </div>
-          <Table>
+          <div className="hidden md:block"><Table>
             <TableHeader><TableRow><TableHead>Clínica</TableHead><TableHead>Plano</TableHead><TableHead>Situação</TableHead><TableHead>Estrutura</TableHead><TableHead>Valor mensal</TableHead><TableHead>Próxima data</TableHead><TableHead className="text-right">Ação</TableHead></TableRow></TableHeader>
             <TableBody>
               {filtrados.map((cliente) => (
@@ -248,7 +242,8 @@ export function PainelAdminPlataforma() {
               ))}
               {!clientes.isLoading && filtrados.length === 0 ? <TableRow><TableCell colSpan={7} className="py-12 text-center text-muted-foreground">Nenhuma clínica encontrada.</TableCell></TableRow> : null}
             </TableBody>
-          </Table>
+          </Table></div>
+          <div className="divide-y md:hidden">{filtrados.map((cliente) => <article key={cliente.clinica_id} className="p-5"><div className="flex items-start justify-between gap-3"><div><h3 className="font-display font-semibold">{cliente.clinica_nome}</h3><p className="mt-1 text-xs text-muted-foreground">{cliente.responsavel || cliente.contato_email || "Responsável não informado"}</p></div><Badge variant={statusVariant(cliente.status)}>{statusLabels[cliente.status]}</Badge></div><div className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><p className="text-xs text-muted-foreground">Plano</p><p className="font-medium">{planoLabels[cliente.plano]}</p></div><div><p className="text-xs text-muted-foreground">Valor</p><p className="font-medium">{brl(cliente.valor_mensal)}</p></div><div><p className="text-xs text-muted-foreground">Estrutura</p><p className="font-medium">{cliente.unidades} un. · {cliente.usuarios} usuários</p></div><div><p className="text-xs text-muted-foreground">Próxima data</p><p className="font-medium">{dataBR(cliente.status === "teste" ? cliente.trial_ate : cliente.proxima_cobranca)}</p></div></div><Button size="sm" variant="outline" className="mt-4 w-full" onClick={() => abrir(cliente)}>Administrar</Button></article>)}</div>
         </section>
 
         <section className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
