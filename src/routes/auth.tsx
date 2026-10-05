@@ -46,6 +46,11 @@ function AuthPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
     setCarregando(false);
     if (error) return toast.error("Não foi possível entrar: " + error.message);
+    const { data: platformAdmin } = await supabase.rpc("is_platform_admin", {});
+    if (platformAdmin) {
+      navigate({ to: "/admin", replace: true });
+      return;
+    }
     irPara("/dashboard");
   }
 
