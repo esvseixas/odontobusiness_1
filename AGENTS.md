@@ -12,3 +12,4 @@
 - Cancellations (orçamentos, lançamentos) go through `cancelar_orcamento` / `cancelar_lancamento` RPCs that require a reason; records are never deleted and cancelled entries are excluded from totals.
 - Stock balance is the sum of `estoque_lotes.quantidade` (views `estoque_saldos`/`estoque_saldo_itens`); lots and movements are written only by SECURITY DEFINER RPCs built on `_estoque_mov`, and movements are immutable (trigger), corrected only by "ajuste".
 - Consumption at attendance goes through `finalizar_atendimento` (status + billing + FEFO stock deduction in one transaction), idempotent via `estoque_baixas_atendimento`; applied lots are traced in `paciente_lotes_aplicados`.
+- Platform administration uses a separate `platform_admins` identity and platform-only RPCs; it never grants cross-tenant access to clinical tables, protecting patient data.

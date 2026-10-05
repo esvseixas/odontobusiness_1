@@ -85,6 +85,20 @@
       "when": 1791209996261,
       "tag": "0011_fase2_bloquear_entrada_vencida",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791211394636,
+      "tag": "0012_admin_plataforma_assinaturas",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1791211647051,
+      "tag": "0013_admin_plataforma_operacao_atomica",
+      "breakpoints": true
     }
   ]
 }

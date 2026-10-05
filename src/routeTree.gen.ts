@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AssinaturaRouteImport } from './routes/assinatura'
+import { Route as PlatformAdminRouteRouteImport } from './routes/_platform-admin/route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
@@ -17,6 +19,7 @@ import { Route as ConfirmarTokenRouteImport } from './routes/confirmar.$token'
 import { Route as AnamneseTokenRouteImport } from './routes/anamnese.$token'
 import { Route as AgendarClinicaRouteImport } from './routes/agendar.$clinica'
 import { Route as AceiteTokenRouteImport } from './routes/aceite.$token'
+import { Route as PlatformAdminAdminRouteImport } from './routes/_platform-admin/admin'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
 import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
@@ -63,6 +66,15 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssinaturaRoute = AssinaturaRouteImport.update({
+  id: '/assinatura',
+  path: '/assinatura',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformAdminRouteRoute = PlatformAdminRouteRouteImport.update({
+  id: '/_platform-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -96,6 +108,11 @@ const AceiteTokenRoute = AceiteTokenRouteImport.update({
   id: '/aceite/$token',
   path: '/aceite/$token',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformAdminAdminRoute = PlatformAdminAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => PlatformAdminRouteRoute,
 } as any)
 const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   id: '/onboarding',
@@ -335,6 +352,7 @@ const AuthenticatedImpressaoDocumentoIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assinatura': typeof AssinaturaRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
@@ -342,6 +360,7 @@ export interface FileRoutesByFullPath {
   '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/admin': typeof PlatformAdminAdminRoute
   '/aceite/$token': typeof AceiteTokenRoute
   '/agendar/$clinica': typeof AgendarClinicaRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
@@ -384,11 +403,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assinatura': typeof AssinaturaRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/admin': typeof PlatformAdminAdminRoute
   '/aceite/$token': typeof AceiteTokenRoute
   '/agendar/$clinica': typeof AgendarClinicaRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
@@ -432,6 +453,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_platform-admin': typeof PlatformAdminRouteRouteWithChildren
+  '/assinatura': typeof AssinaturaRoute
   '/auth': typeof AuthRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
@@ -439,6 +462,7 @@ export interface FileRoutesById {
   '/_authenticated/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_platform-admin/admin': typeof PlatformAdminAdminRoute
   '/aceite/$token': typeof AceiteTokenRoute
   '/agendar/$clinica': typeof AgendarClinicaRoute
   '/anamnese/$token': typeof AnamneseTokenRoute
@@ -483,6 +507,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/assinatura'
     | '/auth'
     | '/agenda'
     | '/configuracoes'
@@ -490,6 +515,7 @@ export interface FileRouteTypes {
     | '/estoque'
     | '/financeiro'
     | '/onboarding'
+    | '/admin'
     | '/aceite/$token'
     | '/agendar/$clinica'
     | '/anamnese/$token'
@@ -532,11 +558,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/assinatura'
     | '/auth'
     | '/agenda'
     | '/dashboard'
     | '/financeiro'
     | '/onboarding'
+    | '/admin'
     | '/aceite/$token'
     | '/agendar/$clinica'
     | '/anamnese/$token'
@@ -579,6 +607,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/_platform-admin'
+    | '/assinatura'
     | '/auth'
     | '/_authenticated/agenda'
     | '/_authenticated/configuracoes'
@@ -586,6 +616,7 @@ export interface FileRouteTypes {
     | '/_authenticated/estoque'
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
+    | '/_platform-admin/admin'
     | '/aceite/$token'
     | '/agendar/$clinica'
     | '/anamnese/$token'
@@ -630,6 +661,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  PlatformAdminRouteRoute: typeof PlatformAdminRouteRouteWithChildren
+  AssinaturaRoute: typeof AssinaturaRoute
   AuthRoute: typeof AuthRoute
   AceiteTokenRoute: typeof AceiteTokenRoute
   AgendarClinicaRoute: typeof AgendarClinicaRoute
@@ -645,6 +678,20 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assinatura': {
+      id: '/assinatura'
+      path: '/assinatura'
+      fullPath: '/assinatura'
+      preLoaderRoute: typeof AssinaturaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_platform-admin': {
+      id: '/_platform-admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PlatformAdminRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -695,6 +742,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/aceite/$token'
       preLoaderRoute: typeof AceiteTokenRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_platform-admin/admin': {
+      id: '/_platform-admin/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof PlatformAdminAdminRouteImport
+      parentRoute: typeof PlatformAdminRouteRoute
     }
     '/_authenticated/onboarding': {
       id: '/_authenticated/onboarding'
@@ -1123,9 +1177,22 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface PlatformAdminRouteRouteChildren {
+  PlatformAdminAdminRoute: typeof PlatformAdminAdminRoute
+}
+
+const PlatformAdminRouteRouteChildren: PlatformAdminRouteRouteChildren = {
+  PlatformAdminAdminRoute: PlatformAdminAdminRoute,
+}
+
+const PlatformAdminRouteRouteWithChildren =
+  PlatformAdminRouteRoute._addFileChildren(PlatformAdminRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  PlatformAdminRouteRoute: PlatformAdminRouteRouteWithChildren,
+  AssinaturaRoute: AssinaturaRoute,
   AuthRoute: AuthRoute,
   AceiteTokenRoute: AceiteTokenRoute,
   AgendarClinicaRoute: AgendarClinicaRoute,
