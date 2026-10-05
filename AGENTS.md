@@ -10,3 +10,5 @@
 - Schedule rules beyond conflicts (working hours, blocks) are enforced by the `validar_agendamento` trigger; creation, recurrence, "atendido" billing and public booking/confirmation go through SECURITY DEFINER RPCs.
 - Document templates use `{{var}}` placeholders resolved client-side before emission; emitted documents are immutable.
 - Cancellations (orçamentos, lançamentos) go through `cancelar_orcamento` / `cancelar_lancamento` RPCs that require a reason; records are never deleted and cancelled entries are excluded from totals.
+- Stock balance is the sum of `estoque_lotes.quantidade` (views `estoque_saldos`/`estoque_saldo_itens`); lots and movements are written only by SECURITY DEFINER RPCs built on `_estoque_mov`, and movements are immutable (trigger), corrected only by "ajuste".
+- Consumption at attendance goes through `finalizar_atendimento` (status + billing + FEFO stock deduction in one transaction), idempotent via `estoque_baixas_atendimento`; applied lots are traced in `paciente_lotes_aplicados`.

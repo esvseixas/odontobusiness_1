@@ -274,6 +274,7 @@ function Implantes({ pacienteId }: { pacienteId: string }) {
           <Button className="sm:col-span-4" disabled={!f.dente || salvar.isPending} onClick={() => salvar.mutate()}>Registrar implante</Button>
         </CardContent>
       </Card>
+      <LotesAplicados pacienteId={pacienteId} />
       <div className="grid gap-3 sm:grid-cols-2">
         {lista.data?.map((i) => (
           <Card key={i.id}><CardContent className="space-y-1 pt-6 text-sm">
@@ -285,6 +286,28 @@ function Implantes({ pacienteId }: { pacienteId: string }) {
         ))}
       </div>
     </div>
+  );
+}
+
+export function LotesAplicados({ pacienteId }: { pacienteId: string }) {
+  const q = useQuery({
+    queryKey: ["lotes-aplicados", pacienteId],
+    queryFn: async () => (await supabase.from("paciente_lotes_aplicados").select("*,estoque_itens(nome,unidade_medida),estoque_lotes(numero_lote,validade),procedimentos(nome),profissionais(nome)")
+      .eq("paciente_id", pacienteId).order("aplicado_em", { ascending: false })).data ?? [],
+  });
+  return (
+    <Card>
+      <CardHeader><CardTitle className="text-base">Lotes aplicados (rastreabilidade)</CardTitle></CardHeader>
+      <CardContent className="space-y-1 text-sm">
+        {q.data?.length ? q.data.map((a) => (
+          <div key={a.id} className="flex flex-wrap justify-between gap-2 rounded-md border p-2">
+            <span>{dataBR(a.aplicado_em)} · {a.estoque_itens?.nome} · <strong>lote {a.estoque_lotes?.numero_lote ?? "s/n"}</strong>
+              {a.estoque_lotes?.validade ? ` (val. ${dataBR(a.estoque_lotes.validade + "T12:00:00")})` : ""}{a.dente ? ` · dente ${a.dente}` : ""}</span>
+            <span className="text-xs text-muted-foreground">{a.procedimentos?.nome ?? "—"} · {a.profissionais?.nome ?? "—"} · {Number(a.quantidade).toLocaleString("pt-BR")} {a.estoque_itens?.unidade_medida}</span>
+          </div>
+        )) : <p className="text-muted-foreground">Nenhum lote aplicado registrado. Os lotes entram aqui ao marcar o atendimento como concluído na agenda.</p>}
+      </CardContent>
+    </Card>
   );
 }
 
