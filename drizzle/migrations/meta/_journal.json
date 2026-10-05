@@ -127,6 +127,27 @@
       "when": 1791212614662,
       "tag": "0017_fase3_corrigir_unidade_orcamento",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1791212858453,
+      "tag": "0018_fase3_comissoes_conciliacao_nfse",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1791212912881,
+      "tag": "0019_fase3_funcoes_relatorios_e_integridade",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1791212970182,
+      "tag": "0020_fase3_integridade_e_integracoes_financeiras",
+      "breakpoints": true
     }
   ]
 }
