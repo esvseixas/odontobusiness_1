@@ -34,3 +34,12 @@
 - [x] 7a. Agenda: bloqueio de conflitos de profissional, paciente e cadeira; alertas clínicos na agenda
 - [x] 7b. Agenda: dia/semana/mês, por profissional/sala, salas, expediente, bloqueios, encaixe, espera, recorrência, arrastar e soltar, confirmação por link/WhatsApp, agendamento online, atendido → evolução/cobrança
 - [ ] 7c. Lembretes automáticos por e-mail 24h/2h (aguardando domínio de e-mail configurado)
+
+## Fase 2 — Estoque integrado
+- [x] 1. Fornecedores; itens com categoria, código de barras, conversão compra×consumo, custo médio, lote/validade, ANVISA; saldo pela soma dos lotes (views)
+- [x] 2. Movimentações tipadas e imutáveis, sem saldo negativo, custo médio ponderado a cada entrada
+- [x] 3. Ficha técnica por procedimento; baixa FEFO idempotente ao marcar "atendido"; lote obrigatório quando exigido, gravado no prontuário e vinculado ao implante
+- [x] 4. Pedidos de compra; recebimento cria lotes + conta a pagar numa transação; sugestão automática (mínimo + consumo 90 dias + prazo)
+- [x] 5. Inventário por lote com ajuste na finalização; transferência atômica entre unidades
+- [x] 6. Alertas (mínimo, vencendo 30/60/90, vencidos com baixa) no painel e no estoque; relatórios com CSV
+- [x] 7. Estoque como menu principal com 8 submenus
