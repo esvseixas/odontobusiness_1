@@ -9,67 +9,70 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AssinaturaRouteImport } from './routes/assinatura'
-import { Route as PlatformAdminRouteRouteImport } from './routes/_platform-admin/route'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
-import { Route as ConfirmarTokenRouteImport } from './routes/confirmar.$token'
-import { Route as AnamneseTokenRouteImport } from './routes/anamnese.$token'
-import { Route as AgendarClinicaRouteImport } from './routes/agendar.$clinica'
-import { Route as AceiteTokenRouteImport } from './routes/aceite.$token'
-import { Route as PlatformAdminAdminRouteImport } from './routes/_platform-admin/admin'
-import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
-import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
-import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as PlatformAdminRouteRouteImport } from './routes/_platform-admin/route'
+import { Route as AssinaturaRouteImport } from './routes/assinatura'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
-import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes/index'
-import { Route as AuthenticatedEstoqueIndexRouteImport } from './routes/_authenticated/estoque/index'
+import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
+import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as PlatformAdminAdminRouteImport } from './routes/_platform-admin/admin'
+import { Route as AceiteTokenRouteImport } from './routes/aceite.$token'
+import { Route as AgendarClinicaRouteImport } from './routes/agendar.$clinica'
+import { Route as AnamneseTokenRouteImport } from './routes/anamnese.$token'
+import { Route as ConfirmarTokenRouteImport } from './routes/confirmar.$token'
+import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
 import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes/index'
-import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes/$id'
-import { Route as AuthenticatedEstoqueRelatoriosRouteImport } from './routes/_authenticated/estoque/relatorios'
-import { Route as AuthenticatedEstoqueMovimentacoesRouteImport } from './routes/_authenticated/estoque/movimentacoes'
-import { Route as AuthenticatedEstoqueLotesRouteImport } from './routes/_authenticated/estoque/lotes'
-import { Route as AuthenticatedEstoqueItensRouteImport } from './routes/_authenticated/estoque/itens'
-import { Route as AuthenticatedEstoqueInventarioRouteImport } from './routes/_authenticated/estoque/inventario'
-import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_authenticated/estoque/fornecedores'
-import { Route as AuthenticatedEstoqueComprasRouteImport } from './routes/_authenticated/estoque/compras'
-import { Route as AuthenticatedConfiguracoesUnidadesRouteImport } from './routes/_authenticated/configuracoes/unidades'
-import { Route as AuthenticatedConfiguracoesTabelasPrecoRouteImport } from './routes/_authenticated/configuracoes/tabelas-preco'
-import { Route as AuthenticatedConfiguracoesProcedimentosRouteImport } from './routes/_authenticated/configuracoes/procedimentos'
-import { Route as AuthenticatedConfiguracoesPlanoContasRouteImport } from './routes/_authenticated/configuracoes/plano-contas'
-import { Route as AuthenticatedConfiguracoesModelosRouteImport } from './routes/_authenticated/configuracoes/modelos'
-import { Route as AuthenticatedConfiguracoesLaboratoriosRouteImport } from './routes/_authenticated/configuracoes/laboratorios'
-import { Route as AuthenticatedConfiguracoesEstoqueRouteImport } from './routes/_authenticated/configuracoes/estoque'
-import { Route as AuthenticatedConfiguracoesEquipeRouteImport } from './routes/_authenticated/configuracoes/equipe'
-import { Route as AuthenticatedConfiguracoesConveniosRouteImport } from './routes/_authenticated/configuracoes/convenios'
-import { Route as AuthenticatedConfiguracoesClinicaRouteImport } from './routes/_authenticated/configuracoes/clinica'
-import { Route as AuthenticatedConfiguracoesAuditoriaRouteImport } from './routes/_authenticated/configuracoes/auditoria'
 import { Route as AuthenticatedConfiguracoesAgendaRouteImport } from './routes/_authenticated/configuracoes/agenda'
-import { Route as AuthenticatedPacientesIdIndexRouteImport } from './routes/_authenticated/pacientes/$id/index'
-import { Route as AuthenticatedPacientesIdOrcamentosRouteImport } from './routes/_authenticated/pacientes/$id/orcamentos'
-import { Route as AuthenticatedPacientesIdOdontogramaRouteImport } from './routes/_authenticated/pacientes/$id/odontograma'
-import { Route as AuthenticatedPacientesIdHistoricoRouteImport } from './routes/_authenticated/pacientes/$id/historico'
-import { Route as AuthenticatedPacientesIdEvolucaoRouteImport } from './routes/_authenticated/pacientes/$id/evolucao'
-import { Route as AuthenticatedPacientesIdEspecialidadesRouteImport } from './routes/_authenticated/pacientes/$id/especialidades'
-import { Route as AuthenticatedPacientesIdDocumentosRouteImport } from './routes/_authenticated/pacientes/$id/documentos'
-import { Route as AuthenticatedPacientesIdDadosRouteImport } from './routes/_authenticated/pacientes/$id/dados'
-import { Route as AuthenticatedPacientesIdArquivosRouteImport } from './routes/_authenticated/pacientes/$id/arquivos'
-import { Route as AuthenticatedImpressaoOrcamentoIdRouteImport } from './routes/_authenticated/impressao/orcamento.$id'
+import { Route as AuthenticatedConfiguracoesAuditoriaRouteImport } from './routes/_authenticated/configuracoes/auditoria'
+import { Route as AuthenticatedConfiguracoesClinicaRouteImport } from './routes/_authenticated/configuracoes/clinica'
+import { Route as AuthenticatedConfiguracoesConveniosRouteImport } from './routes/_authenticated/configuracoes/convenios'
+import { Route as AuthenticatedConfiguracoesEquipeRouteImport } from './routes/_authenticated/configuracoes/equipe'
+import { Route as AuthenticatedConfiguracoesEstoqueRouteImport } from './routes/_authenticated/configuracoes/estoque'
+import { Route as AuthenticatedConfiguracoesLaboratoriosRouteImport } from './routes/_authenticated/configuracoes/laboratorios'
+import { Route as AuthenticatedConfiguracoesModelosRouteImport } from './routes/_authenticated/configuracoes/modelos'
+import { Route as AuthenticatedConfiguracoesPlanoContasRouteImport } from './routes/_authenticated/configuracoes/plano-contas'
+import { Route as AuthenticatedConfiguracoesProcedimentosRouteImport } from './routes/_authenticated/configuracoes/procedimentos'
+import { Route as AuthenticatedConfiguracoesTabelasPrecoRouteImport } from './routes/_authenticated/configuracoes/tabelas-preco'
+import { Route as AuthenticatedConfiguracoesUnidadesRouteImport } from './routes/_authenticated/configuracoes/unidades'
+import { Route as AuthenticatedEstoqueIndexRouteImport } from './routes/_authenticated/estoque/index'
+import { Route as AuthenticatedEstoqueComprasRouteImport } from './routes/_authenticated/estoque/compras'
+import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_authenticated/estoque/fornecedores'
+import { Route as AuthenticatedEstoqueInventarioRouteImport } from './routes/_authenticated/estoque/inventario'
+import { Route as AuthenticatedEstoqueItensRouteImport } from './routes/_authenticated/estoque/itens'
+import { Route as AuthenticatedEstoqueLotesRouteImport } from './routes/_authenticated/estoque/lotes'
+import { Route as AuthenticatedEstoqueMovimentacoesRouteImport } from './routes/_authenticated/estoque/movimentacoes'
+import { Route as AuthenticatedEstoqueRelatoriosRouteImport } from './routes/_authenticated/estoque/relatorios'
+import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes/index'
+import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes/$id'
 import { Route as AuthenticatedImpressaoDocumentoIdRouteImport } from './routes/_authenticated/impressao/documento.$id'
+import { Route as AuthenticatedImpressaoOrcamentoIdRouteImport } from './routes/_authenticated/impressao/orcamento.$id'
+import { Route as AuthenticatedPacientesIdIndexRouteImport } from './routes/_authenticated/pacientes/$id/index'
+import { Route as AuthenticatedPacientesIdArquivosRouteImport } from './routes/_authenticated/pacientes/$id/arquivos'
+import { Route as AuthenticatedPacientesIdDadosRouteImport } from './routes/_authenticated/pacientes/$id/dados'
+import { Route as AuthenticatedPacientesIdDocumentosRouteImport } from './routes/_authenticated/pacientes/$id/documentos'
+import { Route as AuthenticatedPacientesIdEspecialidadesRouteImport } from './routes/_authenticated/pacientes/$id/especialidades'
+import { Route as AuthenticatedPacientesIdEvolucaoRouteImport } from './routes/_authenticated/pacientes/$id/evolucao'
+import { Route as AuthenticatedPacientesIdHistoricoRouteImport } from './routes/_authenticated/pacientes/$id/historico'
+import { Route as AuthenticatedPacientesIdOdontogramaRouteImport } from './routes/_authenticated/pacientes/$id/odontograma'
+import { Route as AuthenticatedPacientesIdOrcamentosRouteImport } from './routes/_authenticated/pacientes/$id/orcamentos'
 
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformAdminRouteRoute = PlatformAdminRouteRouteImport.update({
+  id: '/_platform-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AssinaturaRoute = AssinaturaRouteImport.update({
@@ -77,67 +80,19 @@ const AssinaturaRoute = AssinaturaRouteImport.update({
   path: '/assinatura',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlatformAdminRouteRoute = PlatformAdminRouteRouteImport.update({
-  id: '/_platform-admin',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConviteTokenRoute = ConviteTokenRouteImport.update({
-  id: '/convite/$token',
-  path: '/convite/$token',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConfirmarTokenRoute = ConfirmarTokenRouteImport.update({
-  id: '/confirmar/$token',
-  path: '/confirmar/$token',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnamneseTokenRoute = AnamneseTokenRouteImport.update({
-  id: '/anamnese/$token',
-  path: '/anamnese/$token',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgendarClinicaRoute = AgendarClinicaRouteImport.update({
-  id: '/agendar/$clinica',
-  path: '/agendar/$clinica',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AceiteTokenRoute = AceiteTokenRouteImport.update({
-  id: '/aceite/$token',
-  path: '/aceite/$token',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlatformAdminAdminRoute = PlatformAdminAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => PlatformAdminRouteRoute,
-} as any)
-const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
-  id: '/financeiro',
-  path: '/financeiro',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
-  id: '/estoque',
-  path: '/estoque',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedConfiguracoesRoute =
@@ -146,141 +101,60 @@ const AuthenticatedConfiguracoesRoute =
     path: '/configuracoes',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
-  id: '/agenda',
-  path: '/agenda',
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedPacientesIndexRoute =
-  AuthenticatedPacientesIndexRouteImport.update({
-    id: '/pacientes/',
-    path: '/pacientes/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedEstoqueIndexRoute =
-  AuthenticatedEstoqueIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
+const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const PlatformAdminAdminRoute = PlatformAdminAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => PlatformAdminRouteRoute,
+} as any)
+const AceiteTokenRoute = AceiteTokenRouteImport.update({
+  id: '/aceite/$token',
+  path: '/aceite/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendarClinicaRoute = AgendarClinicaRouteImport.update({
+  id: '/agendar/$clinica',
+  path: '/agendar/$clinica',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnamneseTokenRoute = AnamneseTokenRouteImport.update({
+  id: '/anamnese/$token',
+  path: '/anamnese/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmarTokenRoute = ConfirmarTokenRouteImport.update({
+  id: '/confirmar/$token',
+  path: '/confirmar/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConviteTokenRoute = ConviteTokenRouteImport.update({
+  id: '/convite/$token',
+  path: '/convite/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedConfiguracoesIndexRoute =
   AuthenticatedConfiguracoesIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedPacientesIdRoute =
-  AuthenticatedPacientesIdRouteImport.update({
-    id: '/pacientes/$id',
-    path: '/pacientes/$id',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedEstoqueRelatoriosRoute =
-  AuthenticatedEstoqueRelatoriosRouteImport.update({
-    id: '/relatorios',
-    path: '/relatorios',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueMovimentacoesRoute =
-  AuthenticatedEstoqueMovimentacoesRouteImport.update({
-    id: '/movimentacoes',
-    path: '/movimentacoes',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueLotesRoute =
-  AuthenticatedEstoqueLotesRouteImport.update({
-    id: '/lotes',
-    path: '/lotes',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueItensRoute =
-  AuthenticatedEstoqueItensRouteImport.update({
-    id: '/itens',
-    path: '/itens',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueInventarioRoute =
-  AuthenticatedEstoqueInventarioRouteImport.update({
-    id: '/inventario',
-    path: '/inventario',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueFornecedoresRoute =
-  AuthenticatedEstoqueFornecedoresRouteImport.update({
-    id: '/fornecedores',
-    path: '/fornecedores',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueComprasRoute =
-  AuthenticatedEstoqueComprasRouteImport.update({
-    id: '/compras',
-    path: '/compras',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedConfiguracoesUnidadesRoute =
-  AuthenticatedConfiguracoesUnidadesRouteImport.update({
-    id: '/unidades',
-    path: '/unidades',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesTabelasPrecoRoute =
-  AuthenticatedConfiguracoesTabelasPrecoRouteImport.update({
-    id: '/tabelas-preco',
-    path: '/tabelas-preco',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesProcedimentosRoute =
-  AuthenticatedConfiguracoesProcedimentosRouteImport.update({
-    id: '/procedimentos',
-    path: '/procedimentos',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesPlanoContasRoute =
-  AuthenticatedConfiguracoesPlanoContasRouteImport.update({
-    id: '/plano-contas',
-    path: '/plano-contas',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesModelosRoute =
-  AuthenticatedConfiguracoesModelosRouteImport.update({
-    id: '/modelos',
-    path: '/modelos',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesLaboratoriosRoute =
-  AuthenticatedConfiguracoesLaboratoriosRouteImport.update({
-    id: '/laboratorios',
-    path: '/laboratorios',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesEstoqueRoute =
-  AuthenticatedConfiguracoesEstoqueRouteImport.update({
-    id: '/estoque',
-    path: '/estoque',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesEquipeRoute =
-  AuthenticatedConfiguracoesEquipeRouteImport.update({
-    id: '/equipe',
-    path: '/equipe',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesConveniosRoute =
-  AuthenticatedConfiguracoesConveniosRouteImport.update({
-    id: '/convenios',
-    path: '/convenios',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesClinicaRoute =
-  AuthenticatedConfiguracoesClinicaRouteImport.update({
-    id: '/clinica',
-    path: '/clinica',
-    getParentRoute: () => AuthenticatedConfiguracoesRoute,
-  } as any)
-const AuthenticatedConfiguracoesAuditoriaRoute =
-  AuthenticatedConfiguracoesAuditoriaRouteImport.update({
-    id: '/auditoria',
-    path: '/auditoria',
     getParentRoute: () => AuthenticatedConfiguracoesRoute,
   } as any)
 const AuthenticatedConfiguracoesAgendaRoute =
@@ -289,52 +163,148 @@ const AuthenticatedConfiguracoesAgendaRoute =
     path: '/agenda',
     getParentRoute: () => AuthenticatedConfiguracoesRoute,
   } as any)
+const AuthenticatedConfiguracoesAuditoriaRoute =
+  AuthenticatedConfiguracoesAuditoriaRouteImport.update({
+    id: '/auditoria',
+    path: '/auditoria',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesClinicaRoute =
+  AuthenticatedConfiguracoesClinicaRouteImport.update({
+    id: '/clinica',
+    path: '/clinica',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesConveniosRoute =
+  AuthenticatedConfiguracoesConveniosRouteImport.update({
+    id: '/convenios',
+    path: '/convenios',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesEquipeRoute =
+  AuthenticatedConfiguracoesEquipeRouteImport.update({
+    id: '/equipe',
+    path: '/equipe',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesEstoqueRoute =
+  AuthenticatedConfiguracoesEstoqueRouteImport.update({
+    id: '/estoque',
+    path: '/estoque',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesLaboratoriosRoute =
+  AuthenticatedConfiguracoesLaboratoriosRouteImport.update({
+    id: '/laboratorios',
+    path: '/laboratorios',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesModelosRoute =
+  AuthenticatedConfiguracoesModelosRouteImport.update({
+    id: '/modelos',
+    path: '/modelos',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesPlanoContasRoute =
+  AuthenticatedConfiguracoesPlanoContasRouteImport.update({
+    id: '/plano-contas',
+    path: '/plano-contas',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesProcedimentosRoute =
+  AuthenticatedConfiguracoesProcedimentosRouteImport.update({
+    id: '/procedimentos',
+    path: '/procedimentos',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesTabelasPrecoRoute =
+  AuthenticatedConfiguracoesTabelasPrecoRouteImport.update({
+    id: '/tabelas-preco',
+    path: '/tabelas-preco',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedConfiguracoesUnidadesRoute =
+  AuthenticatedConfiguracoesUnidadesRouteImport.update({
+    id: '/unidades',
+    path: '/unidades',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
+const AuthenticatedEstoqueIndexRoute =
+  AuthenticatedEstoqueIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueComprasRoute =
+  AuthenticatedEstoqueComprasRouteImport.update({
+    id: '/compras',
+    path: '/compras',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueFornecedoresRoute =
+  AuthenticatedEstoqueFornecedoresRouteImport.update({
+    id: '/fornecedores',
+    path: '/fornecedores',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueInventarioRoute =
+  AuthenticatedEstoqueInventarioRouteImport.update({
+    id: '/inventario',
+    path: '/inventario',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueItensRoute =
+  AuthenticatedEstoqueItensRouteImport.update({
+    id: '/itens',
+    path: '/itens',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueLotesRoute =
+  AuthenticatedEstoqueLotesRouteImport.update({
+    id: '/lotes',
+    path: '/lotes',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueMovimentacoesRoute =
+  AuthenticatedEstoqueMovimentacoesRouteImport.update({
+    id: '/movimentacoes',
+    path: '/movimentacoes',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueRelatoriosRoute =
+  AuthenticatedEstoqueRelatoriosRouteImport.update({
+    id: '/relatorios',
+    path: '/relatorios',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedPacientesIndexRoute =
+  AuthenticatedPacientesIndexRouteImport.update({
+    id: '/pacientes/',
+    path: '/pacientes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPacientesIdRoute =
+  AuthenticatedPacientesIdRouteImport.update({
+    id: '/pacientes/$id',
+    path: '/pacientes/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedImpressaoDocumentoIdRoute =
+  AuthenticatedImpressaoDocumentoIdRouteImport.update({
+    id: '/impressao/documento/$id',
+    path: '/impressao/documento/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedImpressaoOrcamentoIdRoute =
+  AuthenticatedImpressaoOrcamentoIdRouteImport.update({
+    id: '/impressao/orcamento/$id',
+    path: '/impressao/orcamento/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPacientesIdIndexRoute =
   AuthenticatedPacientesIdIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthenticatedPacientesIdRoute,
-  } as any)
-const AuthenticatedPacientesIdOrcamentosRoute =
-  AuthenticatedPacientesIdOrcamentosRouteImport.update({
-    id: '/orcamentos',
-    path: '/orcamentos',
-    getParentRoute: () => AuthenticatedPacientesIdRoute,
-  } as any)
-const AuthenticatedPacientesIdOdontogramaRoute =
-  AuthenticatedPacientesIdOdontogramaRouteImport.update({
-    id: '/odontograma',
-    path: '/odontograma',
-    getParentRoute: () => AuthenticatedPacientesIdRoute,
-  } as any)
-const AuthenticatedPacientesIdHistoricoRoute =
-  AuthenticatedPacientesIdHistoricoRouteImport.update({
-    id: '/historico',
-    path: '/historico',
-    getParentRoute: () => AuthenticatedPacientesIdRoute,
-  } as any)
-const AuthenticatedPacientesIdEvolucaoRoute =
-  AuthenticatedPacientesIdEvolucaoRouteImport.update({
-    id: '/evolucao',
-    path: '/evolucao',
-    getParentRoute: () => AuthenticatedPacientesIdRoute,
-  } as any)
-const AuthenticatedPacientesIdEspecialidadesRoute =
-  AuthenticatedPacientesIdEspecialidadesRouteImport.update({
-    id: '/especialidades',
-    path: '/especialidades',
-    getParentRoute: () => AuthenticatedPacientesIdRoute,
-  } as any)
-const AuthenticatedPacientesIdDocumentosRoute =
-  AuthenticatedPacientesIdDocumentosRouteImport.update({
-    id: '/documentos',
-    path: '/documentos',
-    getParentRoute: () => AuthenticatedPacientesIdRoute,
-  } as any)
-const AuthenticatedPacientesIdDadosRoute =
-  AuthenticatedPacientesIdDadosRouteImport.update({
-    id: '/dados',
-    path: '/dados',
     getParentRoute: () => AuthenticatedPacientesIdRoute,
   } as any)
 const AuthenticatedPacientesIdArquivosRoute =
@@ -343,17 +313,47 @@ const AuthenticatedPacientesIdArquivosRoute =
     path: '/arquivos',
     getParentRoute: () => AuthenticatedPacientesIdRoute,
   } as any)
-const AuthenticatedImpressaoOrcamentoIdRoute =
-  AuthenticatedImpressaoOrcamentoIdRouteImport.update({
-    id: '/impressao/orcamento/$id',
-    path: '/impressao/orcamento/$id',
-    getParentRoute: () => AuthenticatedRouteRoute,
+const AuthenticatedPacientesIdDadosRoute =
+  AuthenticatedPacientesIdDadosRouteImport.update({
+    id: '/dados',
+    path: '/dados',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
   } as any)
-const AuthenticatedImpressaoDocumentoIdRoute =
-  AuthenticatedImpressaoDocumentoIdRouteImport.update({
-    id: '/impressao/documento/$id',
-    path: '/impressao/documento/$id',
-    getParentRoute: () => AuthenticatedRouteRoute,
+const AuthenticatedPacientesIdDocumentosRoute =
+  AuthenticatedPacientesIdDocumentosRouteImport.update({
+    id: '/documentos',
+    path: '/documentos',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdEspecialidadesRoute =
+  AuthenticatedPacientesIdEspecialidadesRouteImport.update({
+    id: '/especialidades',
+    path: '/especialidades',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdEvolucaoRoute =
+  AuthenticatedPacientesIdEvolucaoRouteImport.update({
+    id: '/evolucao',
+    path: '/evolucao',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdHistoricoRoute =
+  AuthenticatedPacientesIdHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdOdontogramaRoute =
+  AuthenticatedPacientesIdOdontogramaRouteImport.update({
+    id: '/odontograma',
+    path: '/odontograma',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
+  } as any)
+const AuthenticatedPacientesIdOrcamentosRoute =
+  AuthenticatedPacientesIdOrcamentosRouteImport.update({
+    id: '/orcamentos',
+    path: '/orcamentos',
+    getParentRoute: () => AuthenticatedPacientesIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -686,32 +686,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/assinatura': {
-      id: '/assinatura'
-      path: '/assinatura'
-      fullPath: '/assinatura'
-      preLoaderRoute: typeof AssinaturaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_platform-admin': {
-      id: '/_platform-admin'
-      path: ''
+    '/': {
+      id: '/'
+      path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof PlatformAdminRouteRouteImport
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -721,81 +700,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
+    '/_platform-admin': {
+      id: '/_platform-admin'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof PlatformAdminRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/convite/$token': {
-      id: '/convite/$token'
-      path: '/convite/$token'
-      fullPath: '/convite/$token'
-      preLoaderRoute: typeof ConviteTokenRouteImport
+    '/assinatura': {
+      id: '/assinatura'
+      path: '/assinatura'
+      fullPath: '/assinatura'
+      preLoaderRoute: typeof AssinaturaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/confirmar/$token': {
-      id: '/confirmar/$token'
-      path: '/confirmar/$token'
-      fullPath: '/confirmar/$token'
-      preLoaderRoute: typeof ConfirmarTokenRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/anamnese/$token': {
-      id: '/anamnese/$token'
-      path: '/anamnese/$token'
-      fullPath: '/anamnese/$token'
-      preLoaderRoute: typeof AnamneseTokenRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agendar/$clinica': {
-      id: '/agendar/$clinica'
-      path: '/agendar/$clinica'
-      fullPath: '/agendar/$clinica'
-      preLoaderRoute: typeof AgendarClinicaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/aceite/$token': {
-      id: '/aceite/$token'
-      path: '/aceite/$token'
-      fullPath: '/aceite/$token'
-      preLoaderRoute: typeof AceiteTokenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_platform-admin/admin': {
-      id: '/_platform-admin/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof PlatformAdminAdminRouteImport
-      parentRoute: typeof PlatformAdminRouteRoute
-    }
-    '/_authenticated/onboarding': {
-      id: '/_authenticated/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/financeiro': {
-      id: '/_authenticated/financeiro'
-      path: '/financeiro'
-      fullPath: '/financeiro'
-      preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/estoque': {
-      id: '/_authenticated/estoque'
-      path: '/estoque'
-      fullPath: '/estoque'
-      preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+    '/_authenticated/agenda': {
+      id: '/_authenticated/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AuthenticatedAgendaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/configuracoes': {
@@ -805,165 +742,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/agenda': {
-      id: '/_authenticated/agenda'
-      path: '/agenda'
-      fullPath: '/agenda'
-      preLoaderRoute: typeof AuthenticatedAgendaRouteImport
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/pacientes/': {
-      id: '/_authenticated/pacientes/'
-      path: '/pacientes'
-      fullPath: '/pacientes/'
-      preLoaderRoute: typeof AuthenticatedPacientesIndexRouteImport
+    '/_authenticated/estoque': {
+      id: '/_authenticated/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/estoque/': {
-      id: '/_authenticated/estoque/'
-      path: '/'
-      fullPath: '/estoque/'
-      preLoaderRoute: typeof AuthenticatedEstoqueIndexRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
+    '/_authenticated/financeiro': {
+      id: '/_authenticated/financeiro'
+      path: '/financeiro'
+      fullPath: '/financeiro'
+      preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_platform-admin/admin': {
+      id: '/_platform-admin/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof PlatformAdminAdminRouteImport
+      parentRoute: typeof PlatformAdminRouteRoute
+    }
+    '/aceite/$token': {
+      id: '/aceite/$token'
+      path: '/aceite/$token'
+      fullPath: '/aceite/$token'
+      preLoaderRoute: typeof AceiteTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agendar/$clinica': {
+      id: '/agendar/$clinica'
+      path: '/agendar/$clinica'
+      fullPath: '/agendar/$clinica'
+      preLoaderRoute: typeof AgendarClinicaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anamnese/$token': {
+      id: '/anamnese/$token'
+      path: '/anamnese/$token'
+      fullPath: '/anamnese/$token'
+      preLoaderRoute: typeof AnamneseTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmar/$token': {
+      id: '/confirmar/$token'
+      path: '/confirmar/$token'
+      fullPath: '/confirmar/$token'
+      preLoaderRoute: typeof ConfirmarTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/convite/$token': {
+      id: '/convite/$token'
+      path: '/convite/$token'
+      fullPath: '/convite/$token'
+      preLoaderRoute: typeof ConviteTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/configuracoes/': {
       id: '/_authenticated/configuracoes/'
       path: '/'
       fullPath: '/configuracoes/'
       preLoaderRoute: typeof AuthenticatedConfiguracoesIndexRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/pacientes/$id': {
-      id: '/_authenticated/pacientes/$id'
-      path: '/pacientes/$id'
-      fullPath: '/pacientes/$id'
-      preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/estoque/relatorios': {
-      id: '/_authenticated/estoque/relatorios'
-      path: '/relatorios'
-      fullPath: '/estoque/relatorios'
-      preLoaderRoute: typeof AuthenticatedEstoqueRelatoriosRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/movimentacoes': {
-      id: '/_authenticated/estoque/movimentacoes'
-      path: '/movimentacoes'
-      fullPath: '/estoque/movimentacoes'
-      preLoaderRoute: typeof AuthenticatedEstoqueMovimentacoesRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/lotes': {
-      id: '/_authenticated/estoque/lotes'
-      path: '/lotes'
-      fullPath: '/estoque/lotes'
-      preLoaderRoute: typeof AuthenticatedEstoqueLotesRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/itens': {
-      id: '/_authenticated/estoque/itens'
-      path: '/itens'
-      fullPath: '/estoque/itens'
-      preLoaderRoute: typeof AuthenticatedEstoqueItensRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/inventario': {
-      id: '/_authenticated/estoque/inventario'
-      path: '/inventario'
-      fullPath: '/estoque/inventario'
-      preLoaderRoute: typeof AuthenticatedEstoqueInventarioRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/fornecedores': {
-      id: '/_authenticated/estoque/fornecedores'
-      path: '/fornecedores'
-      fullPath: '/estoque/fornecedores'
-      preLoaderRoute: typeof AuthenticatedEstoqueFornecedoresRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/compras': {
-      id: '/_authenticated/estoque/compras'
-      path: '/compras'
-      fullPath: '/estoque/compras'
-      preLoaderRoute: typeof AuthenticatedEstoqueComprasRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/configuracoes/unidades': {
-      id: '/_authenticated/configuracoes/unidades'
-      path: '/unidades'
-      fullPath: '/configuracoes/unidades'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesUnidadesRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/tabelas-preco': {
-      id: '/_authenticated/configuracoes/tabelas-preco'
-      path: '/tabelas-preco'
-      fullPath: '/configuracoes/tabelas-preco'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesTabelasPrecoRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/procedimentos': {
-      id: '/_authenticated/configuracoes/procedimentos'
-      path: '/procedimentos'
-      fullPath: '/configuracoes/procedimentos'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesProcedimentosRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/plano-contas': {
-      id: '/_authenticated/configuracoes/plano-contas'
-      path: '/plano-contas'
-      fullPath: '/configuracoes/plano-contas'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesPlanoContasRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/modelos': {
-      id: '/_authenticated/configuracoes/modelos'
-      path: '/modelos'
-      fullPath: '/configuracoes/modelos'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesModelosRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/laboratorios': {
-      id: '/_authenticated/configuracoes/laboratorios'
-      path: '/laboratorios'
-      fullPath: '/configuracoes/laboratorios'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesLaboratoriosRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/estoque': {
-      id: '/_authenticated/configuracoes/estoque'
-      path: '/estoque'
-      fullPath: '/configuracoes/estoque'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesEstoqueRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/equipe': {
-      id: '/_authenticated/configuracoes/equipe'
-      path: '/equipe'
-      fullPath: '/configuracoes/equipe'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesEquipeRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/convenios': {
-      id: '/_authenticated/configuracoes/convenios'
-      path: '/convenios'
-      fullPath: '/configuracoes/convenios'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesConveniosRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/clinica': {
-      id: '/_authenticated/configuracoes/clinica'
-      path: '/clinica'
-      fullPath: '/configuracoes/clinica'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesClinicaRouteImport
-      parentRoute: typeof AuthenticatedConfiguracoesRoute
-    }
-    '/_authenticated/configuracoes/auditoria': {
-      id: '/_authenticated/configuracoes/auditoria'
-      path: '/auditoria'
-      fullPath: '/configuracoes/auditoria'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesAuditoriaRouteImport
       parentRoute: typeof AuthenticatedConfiguracoesRoute
     }
     '/_authenticated/configuracoes/agenda': {
@@ -973,60 +826,172 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConfiguracoesAgendaRouteImport
       parentRoute: typeof AuthenticatedConfiguracoesRoute
     }
+    '/_authenticated/configuracoes/auditoria': {
+      id: '/_authenticated/configuracoes/auditoria'
+      path: '/auditoria'
+      fullPath: '/configuracoes/auditoria'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesAuditoriaRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/clinica': {
+      id: '/_authenticated/configuracoes/clinica'
+      path: '/clinica'
+      fullPath: '/configuracoes/clinica'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesClinicaRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/convenios': {
+      id: '/_authenticated/configuracoes/convenios'
+      path: '/convenios'
+      fullPath: '/configuracoes/convenios'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesConveniosRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/equipe': {
+      id: '/_authenticated/configuracoes/equipe'
+      path: '/equipe'
+      fullPath: '/configuracoes/equipe'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesEquipeRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/estoque': {
+      id: '/_authenticated/configuracoes/estoque'
+      path: '/estoque'
+      fullPath: '/configuracoes/estoque'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesEstoqueRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/laboratorios': {
+      id: '/_authenticated/configuracoes/laboratorios'
+      path: '/laboratorios'
+      fullPath: '/configuracoes/laboratorios'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesLaboratoriosRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/modelos': {
+      id: '/_authenticated/configuracoes/modelos'
+      path: '/modelos'
+      fullPath: '/configuracoes/modelos'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesModelosRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/plano-contas': {
+      id: '/_authenticated/configuracoes/plano-contas'
+      path: '/plano-contas'
+      fullPath: '/configuracoes/plano-contas'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesPlanoContasRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/procedimentos': {
+      id: '/_authenticated/configuracoes/procedimentos'
+      path: '/procedimentos'
+      fullPath: '/configuracoes/procedimentos'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesProcedimentosRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/tabelas-preco': {
+      id: '/_authenticated/configuracoes/tabelas-preco'
+      path: '/tabelas-preco'
+      fullPath: '/configuracoes/tabelas-preco'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesTabelasPrecoRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/configuracoes/unidades': {
+      id: '/_authenticated/configuracoes/unidades'
+      path: '/unidades'
+      fullPath: '/configuracoes/unidades'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesUnidadesRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
+    '/_authenticated/estoque/': {
+      id: '/_authenticated/estoque/'
+      path: '/'
+      fullPath: '/estoque/'
+      preLoaderRoute: typeof AuthenticatedEstoqueIndexRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/compras': {
+      id: '/_authenticated/estoque/compras'
+      path: '/compras'
+      fullPath: '/estoque/compras'
+      preLoaderRoute: typeof AuthenticatedEstoqueComprasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/fornecedores': {
+      id: '/_authenticated/estoque/fornecedores'
+      path: '/fornecedores'
+      fullPath: '/estoque/fornecedores'
+      preLoaderRoute: typeof AuthenticatedEstoqueFornecedoresRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/inventario': {
+      id: '/_authenticated/estoque/inventario'
+      path: '/inventario'
+      fullPath: '/estoque/inventario'
+      preLoaderRoute: typeof AuthenticatedEstoqueInventarioRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/itens': {
+      id: '/_authenticated/estoque/itens'
+      path: '/itens'
+      fullPath: '/estoque/itens'
+      preLoaderRoute: typeof AuthenticatedEstoqueItensRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/lotes': {
+      id: '/_authenticated/estoque/lotes'
+      path: '/lotes'
+      fullPath: '/estoque/lotes'
+      preLoaderRoute: typeof AuthenticatedEstoqueLotesRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/movimentacoes': {
+      id: '/_authenticated/estoque/movimentacoes'
+      path: '/movimentacoes'
+      fullPath: '/estoque/movimentacoes'
+      preLoaderRoute: typeof AuthenticatedEstoqueMovimentacoesRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/relatorios': {
+      id: '/_authenticated/estoque/relatorios'
+      path: '/relatorios'
+      fullPath: '/estoque/relatorios'
+      preLoaderRoute: typeof AuthenticatedEstoqueRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/pacientes/': {
+      id: '/_authenticated/pacientes/'
+      path: '/pacientes'
+      fullPath: '/pacientes/'
+      preLoaderRoute: typeof AuthenticatedPacientesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pacientes/$id': {
+      id: '/_authenticated/pacientes/$id'
+      path: '/pacientes/$id'
+      fullPath: '/pacientes/$id'
+      preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/impressao/documento/$id': {
+      id: '/_authenticated/impressao/documento/$id'
+      path: '/impressao/documento/$id'
+      fullPath: '/impressao/documento/$id'
+      preLoaderRoute: typeof AuthenticatedImpressaoDocumentoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/impressao/orcamento/$id': {
+      id: '/_authenticated/impressao/orcamento/$id'
+      path: '/impressao/orcamento/$id'
+      fullPath: '/impressao/orcamento/$id'
+      preLoaderRoute: typeof AuthenticatedImpressaoOrcamentoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pacientes/$id/': {
       id: '/_authenticated/pacientes/$id/'
       path: '/'
       fullPath: '/pacientes/$id/'
       preLoaderRoute: typeof AuthenticatedPacientesIdIndexRouteImport
-      parentRoute: typeof AuthenticatedPacientesIdRoute
-    }
-    '/_authenticated/pacientes/$id/orcamentos': {
-      id: '/_authenticated/pacientes/$id/orcamentos'
-      path: '/orcamentos'
-      fullPath: '/pacientes/$id/orcamentos'
-      preLoaderRoute: typeof AuthenticatedPacientesIdOrcamentosRouteImport
-      parentRoute: typeof AuthenticatedPacientesIdRoute
-    }
-    '/_authenticated/pacientes/$id/odontograma': {
-      id: '/_authenticated/pacientes/$id/odontograma'
-      path: '/odontograma'
-      fullPath: '/pacientes/$id/odontograma'
-      preLoaderRoute: typeof AuthenticatedPacientesIdOdontogramaRouteImport
-      parentRoute: typeof AuthenticatedPacientesIdRoute
-    }
-    '/_authenticated/pacientes/$id/historico': {
-      id: '/_authenticated/pacientes/$id/historico'
-      path: '/historico'
-      fullPath: '/pacientes/$id/historico'
-      preLoaderRoute: typeof AuthenticatedPacientesIdHistoricoRouteImport
-      parentRoute: typeof AuthenticatedPacientesIdRoute
-    }
-    '/_authenticated/pacientes/$id/evolucao': {
-      id: '/_authenticated/pacientes/$id/evolucao'
-      path: '/evolucao'
-      fullPath: '/pacientes/$id/evolucao'
-      preLoaderRoute: typeof AuthenticatedPacientesIdEvolucaoRouteImport
-      parentRoute: typeof AuthenticatedPacientesIdRoute
-    }
-    '/_authenticated/pacientes/$id/especialidades': {
-      id: '/_authenticated/pacientes/$id/especialidades'
-      path: '/especialidades'
-      fullPath: '/pacientes/$id/especialidades'
-      preLoaderRoute: typeof AuthenticatedPacientesIdEspecialidadesRouteImport
-      parentRoute: typeof AuthenticatedPacientesIdRoute
-    }
-    '/_authenticated/pacientes/$id/documentos': {
-      id: '/_authenticated/pacientes/$id/documentos'
-      path: '/documentos'
-      fullPath: '/pacientes/$id/documentos'
-      preLoaderRoute: typeof AuthenticatedPacientesIdDocumentosRouteImport
-      parentRoute: typeof AuthenticatedPacientesIdRoute
-    }
-    '/_authenticated/pacientes/$id/dados': {
-      id: '/_authenticated/pacientes/$id/dados'
-      path: '/dados'
-      fullPath: '/pacientes/$id/dados'
-      preLoaderRoute: typeof AuthenticatedPacientesIdDadosRouteImport
       parentRoute: typeof AuthenticatedPacientesIdRoute
     }
     '/_authenticated/pacientes/$id/arquivos': {
@@ -1036,19 +1001,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIdArquivosRouteImport
       parentRoute: typeof AuthenticatedPacientesIdRoute
     }
-    '/_authenticated/impressao/orcamento/$id': {
-      id: '/_authenticated/impressao/orcamento/$id'
-      path: '/impressao/orcamento/$id'
-      fullPath: '/impressao/orcamento/$id'
-      preLoaderRoute: typeof AuthenticatedImpressaoOrcamentoIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/_authenticated/pacientes/$id/dados': {
+      id: '/_authenticated/pacientes/$id/dados'
+      path: '/dados'
+      fullPath: '/pacientes/$id/dados'
+      preLoaderRoute: typeof AuthenticatedPacientesIdDadosRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
     }
-    '/_authenticated/impressao/documento/$id': {
-      id: '/_authenticated/impressao/documento/$id'
-      path: '/impressao/documento/$id'
-      fullPath: '/impressao/documento/$id'
-      preLoaderRoute: typeof AuthenticatedImpressaoDocumentoIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/_authenticated/pacientes/$id/documentos': {
+      id: '/_authenticated/pacientes/$id/documentos'
+      path: '/documentos'
+      fullPath: '/pacientes/$id/documentos'
+      preLoaderRoute: typeof AuthenticatedPacientesIdDocumentosRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/especialidades': {
+      id: '/_authenticated/pacientes/$id/especialidades'
+      path: '/especialidades'
+      fullPath: '/pacientes/$id/especialidades'
+      preLoaderRoute: typeof AuthenticatedPacientesIdEspecialidadesRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/evolucao': {
+      id: '/_authenticated/pacientes/$id/evolucao'
+      path: '/evolucao'
+      fullPath: '/pacientes/$id/evolucao'
+      preLoaderRoute: typeof AuthenticatedPacientesIdEvolucaoRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/historico': {
+      id: '/_authenticated/pacientes/$id/historico'
+      path: '/historico'
+      fullPath: '/pacientes/$id/historico'
+      preLoaderRoute: typeof AuthenticatedPacientesIdHistoricoRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/odontograma': {
+      id: '/_authenticated/pacientes/$id/odontograma'
+      path: '/odontograma'
+      fullPath: '/pacientes/$id/odontograma'
+      preLoaderRoute: typeof AuthenticatedPacientesIdOdontogramaRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
+    }
+    '/_authenticated/pacientes/$id/orcamentos': {
+      id: '/_authenticated/pacientes/$id/orcamentos'
+      path: '/orcamentos'
+      fullPath: '/pacientes/$id/orcamentos'
+      preLoaderRoute: typeof AuthenticatedPacientesIdOrcamentosRouteImport
+      parentRoute: typeof AuthenticatedPacientesIdRoute
     }
   }
 }
