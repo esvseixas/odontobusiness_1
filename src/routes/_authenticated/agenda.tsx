@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight, Clock, MessageCircle, Plus, Repeat } from "lucide-react";
 
@@ -19,7 +19,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { dataBR, horaBR, isoDia } from "@/lib/format";
+import { brl, dataBR, horaBR, isoDia } from "@/lib/format";
+import { InsumosAtendimento, type InsumoLinha } from "@/components/estoque/insumos-atendimento";
 
 export const Route = createFileRoute("/_authenticated/agenda")({
   head: () => ({
@@ -242,7 +243,7 @@ function Agenda() {
 
 type AgLite = {
   id: string; inicio: string; fim: string; status: string; encaixe: boolean; recorrencia_id: string | null; origem: string;
-  paciente_id: string | null; profissional_id: string | null; cadeira: string | null; confirmacao_token: string; observacoes: string | null;
+  paciente_id: string | null; profissional_id: string | null; cadeira: string | null; confirmacao_token: string; observacoes: string | null; procedimento_id: string | null;
   pacientes: { nome: string; telefone: string | null; elegibilidade_pendente: boolean } | null;
   profissionais: { nome: string; cor: string | null } | null; procedimentos: { nome: string } | null;
 };
@@ -392,7 +393,11 @@ function NovoAgendamento({ inicial, listas, unidadeId, onFechar, onOk }: { inici
 
 function Detalhes({ a, alerta, onFechar, onOk }: { a: AgLite; alerta: Alerta; onFechar: () => void; onOk: () => void }) {
   const [cobrar, setCobrar] = useState(true);
-  const [atendido, setAtendido] = useState<null | { cobranca: boolean }>(null);
+  const [atendido, setAtendido] = useState<null | { cobranca: boolean; estoque?: { itens: number; custo: number } }>(null);
+  const { data: sessao } = useSessao();
+  const baixaEstoque = sessao?.tem("owner", "admin", "estoque", "dentista", "esteticista", "auxiliar") ?? false;
+  const [insumos, setInsumos] = useState<{ linhas: InsumoLinha[]; exige: boolean }>({ linhas: [], exige: false });
+  const onInsumos = useCallback((linhas: InsumoLinha[], exige: boolean) => setInsumos({ linhas, exige }), []);
   const status = useMutation({
     mutationFn: async (s: string) => { const { error } = await supabase.from("agendamentos").update({ status: s as never }).eq("id", a.id); if (error) throw error; },
     onSuccess: () => { toast.success("Status atualizado."); onOk(); },
@@ -400,9 +405,19 @@ function Detalhes({ a, alerta, onFechar, onOk }: { a: AgLite; alerta: Alerta; on
   });
   const atender = useMutation({
     mutationFn: async () => {
-      const { data, error } = await supabase.rpc("marcar_atendido", { p_agendamento: a.id, p_cobrar: cobrar });
+      if (!baixaEstoque) {
+        const { data, error } = await supabase.rpc("marcar_atendido", { p_agendamento: a.id, p_cobrar: cobrar });
+        if (error) throw error;
+        return data as { cobranca: boolean };
+      }
+      const validas = insumos.linhas.filter((l) => l.item_id && Number(l.quantidade) > 0);
+      if (insumos.exige && validas.some((l) => !l.lote_id)) throw new Error("Escolha o lote aplicado de cada insumo.");
+      const { data, error } = await supabase.rpc("finalizar_atendimento", {
+        p_agendamento: a.id, p_cobrar: cobrar,
+        p_insumos: validas.map((l) => ({ item_id: l.item_id, quantidade: Number(l.quantidade), lote_id: l.lote_id || null, dente: l.dente || null })),
+      });
       if (error) throw error;
-      return data as { cobranca: boolean };
+      return data as { cobranca: boolean; estoque?: { itens: number; custo: number } };
     },
     onSuccess: (r) => { setAtendido(r); onOk(); },
     onError: (e) => toast.error(mensagemErro(e)),
@@ -412,7 +427,7 @@ function Detalhes({ a, alerta, onFechar, onOk }: { a: AgLite; alerta: Alerta; on
   const msg = `Olá, ${a.pacientes?.nome?.split(" ")[0] ?? ""}! Lembrete da sua consulta em ${dataBR(a.inicio)} às ${horaBR(a.inicio)}${a.profissionais ? ` com ${a.profissionais.nome}` : ""}. Confirme ou cancele por aqui: ${link}`;
   return (
     <Dialog open onOpenChange={(o) => !o && onFechar()}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
         <DialogHeader><DialogTitle className="flex items-center gap-2">{a.pacientes?.nome ?? "Horário reservado"} <AlertaIcone alertas={alerta} /></DialogTitle></DialogHeader>
         <div className="space-y-1 text-sm">
           <p>{dataBR(a.inicio)} · {horaBR(a.inicio)}–{horaBR(a.fim)}</p>
@@ -428,7 +443,8 @@ function Detalhes({ a, alerta, onFechar, onOk }: { a: AgLite; alerta: Alerta; on
         </div>
         {atendido ? (
           <div className="space-y-2 rounded-md bg-muted/50 p-3 text-sm">
-            <p>Atendimento concluído.{atendido.cobranca ? " Cobrança gerada no financeiro." : ""}</p>
+            <p>Atendimento concluído.{atendido.cobranca ? " Cobrança gerada no financeiro." : ""}
+              {atendido.estoque && atendido.estoque.itens > 0 ? ` Baixa de ${atendido.estoque.itens} insumo(s) no estoque (${brl(atendido.estoque.custo)}).` : ""}</p>
             {a.paciente_id && <Button asChild size="sm"><Link to="/pacientes/$id/evolucao" params={{ id: a.paciente_id }}>Registrar evolução clínica</Link></Button>}
           </div>
         ) : (
@@ -440,6 +456,7 @@ function Detalhes({ a, alerta, onFechar, onOk }: { a: AgLite; alerta: Alerta; on
             </div>
             {a.status !== "atendido" && a.status !== "cancelado" && (
               <div className="space-y-2 rounded-md border p-3">
+                {baixaEstoque && <InsumosAtendimento procedimentoId={a.procedimento_id} onChange={onInsumos} />}
                 <label className="flex items-center gap-2 text-sm"><Checkbox checked={cobrar} onCheckedChange={(v) => setCobrar(!!v)} /> Gerar cobrança se o paciente não tiver orçamento aprovado</label>
                 <Button size="sm" onClick={() => atender.mutate()} disabled={atender.isPending}>Marcar como atendido</Button>
               </div>
