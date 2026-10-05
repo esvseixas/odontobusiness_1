@@ -78,6 +78,13 @@
       "when": 1791209487931,
       "tag": "0010_fase2_estoque_integrado",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1791209996261,
+      "tag": "0011_fase2_bloquear_entrada_vencida",
+      "breakpoints": true
     }
   ]
 }
