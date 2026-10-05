@@ -36,6 +36,10 @@ import {
   Truck,
   ClipboardCheck,
   BarChart3,
+  Banknote,
+  BookOpen,
+  Landmark,
+  Scale,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -48,7 +52,19 @@ import { Button } from "@/components/ui/button";
 const NAV = [
   { to: "/dashboard", label: "Painel", icon: LayoutDashboard },
   { to: "/agenda", label: "Agenda", icon: CalendarDays },
-  { to: "/financeiro", label: "Financeiro", icon: Wallet },
+] as const;
+
+const FINANCEIRO_NAV = [
+  { to: "/financeiro", label: "Visão geral", icon: LayoutDashboard },
+  { to: "/financeiro/receber", label: "A receber", icon: Banknote },
+  { to: "/financeiro/pagar", label: "A pagar", icon: Receipt },
+  { to: "/financeiro/caixa", label: "Caixa", icon: Wallet },
+  { to: "/financeiro/contas", label: "Contas e conciliação", icon: Landmark },
+  { to: "/financeiro/comissoes", label: "Comissões", icon: Users },
+  { to: "/financeiro/dre", label: "DRE", icon: Scale },
+  { to: "/financeiro/fluxo", label: "Fluxo de caixa", icon: ArrowLeftRight },
+  { to: "/financeiro/relatorios", label: "Relatórios", icon: BarChart3 },
+  { to: "/financeiro/configuracoes", label: "Configurações financeiras", icon: BookOpen },
 ] as const;
 
 const PACIENTE_NAV = [
@@ -96,11 +112,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const papeis = sessao?.papeis ?? [];
   const mostrarPacientes = podeAcessar("/pacientes", papeis);
+  const mostrarFinanceiro = FINANCEIRO_NAV.some((item) => podeAcessar(item.to, papeis));
   const mostrarConfig = CONFIG_NAV.some((item) => podeAcessar(item.to, papeis));
   const permitido = !sessao || podeAcessar(pathname, papeis);
   const pacientesAtiva = pathname.startsWith("/pacientes");
   const pacienteId = pathname.match(/^\/pacientes\/([^/]+)/)?.[1];
   const [pacientesAberta, setPacientesAberta] = useState(pacientesAtiva);
+  const financeiroAtiva = pathname.startsWith("/financeiro");
+  const [financeiroAberta, setFinanceiroAberta] = useState(financeiroAtiva);
   const mostrarEstoque = podeAcessar("/estoque", papeis);
   const estoqueAtiva = pathname.startsWith("/estoque");
   const [estoqueAberta, setEstoqueAberta] = useState(estoqueAtiva);
@@ -110,6 +129,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (pacientesAtiva) setPacientesAberta(true);
   }, [pacientesAtiva, pacienteId]);
+
+  useEffect(() => {
+    if (financeiroAtiva) setFinanceiroAberta(true);
+  }, [financeiroAtiva]);
 
   const pacienteAtual = useQuery({
     enabled: !!pacienteId,
@@ -166,6 +189,22 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
+          <div className={cn(!mostrarFinanceiro && "hidden")}>
+            <Button type="button" variant="ghost" className={cn("h-9 w-full justify-start gap-3 px-3 text-sm font-medium", financeiroAtiva ? "bg-secondary text-foreground" : "text-muted-foreground")} aria-expanded={financeiroAberta} onClick={() => setFinanceiroAberta((v) => !v)}>
+              <Wallet className="h-4 w-4" />
+              <span className="flex-1 text-left">Financeiro</span>
+              <ChevronDown className={cn("h-4 w-4 transition-transform", financeiroAberta && "rotate-180")} />
+            </Button>
+            {financeiroAberta ? (
+              <div className="ml-5 mt-1 space-y-0.5 border-l pl-2">
+                {FINANCEIRO_NAV.filter((item) => podeAcessar(item.to, papeis)).map((item) => {
+                  const Icon = item.icon;
+                  const ativo = item.to === "/financeiro" ? pathname === item.to || pathname === item.to + "/" : pathname.startsWith(item.to);
+                  return <Link key={item.to} to={item.to} onClick={() => setAberto(false)} className={cn("flex items-center gap-2 rounded-md px-2 py-1.5 text-xs font-medium transition-colors", ativo ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground")}><Icon className="h-3.5 w-3.5" />{item.label}</Link>;
+                })}
+              </div>
+            ) : null}
+          </div>
           <div className={cn(!mostrarPacientes && "hidden")}>
             <Button
               type="button"

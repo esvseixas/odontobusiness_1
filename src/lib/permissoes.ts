@@ -5,6 +5,8 @@ const CLINICO: Papel[] = ["owner", "admin", "dentista", "esteticista", "auxiliar
 
 /** Papéis com acesso a cada área (prefixo do endereço). Áreas ausentes são livres para a equipe. */
 export const ACESSO: Array<{ prefixo: string; papeis: Papel[] }> = [
+  { prefixo: "/financeiro/caixa", papeis: ["owner", "admin", "financeiro", "recepcao"] },
+  { prefixo: "/financeiro/receber", papeis: ["owner", "admin", "financeiro", "recepcao"] },
   { prefixo: "/financeiro", papeis: ["owner", "admin", "financeiro"] },
   { prefixo: "/estoque", papeis: ["owner", "admin", "estoque", "auxiliar", "dentista", "esteticista", "recepcao"] },
   { prefixo: "/configuracoes/estoque", papeis: ["owner", "admin", "estoque", "auxiliar", "dentista", "esteticista", "recepcao"] },
