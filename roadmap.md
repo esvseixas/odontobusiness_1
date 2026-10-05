@@ -50,3 +50,13 @@
 - [x] Criar área exclusiva do administrador geral para gerenciar clientes assinantes.
 - [x] Validar isolamento, permissões e fluxos administrativos no navegador.
 - [x] Confirmar o administrador geral e adicionar recuperação e redefinição segura de senha.
+
+## Fase 3 — Financeiro e contábil simples
+- [ ] 1. Estrutura: contas financeiras, formas de pagamento, centros de custo e plano de contas hierárquico.
+- [ ] 2. Lançamentos: baixas parciais, parcelamento transacional, recorrência, competência e atualização automática de atrasados.
+- [ ] 3. Caixa diário: sessões, conferência, sangria e suprimento.
+- [ ] 4. Comissões e repasses: regras, apuração, aprovação e conta a pagar.
+- [ ] 5. Relatórios gerenciais: DRE, fluxo de caixa e indicadores por filtros.
+- [ ] 6. Conciliação, NFS-e plugável e exportação mensal para o contador.
+- [ ] 7. Interface financeira com submenus, permissões por papel e paginação no servidor.
+- [ ] Validar isolamento, cálculos, vencimentos, permissões e responsividade; remover dados de teste.
