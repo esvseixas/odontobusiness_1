@@ -99,6 +99,34 @@
       "when": 1791211647051,
       "tag": "0013_admin_plataforma_operacao_atomica",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1791212512859,
+      "tag": "0014_fase3_estrutura_financeira",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1791212558883,
+      "tag": "0015_fase3_baixas_recorrencias_caixa",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1791212590146,
+      "tag": "0016_fase3_parcelamento_e_atrasos",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1791212614662,
+      "tag": "0017_fase3_corrigir_unidade_orcamento",
+      "breakpoints": true
     }
   ]
 }

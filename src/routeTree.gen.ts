@@ -28,9 +28,14 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes/index'
+import { Route as AuthenticatedFinanceiroIndexRouteImport } from './routes/_authenticated/financeiro/index'
 import { Route as AuthenticatedEstoqueIndexRouteImport } from './routes/_authenticated/estoque/index'
 import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes/index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes/$id'
+import { Route as AuthenticatedFinanceiroReceberRouteImport } from './routes/_authenticated/financeiro/receber'
+import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_authenticated/financeiro/pagar'
+import { Route as AuthenticatedFinanceiroConfiguracoesRouteImport } from './routes/_authenticated/financeiro/configuracoes'
+import { Route as AuthenticatedFinanceiroCaixaRouteImport } from './routes/_authenticated/financeiro/caixa'
 import { Route as AuthenticatedEstoqueRelatoriosRouteImport } from './routes/_authenticated/estoque/relatorios'
 import { Route as AuthenticatedEstoqueMovimentacoesRouteImport } from './routes/_authenticated/estoque/movimentacoes'
 import { Route as AuthenticatedEstoqueLotesRouteImport } from './routes/_authenticated/estoque/lotes'
@@ -157,6 +162,12 @@ const AuthenticatedPacientesIndexRoute =
     path: '/pacientes/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFinanceiroIndexRoute =
+  AuthenticatedFinanceiroIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
 const AuthenticatedEstoqueIndexRoute =
   AuthenticatedEstoqueIndexRouteImport.update({
     id: '/',
@@ -174,6 +185,30 @@ const AuthenticatedPacientesIdRoute =
     id: '/pacientes/$id',
     path: '/pacientes/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFinanceiroReceberRoute =
+  AuthenticatedFinanceiroReceberRouteImport.update({
+    id: '/receber',
+    path: '/receber',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroPagarRoute =
+  AuthenticatedFinanceiroPagarRouteImport.update({
+    id: '/pagar',
+    path: '/pagar',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroConfiguracoesRoute =
+  AuthenticatedFinanceiroConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroCaixaRoute =
+  AuthenticatedFinanceiroCaixaRouteImport.update({
+    id: '/caixa',
+    path: '/caixa',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
   } as any)
 const AuthenticatedEstoqueRelatoriosRoute =
   AuthenticatedEstoqueRelatoriosRouteImport.update({
@@ -365,7 +400,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
-  '/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/admin': typeof PlatformAdminAdminRoute
   '/aceite/$token': typeof AceiteTokenRoute
@@ -392,9 +427,14 @@ export interface FileRoutesByFullPath {
   '/estoque/lotes': typeof AuthenticatedEstoqueLotesRoute
   '/estoque/movimentacoes': typeof AuthenticatedEstoqueMovimentacoesRoute
   '/estoque/relatorios': typeof AuthenticatedEstoqueRelatoriosRoute
+  '/financeiro/caixa': typeof AuthenticatedFinanceiroCaixaRoute
+  '/financeiro/configuracoes': typeof AuthenticatedFinanceiroConfiguracoesRoute
+  '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
+  '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/estoque/': typeof AuthenticatedEstoqueIndexRoute
+  '/financeiro/': typeof AuthenticatedFinanceiroIndexRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
   '/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
@@ -415,7 +455,6 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/admin': typeof PlatformAdminAdminRoute
   '/aceite/$token': typeof AceiteTokenRoute
@@ -442,8 +481,13 @@ export interface FileRoutesByTo {
   '/estoque/lotes': typeof AuthenticatedEstoqueLotesRoute
   '/estoque/movimentacoes': typeof AuthenticatedEstoqueMovimentacoesRoute
   '/estoque/relatorios': typeof AuthenticatedEstoqueRelatoriosRoute
+  '/financeiro/caixa': typeof AuthenticatedFinanceiroCaixaRoute
+  '/financeiro/configuracoes': typeof AuthenticatedFinanceiroConfiguracoesRoute
+  '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
+  '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/estoque': typeof AuthenticatedEstoqueIndexRoute
+  '/financeiro': typeof AuthenticatedFinanceiroIndexRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
   '/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
@@ -469,7 +513,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/estoque': typeof AuthenticatedEstoqueRouteWithChildren
-  '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_platform-admin/admin': typeof PlatformAdminAdminRoute
   '/aceite/$token': typeof AceiteTokenRoute
@@ -496,9 +540,14 @@ export interface FileRoutesById {
   '/_authenticated/estoque/lotes': typeof AuthenticatedEstoqueLotesRoute
   '/_authenticated/estoque/movimentacoes': typeof AuthenticatedEstoqueMovimentacoesRoute
   '/_authenticated/estoque/relatorios': typeof AuthenticatedEstoqueRelatoriosRoute
+  '/_authenticated/financeiro/caixa': typeof AuthenticatedFinanceiroCaixaRoute
+  '/_authenticated/financeiro/configuracoes': typeof AuthenticatedFinanceiroConfiguracoesRoute
+  '/_authenticated/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
+  '/_authenticated/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/estoque/': typeof AuthenticatedEstoqueIndexRoute
+  '/_authenticated/financeiro/': typeof AuthenticatedFinanceiroIndexRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
   '/_authenticated/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/_authenticated/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
@@ -550,9 +599,14 @@ export interface FileRouteTypes {
     | '/estoque/lotes'
     | '/estoque/movimentacoes'
     | '/estoque/relatorios'
+    | '/financeiro/caixa'
+    | '/financeiro/configuracoes'
+    | '/financeiro/pagar'
+    | '/financeiro/receber'
     | '/pacientes/$id'
     | '/configuracoes/'
     | '/estoque/'
+    | '/financeiro/'
     | '/pacientes/'
     | '/impressao/documento/$id'
     | '/impressao/orcamento/$id'
@@ -573,7 +627,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/agenda'
     | '/dashboard'
-    | '/financeiro'
     | '/onboarding'
     | '/admin'
     | '/aceite/$token'
@@ -600,8 +653,13 @@ export interface FileRouteTypes {
     | '/estoque/lotes'
     | '/estoque/movimentacoes'
     | '/estoque/relatorios'
+    | '/financeiro/caixa'
+    | '/financeiro/configuracoes'
+    | '/financeiro/pagar'
+    | '/financeiro/receber'
     | '/configuracoes'
     | '/estoque'
+    | '/financeiro'
     | '/pacientes'
     | '/impressao/documento/$id'
     | '/impressao/orcamento/$id'
@@ -653,9 +711,14 @@ export interface FileRouteTypes {
     | '/_authenticated/estoque/lotes'
     | '/_authenticated/estoque/movimentacoes'
     | '/_authenticated/estoque/relatorios'
+    | '/_authenticated/financeiro/caixa'
+    | '/_authenticated/financeiro/configuracoes'
+    | '/_authenticated/financeiro/pagar'
+    | '/_authenticated/financeiro/receber'
     | '/_authenticated/pacientes/$id'
     | '/_authenticated/configuracoes/'
     | '/_authenticated/estoque/'
+    | '/_authenticated/financeiro/'
     | '/_authenticated/pacientes/'
     | '/_authenticated/impressao/documento/$id'
     | '/_authenticated/impressao/orcamento/$id'
@@ -819,6 +882,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/financeiro/': {
+      id: '/_authenticated/financeiro/'
+      path: '/'
+      fullPath: '/financeiro/'
+      preLoaderRoute: typeof AuthenticatedFinanceiroIndexRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
     '/_authenticated/estoque/': {
       id: '/_authenticated/estoque/'
       path: '/'
@@ -839,6 +909,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/pacientes/$id'
       preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/financeiro/receber': {
+      id: '/_authenticated/financeiro/receber'
+      path: '/receber'
+      fullPath: '/financeiro/receber'
+      preLoaderRoute: typeof AuthenticatedFinanceiroReceberRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/pagar': {
+      id: '/_authenticated/financeiro/pagar'
+      path: '/pagar'
+      fullPath: '/financeiro/pagar'
+      preLoaderRoute: typeof AuthenticatedFinanceiroPagarRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/configuracoes': {
+      id: '/_authenticated/financeiro/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/financeiro/configuracoes'
+      preLoaderRoute: typeof AuthenticatedFinanceiroConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/caixa': {
+      id: '/_authenticated/financeiro/caixa'
+      path: '/caixa'
+      fullPath: '/financeiro/caixa'
+      preLoaderRoute: typeof AuthenticatedFinanceiroCaixaRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
     }
     '/_authenticated/estoque/relatorios': {
       id: '/_authenticated/estoque/relatorios'
@@ -1129,6 +1227,29 @@ const AuthenticatedEstoqueRouteChildren: AuthenticatedEstoqueRouteChildren = {
 const AuthenticatedEstoqueRouteWithChildren =
   AuthenticatedEstoqueRoute._addFileChildren(AuthenticatedEstoqueRouteChildren)
 
+interface AuthenticatedFinanceiroRouteChildren {
+  AuthenticatedFinanceiroCaixaRoute: typeof AuthenticatedFinanceiroCaixaRoute
+  AuthenticatedFinanceiroConfiguracoesRoute: typeof AuthenticatedFinanceiroConfiguracoesRoute
+  AuthenticatedFinanceiroPagarRoute: typeof AuthenticatedFinanceiroPagarRoute
+  AuthenticatedFinanceiroReceberRoute: typeof AuthenticatedFinanceiroReceberRoute
+  AuthenticatedFinanceiroIndexRoute: typeof AuthenticatedFinanceiroIndexRoute
+}
+
+const AuthenticatedFinanceiroRouteChildren: AuthenticatedFinanceiroRouteChildren =
+  {
+    AuthenticatedFinanceiroCaixaRoute: AuthenticatedFinanceiroCaixaRoute,
+    AuthenticatedFinanceiroConfiguracoesRoute:
+      AuthenticatedFinanceiroConfiguracoesRoute,
+    AuthenticatedFinanceiroPagarRoute: AuthenticatedFinanceiroPagarRoute,
+    AuthenticatedFinanceiroReceberRoute: AuthenticatedFinanceiroReceberRoute,
+    AuthenticatedFinanceiroIndexRoute: AuthenticatedFinanceiroIndexRoute,
+  }
+
+const AuthenticatedFinanceiroRouteWithChildren =
+  AuthenticatedFinanceiroRoute._addFileChildren(
+    AuthenticatedFinanceiroRouteChildren,
+  )
+
 interface AuthenticatedPacientesIdRouteChildren {
   AuthenticatedPacientesIdArquivosRoute: typeof AuthenticatedPacientesIdArquivosRoute
   AuthenticatedPacientesIdDadosRoute: typeof AuthenticatedPacientesIdDadosRoute
@@ -1171,7 +1292,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRouteWithChildren
-  AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRoute
+  AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRouteWithChildren
   AuthenticatedPacientesIndexRoute: typeof AuthenticatedPacientesIndexRoute
@@ -1184,7 +1305,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEstoqueRoute: AuthenticatedEstoqueRouteWithChildren,
-  AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRoute,
+  AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRouteWithChildren,
   AuthenticatedPacientesIndexRoute: AuthenticatedPacientesIndexRoute,

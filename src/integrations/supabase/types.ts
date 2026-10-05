@@ -450,6 +450,196 @@ export type Database = {
           },
         ]
       }
+      caixa_movimentos: {
+        Row: {
+          clinica_id: string
+          created_at: string
+          created_by: string
+          id: string
+          motivo: string
+          sessao_id: string
+          tipo: string
+          unidade_id: string
+          valor: number
+        }
+        Insert: {
+          clinica_id: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          motivo: string
+          sessao_id: string
+          tipo: string
+          unidade_id: string
+          valor: number
+        }
+        Update: {
+          clinica_id?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          motivo?: string
+          sessao_id?: string
+          tipo?: string
+          unidade_id?: string
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "caixa_movimentos_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "caixa_movimentos_sessao_id_fkey"
+            columns: ["sessao_id"]
+            isOneToOne: false
+            referencedRelation: "caixa_sessoes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "caixa_movimentos_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      caixa_sessoes: {
+        Row: {
+          aberto_em: string
+          clinica_id: string
+          conferencia: Json
+          conta_financeira_id: string
+          diferenca: number | null
+          fechado_em: string | null
+          id: string
+          justificativa: string | null
+          operador_id: string
+          saldo_calculado: number | null
+          saldo_informado: number | null
+          saldo_inicial: number
+          status: string
+          unidade_id: string
+        }
+        Insert: {
+          aberto_em?: string
+          clinica_id: string
+          conferencia?: Json
+          conta_financeira_id: string
+          diferenca?: number | null
+          fechado_em?: string | null
+          id?: string
+          justificativa?: string | null
+          operador_id?: string
+          saldo_calculado?: number | null
+          saldo_informado?: number | null
+          saldo_inicial?: number
+          status?: string
+          unidade_id: string
+        }
+        Update: {
+          aberto_em?: string
+          clinica_id?: string
+          conferencia?: Json
+          conta_financeira_id?: string
+          diferenca?: number | null
+          fechado_em?: string | null
+          id?: string
+          justificativa?: string | null
+          operador_id?: string
+          saldo_calculado?: number | null
+          saldo_informado?: number | null
+          saldo_inicial?: number
+          status?: string
+          unidade_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "caixa_sessoes_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "caixa_sessoes_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "caixa_sessoes_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras_saldos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "caixa_sessoes_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      centros_custo: {
+        Row: {
+          ativo: boolean
+          clinica_id: string
+          created_at: string
+          especialidade_id: string | null
+          id: string
+          nome: string
+          unidade_id: string | null
+        }
+        Insert: {
+          ativo?: boolean
+          clinica_id: string
+          created_at?: string
+          especialidade_id?: string | null
+          id?: string
+          nome: string
+          unidade_id?: string | null
+        }
+        Update: {
+          ativo?: boolean
+          clinica_id?: string
+          created_at?: string
+          especialidade_id?: string | null
+          id?: string
+          nome?: string
+          unidade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "centros_custo_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "centros_custo_especialidade_id_fkey"
+            columns: ["especialidade_id"]
+            isOneToOne: false
+            referencedRelation: "especialidades"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "centros_custo_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clinicas: {
         Row: {
           agendamento_online: boolean
@@ -485,6 +675,63 @@ export type Database = {
           telefone?: string | null
         }
         Relationships: []
+      }
+      contas_financeiras: {
+        Row: {
+          agencia: string | null
+          ativo: boolean
+          banco: string | null
+          clinica_id: string
+          conta: string | null
+          created_at: string
+          id: string
+          nome: string
+          saldo_inicial: number
+          tipo: string
+          unidade_id: string | null
+        }
+        Insert: {
+          agencia?: string | null
+          ativo?: boolean
+          banco?: string | null
+          clinica_id: string
+          conta?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+          saldo_inicial?: number
+          tipo: string
+          unidade_id?: string | null
+        }
+        Update: {
+          agencia?: string | null
+          ativo?: boolean
+          banco?: string | null
+          clinica_id?: string
+          conta?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          saldo_inicial?: number
+          tipo?: string
+          unidade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contas_financeiras_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contas_financeiras_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       convenios: {
         Row: {
@@ -1121,59 +1368,231 @@ export type Database = {
           },
         ]
       }
+      financeiro_baixas: {
+        Row: {
+          caixa_sessao_id: string | null
+          clinica_id: string
+          conta_financeira_id: string
+          created_at: string
+          created_by: string | null
+          desconto: number
+          forma_pagamento_id: string | null
+          id: string
+          juros: number
+          motivo: string | null
+          multa: number
+          pagamento_id: string | null
+          pago_em: string
+          recebimento_id: string | null
+          tipo: string
+          unidade_id: string | null
+          valor: number
+        }
+        Insert: {
+          caixa_sessao_id?: string | null
+          clinica_id: string
+          conta_financeira_id: string
+          created_at?: string
+          created_by?: string | null
+          desconto?: number
+          forma_pagamento_id?: string | null
+          id?: string
+          juros?: number
+          motivo?: string | null
+          multa?: number
+          pagamento_id?: string | null
+          pago_em?: string
+          recebimento_id?: string | null
+          tipo?: string
+          unidade_id?: string | null
+          valor: number
+        }
+        Update: {
+          caixa_sessao_id?: string | null
+          clinica_id?: string
+          conta_financeira_id?: string
+          created_at?: string
+          created_by?: string | null
+          desconto?: number
+          forma_pagamento_id?: string | null
+          id?: string
+          juros?: number
+          motivo?: string | null
+          multa?: number
+          pagamento_id?: string | null
+          pago_em?: string
+          recebimento_id?: string | null
+          tipo?: string
+          unidade_id?: string | null
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financeiro_baixas_caixa_sessao_id_fkey"
+            columns: ["caixa_sessao_id"]
+            isOneToOne: false
+            referencedRelation: "caixa_sessoes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_baixas_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_baixas_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_baixas_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras_saldos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_baixas_forma_pagamento_id_fkey"
+            columns: ["forma_pagamento_id"]
+            isOneToOne: false
+            referencedRelation: "formas_pagamento"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_baixas_pagamento_id_fkey"
+            columns: ["pagamento_id"]
+            isOneToOne: false
+            referencedRelation: "financeiro_pagamentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_baixas_recebimento_id_fkey"
+            columns: ["recebimento_id"]
+            isOneToOne: false
+            referencedRelation: "financeiro_recebimentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_baixas_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       financeiro_pagamentos: {
         Row: {
           cancelado_em: string | null
           cancelado_motivo: string | null
+          centro_custo_id: string | null
           clinica_id: string
+          competencia: string | null
+          comprovante_path: string | null
+          conta_financeira_id: string | null
           conta_id: string | null
           created_at: string
+          desconto_baixa: number
           descricao: string
+          forma_pagamento_id: string | null
           fornecedor: string | null
           fornecedor_id: string | null
           id: string
+          juros: number
+          multa: number
+          origem_id: string | null
+          origem_tipo: string | null
           pago_em: string | null
           pedido_compra_id: string | null
+          previsto_credito_em: string | null
+          recorrencia_id: string | null
           status: Database["public"]["Enums"]["lancamento_status"]
+          taxa: number
           unidade_id: string | null
           valor: number
+          valor_bruto: number | null
+          valor_liquido: number | null
+          valor_pago: number
           vencimento: string
         }
         Insert: {
           cancelado_em?: string | null
           cancelado_motivo?: string | null
+          centro_custo_id?: string | null
           clinica_id: string
+          competencia?: string | null
+          comprovante_path?: string | null
+          conta_financeira_id?: string | null
           conta_id?: string | null
           created_at?: string
+          desconto_baixa?: number
           descricao: string
+          forma_pagamento_id?: string | null
           fornecedor?: string | null
           fornecedor_id?: string | null
           id?: string
+          juros?: number
+          multa?: number
+          origem_id?: string | null
+          origem_tipo?: string | null
           pago_em?: string | null
           pedido_compra_id?: string | null
+          previsto_credito_em?: string | null
+          recorrencia_id?: string | null
           status?: Database["public"]["Enums"]["lancamento_status"]
+          taxa?: number
           unidade_id?: string | null
           valor?: number
+          valor_bruto?: number | null
+          valor_liquido?: number | null
+          valor_pago?: number
           vencimento: string
         }
         Update: {
           cancelado_em?: string | null
           cancelado_motivo?: string | null
+          centro_custo_id?: string | null
           clinica_id?: string
+          competencia?: string | null
+          comprovante_path?: string | null
+          conta_financeira_id?: string | null
           conta_id?: string | null
           created_at?: string
+          desconto_baixa?: number
           descricao?: string
+          forma_pagamento_id?: string | null
           fornecedor?: string | null
           fornecedor_id?: string | null
           id?: string
+          juros?: number
+          multa?: number
+          origem_id?: string | null
+          origem_tipo?: string | null
           pago_em?: string | null
           pedido_compra_id?: string | null
+          previsto_credito_em?: string | null
+          recorrencia_id?: string | null
           status?: Database["public"]["Enums"]["lancamento_status"]
+          taxa?: number
           unidade_id?: string | null
           valor?: number
+          valor_bruto?: number | null
+          valor_liquido?: number | null
+          valor_pago?: number
           vencimento?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "financeiro_pagamentos_centro_custo_id_fkey"
+            columns: ["centro_custo_id"]
+            isOneToOne: false
+            referencedRelation: "centros_custo"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "financeiro_pagamentos_clinica_id_fkey"
             columns: ["clinica_id"]
@@ -1182,10 +1601,31 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "financeiro_pagamentos_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_pagamentos_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras_saldos"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "financeiro_pagamentos_conta_id_fkey"
             columns: ["conta_id"]
             isOneToOne: false
             referencedRelation: "plano_contas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_pagamentos_forma_pagamento_id_fkey"
+            columns: ["forma_pagamento_id"]
+            isOneToOne: false
+            referencedRelation: "formas_pagamento"
             referencedColumns: ["id"]
           },
           {
@@ -1215,64 +1655,119 @@ export type Database = {
         Row: {
           cancelado_em: string | null
           cancelado_motivo: string | null
+          centro_custo_id: string | null
           clinica_id: string
+          competencia: string | null
+          comprovante_path: string | null
+          conta_financeira_id: string | null
           conta_id: string | null
           created_at: string
+          desconto_baixa: number
           descricao: string
           forma_pagamento: string | null
+          forma_pagamento_id: string | null
           id: string
+          juros: number
+          multa: number
           orcamento_id: string | null
+          origem_id: string | null
+          origem_tipo: string | null
           paciente_id: string | null
           pago_em: string | null
           parcela: number
+          previsto_credito_em: string | null
           profissional_id: string | null
+          recorrencia_id: string | null
           status: Database["public"]["Enums"]["lancamento_status"]
+          taxa: number
           total_parcelas: number
           unidade_id: string | null
           valor: number
+          valor_bruto: number | null
+          valor_liquido: number | null
+          valor_pago: number
           vencimento: string
         }
         Insert: {
           cancelado_em?: string | null
           cancelado_motivo?: string | null
+          centro_custo_id?: string | null
           clinica_id: string
+          competencia?: string | null
+          comprovante_path?: string | null
+          conta_financeira_id?: string | null
           conta_id?: string | null
           created_at?: string
+          desconto_baixa?: number
           descricao: string
           forma_pagamento?: string | null
+          forma_pagamento_id?: string | null
           id?: string
+          juros?: number
+          multa?: number
           orcamento_id?: string | null
+          origem_id?: string | null
+          origem_tipo?: string | null
           paciente_id?: string | null
           pago_em?: string | null
           parcela?: number
+          previsto_credito_em?: string | null
           profissional_id?: string | null
+          recorrencia_id?: string | null
           status?: Database["public"]["Enums"]["lancamento_status"]
+          taxa?: number
           total_parcelas?: number
           unidade_id?: string | null
           valor?: number
+          valor_bruto?: number | null
+          valor_liquido?: number | null
+          valor_pago?: number
           vencimento: string
         }
         Update: {
           cancelado_em?: string | null
           cancelado_motivo?: string | null
+          centro_custo_id?: string | null
           clinica_id?: string
+          competencia?: string | null
+          comprovante_path?: string | null
+          conta_financeira_id?: string | null
           conta_id?: string | null
           created_at?: string
+          desconto_baixa?: number
           descricao?: string
           forma_pagamento?: string | null
+          forma_pagamento_id?: string | null
           id?: string
+          juros?: number
+          multa?: number
           orcamento_id?: string | null
+          origem_id?: string | null
+          origem_tipo?: string | null
           paciente_id?: string | null
           pago_em?: string | null
           parcela?: number
+          previsto_credito_em?: string | null
           profissional_id?: string | null
+          recorrencia_id?: string | null
           status?: Database["public"]["Enums"]["lancamento_status"]
+          taxa?: number
           total_parcelas?: number
           unidade_id?: string | null
           valor?: number
+          valor_bruto?: number | null
+          valor_liquido?: number | null
+          valor_pago?: number
           vencimento?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "financeiro_recebimentos_centro_custo_id_fkey"
+            columns: ["centro_custo_id"]
+            isOneToOne: false
+            referencedRelation: "centros_custo"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "financeiro_recebimentos_clinica_id_fkey"
             columns: ["clinica_id"]
@@ -1281,10 +1776,31 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "financeiro_recebimentos_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_recebimentos_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras_saldos"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "financeiro_recebimentos_conta_id_fkey"
             columns: ["conta_id"]
             isOneToOne: false
             referencedRelation: "plano_contas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_recebimentos_forma_pagamento_id_fkey"
+            columns: ["forma_pagamento_id"]
+            isOneToOne: false
+            referencedRelation: "formas_pagamento"
             referencedColumns: ["id"]
           },
           {
@@ -1313,6 +1829,180 @@ export type Database = {
             columns: ["unidade_id"]
             isOneToOne: false
             referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financeiro_recorrencias: {
+        Row: {
+          ativo: boolean
+          centro_custo_id: string | null
+          clinica_id: string
+          conta_financeira_id: string | null
+          conta_id: string | null
+          created_at: string
+          descricao: string
+          dia_vencimento: number
+          fim: string | null
+          forma_pagamento_id: string | null
+          id: string
+          inicio: string
+          tipo: string
+          ultimo_mes_gerado: string | null
+          unidade_id: string | null
+          valor: number
+        }
+        Insert: {
+          ativo?: boolean
+          centro_custo_id?: string | null
+          clinica_id: string
+          conta_financeira_id?: string | null
+          conta_id?: string | null
+          created_at?: string
+          descricao: string
+          dia_vencimento: number
+          fim?: string | null
+          forma_pagamento_id?: string | null
+          id?: string
+          inicio: string
+          tipo: string
+          ultimo_mes_gerado?: string | null
+          unidade_id?: string | null
+          valor: number
+        }
+        Update: {
+          ativo?: boolean
+          centro_custo_id?: string | null
+          clinica_id?: string
+          conta_financeira_id?: string | null
+          conta_id?: string | null
+          created_at?: string
+          descricao?: string
+          dia_vencimento?: number
+          fim?: string | null
+          forma_pagamento_id?: string | null
+          id?: string
+          inicio?: string
+          tipo?: string
+          ultimo_mes_gerado?: string | null
+          unidade_id?: string | null
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financeiro_recorrencias_centro_custo_id_fkey"
+            columns: ["centro_custo_id"]
+            isOneToOne: false
+            referencedRelation: "centros_custo"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_recorrencias_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_recorrencias_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_recorrencias_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras_saldos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_recorrencias_conta_id_fkey"
+            columns: ["conta_id"]
+            isOneToOne: false
+            referencedRelation: "plano_contas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_recorrencias_forma_pagamento_id_fkey"
+            columns: ["forma_pagamento_id"]
+            isOneToOne: false
+            referencedRelation: "formas_pagamento"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_recorrencias_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formas_pagamento: {
+        Row: {
+          ativo: boolean
+          clinica_id: string
+          conta_financeira_id: string | null
+          created_at: string
+          id: string
+          nome: string
+          parcelamento_maximo: number
+          prazo_recebimento_dias: number
+          taxa_fixa: number
+          taxa_percentual: number
+          taxas_por_parcela: Json
+          tipo: string
+        }
+        Insert: {
+          ativo?: boolean
+          clinica_id: string
+          conta_financeira_id?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+          parcelamento_maximo?: number
+          prazo_recebimento_dias?: number
+          taxa_fixa?: number
+          taxa_percentual?: number
+          taxas_por_parcela?: Json
+          tipo: string
+        }
+        Update: {
+          ativo?: boolean
+          clinica_id?: string
+          conta_financeira_id?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          parcelamento_maximo?: number
+          prazo_recebimento_dias?: number
+          taxa_fixa?: number
+          taxa_percentual?: number
+          taxas_por_parcela?: Json
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formas_pagamento_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formas_pagamento_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formas_pagamento_conta_financeira_id_fkey"
+            columns: ["conta_financeira_id"]
+            isOneToOne: false
+            referencedRelation: "contas_financeiras_saldos"
             referencedColumns: ["id"]
           },
         ]
@@ -2714,27 +3404,39 @@ export type Database = {
       }
       plano_contas: {
         Row: {
+          ativo: boolean
           centro_custo: string | null
           clinica_id: string
+          codigo: string | null
           created_at: string
           id: string
+          natureza: string | null
           nome: string
+          pai_id: string | null
           tipo: Database["public"]["Enums"]["conta_tipo"]
         }
         Insert: {
+          ativo?: boolean
           centro_custo?: string | null
           clinica_id: string
+          codigo?: string | null
           created_at?: string
           id?: string
+          natureza?: string | null
           nome: string
+          pai_id?: string | null
           tipo: Database["public"]["Enums"]["conta_tipo"]
         }
         Update: {
+          ativo?: boolean
           centro_custo?: string | null
           clinica_id?: string
+          codigo?: string | null
           created_at?: string
           id?: string
+          natureza?: string | null
           nome?: string
+          pai_id?: string | null
           tipo?: Database["public"]["Enums"]["conta_tipo"]
         }
         Relationships: [
@@ -2743,6 +3445,13 @@ export type Database = {
             columns: ["clinica_id"]
             isOneToOne: false
             referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plano_contas_pai_id_fkey"
+            columns: ["pai_id"]
+            isOneToOne: false
+            referencedRelation: "plano_contas"
             referencedColumns: ["id"]
           },
         ]
@@ -3308,6 +4017,38 @@ export type Database = {
       }
     }
     Views: {
+      contas_financeiras_saldos: {
+        Row: {
+          agencia: string | null
+          ativo: boolean | null
+          banco: string | null
+          clinica_id: string | null
+          conta: string | null
+          created_at: string | null
+          id: string | null
+          nome: string | null
+          saldo: number | null
+          saldo_inicial: number | null
+          tipo: string | null
+          unidade_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contas_financeiras_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contas_financeiras_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       estoque_saldo_itens: {
         Row: {
           ativo: boolean | null
@@ -3404,6 +4145,10 @@ export type Database = {
         }
         Returns: string
       }
+      abrir_caixa: {
+        Args: { p_conta: string; p_saldo_inicial: number; p_unidade: string }
+        Returns: string
+      }
       abrir_inventario: { Args: { p_unidade: string }; Returns: string }
       aceitar_convite: { Args: { p_token: string }; Returns: string }
       aceitar_orcamento_link: {
@@ -3470,8 +4215,13 @@ export type Database = {
         Args: { p_item: string; p_observacao?: string; p_status: string }
         Returns: undefined
       }
+      atualizar_lancamentos_atrasados: { Args: never; Returns: number }
       atualizar_status_pedido: {
         Args: { p_motivo?: string; p_pedido: string; p_status: string }
+        Returns: undefined
+      }
+      atualizar_totais_lancamento: {
+        Args: { p_id: string; p_tipo: string }
         Returns: undefined
       }
       baixar_insumos_atendimento: {
@@ -3532,6 +4282,24 @@ export type Database = {
         }
         Returns: string
       }
+      criar_lancamentos_parcelados: {
+        Args: {
+          p_conta?: string
+          p_descricao: string
+          p_dia_vencimento: number
+          p_forma?: string
+          p_origem_id?: string
+          p_origem_tipo?: string
+          p_paciente?: string
+          p_parcelas: number
+          p_primeiro_vencimento: string
+          p_profissional?: string
+          p_tipo: string
+          p_unidade?: string
+          p_valor: number
+        }
+        Returns: string[]
+      }
       criar_ordem_laboratorio: {
         Args: {
           p_cor: string
@@ -3560,6 +4328,19 @@ export type Database = {
         Args: { p_respostas: Json; p_token: string }
         Returns: undefined
       }
+      estornar_baixa: {
+        Args: { p_baixa: string; p_motivo: string }
+        Returns: string
+      }
+      fechar_caixa: {
+        Args: {
+          p_conferencia: Json
+          p_justificativa?: string
+          p_saldo_informado: number
+          p_sessao: string
+        }
+        Returns: undefined
+      }
       finalizar_atendimento: {
         Args: { p_agendamento: string; p_cobrar?: boolean; p_insumos?: Json }
         Returns: Json
@@ -3575,6 +4356,10 @@ export type Database = {
       gerar_orcamento: {
         Args: { p_paciente: string; p_validade_dias?: number }
         Returns: string
+      }
+      gerar_recorrencias_financeiras: {
+        Args: { p_mes?: string }
+        Returns: number
       }
       gerenciar_assinatura: {
         Args: {
@@ -3641,6 +4426,15 @@ export type Database = {
         Args: { p_agendamento: string; p_cobrar?: boolean }
         Returns: Json
       }
+      movimentar_caixa: {
+        Args: {
+          p_motivo: string
+          p_sessao: string
+          p_tipo: string
+          p_valor: number
+        }
+        Returns: string
+      }
       receber_pedido: {
         Args: {
           p_itens: Json
@@ -3658,6 +4452,21 @@ export type Database = {
           p_orcamento: string
         }
         Returns: undefined
+      }
+      registrar_baixa: {
+        Args: {
+          p_caixa?: string
+          p_conta: string
+          p_data?: string
+          p_desconto?: number
+          p_forma?: string
+          p_juros?: number
+          p_lancamento: string
+          p_multa?: number
+          p_tipo: string
+          p_valor: number
+        }
+        Returns: string
       }
       registrar_contagem: {
         Args: { p_inventario_item: string; p_quantidade: number }
