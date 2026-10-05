@@ -19,12 +19,21 @@ import { Route as AgendarClinicaRouteImport } from './routes/agendar.$clinica'
 import { Route as AceiteTokenRouteImport } from './routes/aceite.$token'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
+import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes/index'
+import { Route as AuthenticatedEstoqueIndexRouteImport } from './routes/_authenticated/estoque/index'
 import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes/index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes/$id'
+import { Route as AuthenticatedEstoqueRelatoriosRouteImport } from './routes/_authenticated/estoque/relatorios'
+import { Route as AuthenticatedEstoqueMovimentacoesRouteImport } from './routes/_authenticated/estoque/movimentacoes'
+import { Route as AuthenticatedEstoqueLotesRouteImport } from './routes/_authenticated/estoque/lotes'
+import { Route as AuthenticatedEstoqueItensRouteImport } from './routes/_authenticated/estoque/itens'
+import { Route as AuthenticatedEstoqueInventarioRouteImport } from './routes/_authenticated/estoque/inventario'
+import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_authenticated/estoque/fornecedores'
+import { Route as AuthenticatedEstoqueComprasRouteImport } from './routes/_authenticated/estoque/compras'
 import { Route as AuthenticatedConfiguracoesUnidadesRouteImport } from './routes/_authenticated/configuracoes/unidades'
 import { Route as AuthenticatedConfiguracoesTabelasPrecoRouteImport } from './routes/_authenticated/configuracoes/tabelas-preco'
 import { Route as AuthenticatedConfiguracoesProcedimentosRouteImport } from './routes/_authenticated/configuracoes/procedimentos'
@@ -98,6 +107,11 @@ const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
   path: '/financeiro',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -120,6 +134,12 @@ const AuthenticatedPacientesIndexRoute =
     path: '/pacientes/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedEstoqueIndexRoute =
+  AuthenticatedEstoqueIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
 const AuthenticatedConfiguracoesIndexRoute =
   AuthenticatedConfiguracoesIndexRouteImport.update({
     id: '/',
@@ -131,6 +151,48 @@ const AuthenticatedPacientesIdRoute =
     id: '/pacientes/$id',
     path: '/pacientes/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEstoqueRelatoriosRoute =
+  AuthenticatedEstoqueRelatoriosRouteImport.update({
+    id: '/relatorios',
+    path: '/relatorios',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueMovimentacoesRoute =
+  AuthenticatedEstoqueMovimentacoesRouteImport.update({
+    id: '/movimentacoes',
+    path: '/movimentacoes',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueLotesRoute =
+  AuthenticatedEstoqueLotesRouteImport.update({
+    id: '/lotes',
+    path: '/lotes',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueItensRoute =
+  AuthenticatedEstoqueItensRouteImport.update({
+    id: '/itens',
+    path: '/itens',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueInventarioRoute =
+  AuthenticatedEstoqueInventarioRouteImport.update({
+    id: '/inventario',
+    path: '/inventario',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueFornecedoresRoute =
+  AuthenticatedEstoqueFornecedoresRouteImport.update({
+    id: '/fornecedores',
+    path: '/fornecedores',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueComprasRoute =
+  AuthenticatedEstoqueComprasRouteImport.update({
+    id: '/compras',
+    path: '/compras',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
   } as any)
 const AuthenticatedConfiguracoesUnidadesRoute =
   AuthenticatedConfiguracoesUnidadesRouteImport.update({
@@ -277,6 +339,7 @@ export interface FileRoutesByFullPath {
   '/agenda': typeof AuthenticatedAgendaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/financeiro': typeof AuthenticatedFinanceiroRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/aceite/$token': typeof AceiteTokenRoute
@@ -296,8 +359,16 @@ export interface FileRoutesByFullPath {
   '/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/configuracoes/tabelas-preco': typeof AuthenticatedConfiguracoesTabelasPrecoRoute
   '/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
+  '/estoque/compras': typeof AuthenticatedEstoqueComprasRoute
+  '/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
+  '/estoque/inventario': typeof AuthenticatedEstoqueInventarioRoute
+  '/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/estoque/lotes': typeof AuthenticatedEstoqueLotesRoute
+  '/estoque/movimentacoes': typeof AuthenticatedEstoqueMovimentacoesRoute
+  '/estoque/relatorios': typeof AuthenticatedEstoqueRelatoriosRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
+  '/estoque/': typeof AuthenticatedEstoqueIndexRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
   '/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
@@ -335,7 +406,15 @@ export interface FileRoutesByTo {
   '/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/configuracoes/tabelas-preco': typeof AuthenticatedConfiguracoesTabelasPrecoRoute
   '/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
+  '/estoque/compras': typeof AuthenticatedEstoqueComprasRoute
+  '/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
+  '/estoque/inventario': typeof AuthenticatedEstoqueInventarioRoute
+  '/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/estoque/lotes': typeof AuthenticatedEstoqueLotesRoute
+  '/estoque/movimentacoes': typeof AuthenticatedEstoqueMovimentacoesRoute
+  '/estoque/relatorios': typeof AuthenticatedEstoqueRelatoriosRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
+  '/estoque': typeof AuthenticatedEstoqueIndexRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
   '/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
@@ -357,6 +436,7 @@ export interface FileRoutesById {
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/aceite/$token': typeof AceiteTokenRoute
@@ -376,8 +456,16 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/procedimentos': typeof AuthenticatedConfiguracoesProcedimentosRoute
   '/_authenticated/configuracoes/tabelas-preco': typeof AuthenticatedConfiguracoesTabelasPrecoRoute
   '/_authenticated/configuracoes/unidades': typeof AuthenticatedConfiguracoesUnidadesRoute
+  '/_authenticated/estoque/compras': typeof AuthenticatedEstoqueComprasRoute
+  '/_authenticated/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
+  '/_authenticated/estoque/inventario': typeof AuthenticatedEstoqueInventarioRoute
+  '/_authenticated/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/_authenticated/estoque/lotes': typeof AuthenticatedEstoqueLotesRoute
+  '/_authenticated/estoque/movimentacoes': typeof AuthenticatedEstoqueMovimentacoesRoute
+  '/_authenticated/estoque/relatorios': typeof AuthenticatedEstoqueRelatoriosRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRouteWithChildren
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
+  '/_authenticated/estoque/': typeof AuthenticatedEstoqueIndexRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
   '/_authenticated/impressao/documento/$id': typeof AuthenticatedImpressaoDocumentoIdRoute
   '/_authenticated/impressao/orcamento/$id': typeof AuthenticatedImpressaoOrcamentoIdRoute
@@ -399,6 +487,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/configuracoes'
     | '/dashboard'
+    | '/estoque'
     | '/financeiro'
     | '/onboarding'
     | '/aceite/$token'
@@ -418,8 +507,16 @@ export interface FileRouteTypes {
     | '/configuracoes/procedimentos'
     | '/configuracoes/tabelas-preco'
     | '/configuracoes/unidades'
+    | '/estoque/compras'
+    | '/estoque/fornecedores'
+    | '/estoque/inventario'
+    | '/estoque/itens'
+    | '/estoque/lotes'
+    | '/estoque/movimentacoes'
+    | '/estoque/relatorios'
     | '/pacientes/$id'
     | '/configuracoes/'
+    | '/estoque/'
     | '/pacientes/'
     | '/impressao/documento/$id'
     | '/impressao/orcamento/$id'
@@ -457,7 +554,15 @@ export interface FileRouteTypes {
     | '/configuracoes/procedimentos'
     | '/configuracoes/tabelas-preco'
     | '/configuracoes/unidades'
+    | '/estoque/compras'
+    | '/estoque/fornecedores'
+    | '/estoque/inventario'
+    | '/estoque/itens'
+    | '/estoque/lotes'
+    | '/estoque/movimentacoes'
+    | '/estoque/relatorios'
     | '/configuracoes'
+    | '/estoque'
     | '/pacientes'
     | '/impressao/documento/$id'
     | '/impressao/orcamento/$id'
@@ -478,6 +583,7 @@ export interface FileRouteTypes {
     | '/_authenticated/agenda'
     | '/_authenticated/configuracoes'
     | '/_authenticated/dashboard'
+    | '/_authenticated/estoque'
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
     | '/aceite/$token'
@@ -497,8 +603,16 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes/procedimentos'
     | '/_authenticated/configuracoes/tabelas-preco'
     | '/_authenticated/configuracoes/unidades'
+    | '/_authenticated/estoque/compras'
+    | '/_authenticated/estoque/fornecedores'
+    | '/_authenticated/estoque/inventario'
+    | '/_authenticated/estoque/itens'
+    | '/_authenticated/estoque/lotes'
+    | '/_authenticated/estoque/movimentacoes'
+    | '/_authenticated/estoque/relatorios'
     | '/_authenticated/pacientes/$id'
     | '/_authenticated/configuracoes/'
+    | '/_authenticated/estoque/'
     | '/_authenticated/pacientes/'
     | '/_authenticated/impressao/documento/$id'
     | '/_authenticated/impressao/orcamento/$id'
@@ -596,6 +710,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/estoque': {
+      id: '/_authenticated/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -624,6 +745,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/estoque/': {
+      id: '/_authenticated/estoque/'
+      path: '/'
+      fullPath: '/estoque/'
+      preLoaderRoute: typeof AuthenticatedEstoqueIndexRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
     '/_authenticated/configuracoes/': {
       id: '/_authenticated/configuracoes/'
       path: '/'
@@ -637,6 +765,55 @@ declare module '@tanstack/react-router' {
       fullPath: '/pacientes/$id'
       preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/estoque/relatorios': {
+      id: '/_authenticated/estoque/relatorios'
+      path: '/relatorios'
+      fullPath: '/estoque/relatorios'
+      preLoaderRoute: typeof AuthenticatedEstoqueRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/movimentacoes': {
+      id: '/_authenticated/estoque/movimentacoes'
+      path: '/movimentacoes'
+      fullPath: '/estoque/movimentacoes'
+      preLoaderRoute: typeof AuthenticatedEstoqueMovimentacoesRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/lotes': {
+      id: '/_authenticated/estoque/lotes'
+      path: '/lotes'
+      fullPath: '/estoque/lotes'
+      preLoaderRoute: typeof AuthenticatedEstoqueLotesRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/itens': {
+      id: '/_authenticated/estoque/itens'
+      path: '/itens'
+      fullPath: '/estoque/itens'
+      preLoaderRoute: typeof AuthenticatedEstoqueItensRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/inventario': {
+      id: '/_authenticated/estoque/inventario'
+      path: '/inventario'
+      fullPath: '/estoque/inventario'
+      preLoaderRoute: typeof AuthenticatedEstoqueInventarioRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/fornecedores': {
+      id: '/_authenticated/estoque/fornecedores'
+      path: '/fornecedores'
+      fullPath: '/estoque/fornecedores'
+      preLoaderRoute: typeof AuthenticatedEstoqueFornecedoresRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/compras': {
+      id: '/_authenticated/estoque/compras'
+      path: '/compras'
+      fullPath: '/estoque/compras'
+      preLoaderRoute: typeof AuthenticatedEstoqueComprasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
     }
     '/_authenticated/configuracoes/unidades': {
       id: '/_authenticated/configuracoes/unidades'
@@ -852,6 +1029,32 @@ const AuthenticatedConfiguracoesRouteWithChildren =
     AuthenticatedConfiguracoesRouteChildren,
   )
 
+interface AuthenticatedEstoqueRouteChildren {
+  AuthenticatedEstoqueComprasRoute: typeof AuthenticatedEstoqueComprasRoute
+  AuthenticatedEstoqueFornecedoresRoute: typeof AuthenticatedEstoqueFornecedoresRoute
+  AuthenticatedEstoqueInventarioRoute: typeof AuthenticatedEstoqueInventarioRoute
+  AuthenticatedEstoqueItensRoute: typeof AuthenticatedEstoqueItensRoute
+  AuthenticatedEstoqueLotesRoute: typeof AuthenticatedEstoqueLotesRoute
+  AuthenticatedEstoqueMovimentacoesRoute: typeof AuthenticatedEstoqueMovimentacoesRoute
+  AuthenticatedEstoqueRelatoriosRoute: typeof AuthenticatedEstoqueRelatoriosRoute
+  AuthenticatedEstoqueIndexRoute: typeof AuthenticatedEstoqueIndexRoute
+}
+
+const AuthenticatedEstoqueRouteChildren: AuthenticatedEstoqueRouteChildren = {
+  AuthenticatedEstoqueComprasRoute: AuthenticatedEstoqueComprasRoute,
+  AuthenticatedEstoqueFornecedoresRoute: AuthenticatedEstoqueFornecedoresRoute,
+  AuthenticatedEstoqueInventarioRoute: AuthenticatedEstoqueInventarioRoute,
+  AuthenticatedEstoqueItensRoute: AuthenticatedEstoqueItensRoute,
+  AuthenticatedEstoqueLotesRoute: AuthenticatedEstoqueLotesRoute,
+  AuthenticatedEstoqueMovimentacoesRoute:
+    AuthenticatedEstoqueMovimentacoesRoute,
+  AuthenticatedEstoqueRelatoriosRoute: AuthenticatedEstoqueRelatoriosRoute,
+  AuthenticatedEstoqueIndexRoute: AuthenticatedEstoqueIndexRoute,
+}
+
+const AuthenticatedEstoqueRouteWithChildren =
+  AuthenticatedEstoqueRoute._addFileChildren(AuthenticatedEstoqueRouteChildren)
+
 interface AuthenticatedPacientesIdRouteChildren {
   AuthenticatedPacientesIdArquivosRoute: typeof AuthenticatedPacientesIdArquivosRoute
   AuthenticatedPacientesIdDadosRoute: typeof AuthenticatedPacientesIdDadosRoute
@@ -893,6 +1096,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRouteWithChildren
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRouteWithChildren
@@ -905,6 +1109,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEstoqueRoute: AuthenticatedEstoqueRouteWithChildren,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRouteWithChildren,

@@ -28,6 +28,7 @@ import { useSessao, type Papel } from "@/hooks/useSessao";
 import { NOME_PAPEL } from "@/lib/permissoes";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, dataBR, horaBR } from "@/lib/format";
+import { FichaTecnicaBotao } from "@/components/estoque/ficha-tecnica";
 
 function useCriarRegistro<T extends Record<string, unknown>>(
   tabela: string,
@@ -327,6 +328,7 @@ export function ProcedimentosPage() {
                 <TableHead className="text-right">Duração</TableHead>
                 <TableHead className="text-right">Custo</TableHead>
                 <TableHead className="text-right">Valor</TableHead>
+                <TableHead />
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -342,6 +344,7 @@ export function ProcedimentosPage() {
                   <TableCell className="text-right">{p.duracao_minutos} min{p.sessoes_previstas > 1 ? ` · ${p.sessoes_previstas}x` : ""}</TableCell>
                   <TableCell className="text-right">{brl(Number(p.custo_estimado))}</TableCell>
                   <TableCell className="text-right">{brl(Number(p.valor))}</TableCell>
+                  <TableCell><FichaTecnicaBotao procedimentoId={p.id} nome={p.nome} /></TableCell>
                 </TableRow>
               ))}
             </TableBody>
