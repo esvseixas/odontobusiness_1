@@ -45,7 +45,7 @@
 - [x] 7. Estoque como menu principal com 8 submenus
 
 ## Landing page e administração da plataforma
-- [ ] Redesenhar a landing page com apresentação profissional e benefícios detalhados.
-- [ ] Definir período de teste, planos e valores para clínica única e redes.
-- [ ] Criar área exclusiva do administrador geral para gerenciar clientes assinantes.
+- [x] Redesenhar a landing page com apresentação profissional e benefícios detalhados.
+- [x] Definir período de teste, planos e valores para clínica única e redes.
+- [x] Criar área exclusiva do administrador geral para gerenciar clientes assinantes.
 - [ ] Validar isolamento, permissões e fluxos administrativos no navegador.

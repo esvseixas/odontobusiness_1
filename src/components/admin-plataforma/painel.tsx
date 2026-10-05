@@ -118,6 +118,19 @@ export function PainelAdminPlataforma() {
     },
   });
 
+  const auditoria = useQuery({
+    queryKey: ["plataforma-auditoria"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("auditoria_plataforma")
+        .select("id,clinica_id,acao,created_at")
+        .order("created_at", { ascending: false })
+        .limit(8);
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const filtrados = useMemo(() => {
     const termo = busca.trim().toLocaleLowerCase("pt-BR");
     if (!termo) return clientes.data ?? [];
@@ -156,6 +169,7 @@ export function PainelAdminPlataforma() {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["plataforma-resumo"] }),
         queryClient.invalidateQueries({ queryKey: ["plataforma-clientes"] }),
+        queryClient.invalidateQueries({ queryKey: ["plataforma-auditoria"] }),
       ]);
     },
     onError: (error) => toast.error(error instanceof Error ? error.message : "Não foi possível salvar"),
@@ -235,6 +249,11 @@ export function PainelAdminPlataforma() {
               {!clientes.isLoading && filtrados.length === 0 ? <TableRow><TableCell colSpan={7} className="py-12 text-center text-muted-foreground">Nenhuma clínica encontrada.</TableCell></TableRow> : null}
             </TableBody>
           </Table>
+        </section>
+
+        <section className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+          <Card className="rounded-md shadow-sm"><CardContent className="p-5"><h2 className="font-display text-lg font-semibold">Atividade administrativa</h2><p className="mt-1 text-sm text-muted-foreground">Alterações comerciais recentes, separadas da auditoria clínica.</p><div className="mt-5 space-y-1">{(auditoria.data ?? []).map((item) => { const cliente = (clientes.data ?? []).find((row) => row.clinica_id === item.clinica_id); return <div key={item.id} className="flex items-center justify-between gap-4 border-b py-3 last:border-0"><div><p className="text-sm font-medium">{item.acao}</p><p className="text-xs text-muted-foreground">{cliente?.clinica_nome ?? "Clínica"}</p></div><span className="shrink-0 text-xs text-muted-foreground">{dataBR(item.created_at)}</span></div>; })}{!auditoria.isLoading && !auditoria.data?.length ? <p className="py-6 text-sm text-muted-foreground">Nenhuma alteração administrativa registrada.</p> : null}</div></CardContent></Card>
+          <Card className="rounded-md bg-foreground text-background shadow-sm"><CardContent className="p-6"><ShieldCheck className="h-7 w-7 text-accent" /><h2 className="mt-6 font-display text-xl font-semibold">Privacidade por separação</h2><p className="mt-3 text-sm leading-6 text-background/65">Este painel consulta apenas informações comerciais: clínica, responsável, quantidade de usuários, unidades e assinatura.</p><p className="mt-4 text-sm leading-6 text-background/65">Prontuários, pacientes, imagens, agenda e dados financeiros internos permanecem protegidos pelas regras de cada clínica.</p></CardContent></Card>
         </section>
       </main>
 
