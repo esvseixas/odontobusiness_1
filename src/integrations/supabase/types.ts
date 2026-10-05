@@ -3419,6 +3419,20 @@ export type Database = {
         Args: { p_clinica: string; p_nota: string }
         Returns: string
       }
+      administrar_cliente_plataforma: {
+        Args: {
+          p_ciclo: string
+          p_clinica: string
+          p_motivo?: string
+          p_nota?: string
+          p_plano: string
+          p_proxima_cobranca?: string
+          p_status: string
+          p_trial_ate?: string
+          p_valor: number
+        }
+        Returns: undefined
+      }
       agenda_publica_info: { Args: { p_clinica: string }; Returns: Json }
       agendar_online: {
         Args: {
