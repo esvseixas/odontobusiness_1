@@ -71,6 +71,13 @@
       "when": 1791209053755,
       "tag": "0009_fase0_cancelamentos_com_motivo",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791209487931,
+      "tag": "0010_fase2_estoque_integrado",
+      "breakpoints": true
     }
   ]
 }

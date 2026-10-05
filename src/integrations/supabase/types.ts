@@ -634,37 +634,106 @@ export type Database = {
           },
         ]
       }
-      estoque_itens: {
+      estoque_baixas_atendimento: {
         Row: {
+          agendamento_id: string
           clinica_id: string
           created_at: string
+          custo_total: number
+          realizado_por: string | null
+        }
+        Insert: {
+          agendamento_id: string
+          clinica_id: string
+          created_at?: string
+          custo_total?: number
+          realizado_por?: string | null
+        }
+        Update: {
+          agendamento_id?: string
+          clinica_id?: string
+          created_at?: string
+          custo_total?: number
+          realizado_por?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estoque_baixas_atendimento_agendamento_id_fkey"
+            columns: ["agendamento_id"]
+            isOneToOne: true
+            referencedRelation: "agendamentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_baixas_atendimento_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      estoque_itens: {
+        Row: {
+          ativo: boolean
+          categoria: string | null
+          clinica_id: string
+          codigo_barras: string | null
+          controla_lote: boolean
+          controla_validade: boolean
+          created_at: string
+          custo_medio: number
           estoque_minimo: number
+          fator_conversao: number
           fornecedor: string | null
+          fornecedor_id: string | null
           id: string
           nome: string
           quantidade: number
+          registro_anvisa: string | null
+          unidade_compra: string | null
           unidade_medida: string | null
           validade: string | null
         }
         Insert: {
+          ativo?: boolean
+          categoria?: string | null
           clinica_id: string
+          codigo_barras?: string | null
+          controla_lote?: boolean
+          controla_validade?: boolean
           created_at?: string
+          custo_medio?: number
           estoque_minimo?: number
+          fator_conversao?: number
           fornecedor?: string | null
+          fornecedor_id?: string | null
           id?: string
           nome: string
           quantidade?: number
+          registro_anvisa?: string | null
+          unidade_compra?: string | null
           unidade_medida?: string | null
           validade?: string | null
         }
         Update: {
+          ativo?: boolean
+          categoria?: string | null
           clinica_id?: string
+          codigo_barras?: string | null
+          controla_lote?: boolean
+          controla_validade?: boolean
           created_at?: string
+          custo_medio?: number
           estoque_minimo?: number
+          fator_conversao?: number
           fornecedor?: string | null
+          fornecedor_id?: string | null
           id?: string
           nome?: string
           quantidade?: number
+          registro_anvisa?: string | null
+          unidade_compra?: string | null
           unidade_medida?: string | null
           validade?: string | null
         }
@@ -676,6 +745,13 @@ export type Database = {
             referencedRelation: "clinicas"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "estoque_itens_fornecedor_id_fkey"
+            columns: ["fornecedor_id"]
+            isOneToOne: false
+            referencedRelation: "fornecedores"
+            referencedColumns: ["id"]
+          },
         ]
       }
       estoque_lotes: {
@@ -683,9 +759,12 @@ export type Database = {
           clinica_id: string
           created_at: string
           created_by: string | null
+          custo_unitario: number
           entrada_em: string
+          fornecedor_id: string | null
           id: string
           item_id: string
+          nota_fiscal: string | null
           numero_lote: string | null
           quantidade: number
           unidade_id: string | null
@@ -695,9 +774,12 @@ export type Database = {
           clinica_id: string
           created_at?: string
           created_by?: string | null
+          custo_unitario?: number
           entrada_em?: string
+          fornecedor_id?: string | null
           id?: string
           item_id: string
+          nota_fiscal?: string | null
           numero_lote?: string | null
           quantidade?: number
           unidade_id?: string | null
@@ -707,9 +789,12 @@ export type Database = {
           clinica_id?: string
           created_at?: string
           created_by?: string | null
+          custo_unitario?: number
           entrada_em?: string
+          fornecedor_id?: string | null
           id?: string
           item_id?: string
+          nota_fiscal?: string | null
           numero_lote?: string | null
           quantidade?: number
           unidade_id?: string | null
@@ -724,11 +809,25 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "estoque_lotes_fornecedor_id_fkey"
+            columns: ["fornecedor_id"]
+            isOneToOne: false
+            referencedRelation: "fornecedores"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "estoque_lotes_item_id_fkey"
             columns: ["item_id"]
             isOneToOne: false
             referencedRelation: "estoque_itens"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_lotes_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_saldo_itens"
+            referencedColumns: ["item_id"]
           },
           {
             foreignKeyName: "estoque_lotes_unidade_id_fkey"
@@ -741,36 +840,76 @@ export type Database = {
       }
       estoque_movimentacoes: {
         Row: {
+          agendamento_id: string | null
           clinica_id: string
           created_at: string
           created_by: string | null
+          custo_total: number
+          custo_unitario: number
+          delta: number | null
           id: string
           item_id: string
+          lote_id: string | null
           motivo: string | null
+          paciente_id: string | null
+          procedimento_id: string | null
+          profissional_id: string | null
           quantidade: number
+          referencia_id: string | null
           tipo: string
+          tipo_mov: Database["public"]["Enums"]["estoque_mov_tipo"] | null
+          unidade_id: string | null
         }
         Insert: {
+          agendamento_id?: string | null
           clinica_id: string
           created_at?: string
           created_by?: string | null
+          custo_total?: number
+          custo_unitario?: number
+          delta?: number | null
           id?: string
           item_id: string
+          lote_id?: string | null
           motivo?: string | null
+          paciente_id?: string | null
+          procedimento_id?: string | null
+          profissional_id?: string | null
           quantidade: number
+          referencia_id?: string | null
           tipo: string
+          tipo_mov?: Database["public"]["Enums"]["estoque_mov_tipo"] | null
+          unidade_id?: string | null
         }
         Update: {
+          agendamento_id?: string | null
           clinica_id?: string
           created_at?: string
           created_by?: string | null
+          custo_total?: number
+          custo_unitario?: number
+          delta?: number | null
           id?: string
           item_id?: string
+          lote_id?: string | null
           motivo?: string | null
+          paciente_id?: string | null
+          procedimento_id?: string | null
+          profissional_id?: string | null
           quantidade?: number
+          referencia_id?: string | null
           tipo?: string
+          tipo_mov?: Database["public"]["Enums"]["estoque_mov_tipo"] | null
+          unidade_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "estoque_movimentacoes_agendamento_id_fkey"
+            columns: ["agendamento_id"]
+            isOneToOne: false
+            referencedRelation: "agendamentos"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "estoque_movimentacoes_clinica_id_fkey"
             columns: ["clinica_id"]
@@ -783,6 +922,48 @@ export type Database = {
             columns: ["item_id"]
             isOneToOne: false
             referencedRelation: "estoque_itens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_movimentacoes_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_saldo_itens"
+            referencedColumns: ["item_id"]
+          },
+          {
+            foreignKeyName: "estoque_movimentacoes_lote_id_fkey"
+            columns: ["lote_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_lotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_movimentacoes_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_movimentacoes_procedimento_id_fkey"
+            columns: ["procedimento_id"]
+            isOneToOne: false
+            referencedRelation: "procedimentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_movimentacoes_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_movimentacoes_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
             referencedColumns: ["id"]
           },
         ]
@@ -861,8 +1042,10 @@ export type Database = {
           created_at: string
           descricao: string
           fornecedor: string | null
+          fornecedor_id: string | null
           id: string
           pago_em: string | null
+          pedido_compra_id: string | null
           status: Database["public"]["Enums"]["lancamento_status"]
           unidade_id: string | null
           valor: number
@@ -876,8 +1059,10 @@ export type Database = {
           created_at?: string
           descricao: string
           fornecedor?: string | null
+          fornecedor_id?: string | null
           id?: string
           pago_em?: string | null
+          pedido_compra_id?: string | null
           status?: Database["public"]["Enums"]["lancamento_status"]
           unidade_id?: string | null
           valor?: number
@@ -891,8 +1076,10 @@ export type Database = {
           created_at?: string
           descricao?: string
           fornecedor?: string | null
+          fornecedor_id?: string | null
           id?: string
           pago_em?: string | null
+          pedido_compra_id?: string | null
           status?: Database["public"]["Enums"]["lancamento_status"]
           unidade_id?: string | null
           valor?: number
@@ -911,6 +1098,20 @@ export type Database = {
             columns: ["conta_id"]
             isOneToOne: false
             referencedRelation: "plano_contas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_pagamentos_fornecedor_id_fkey"
+            columns: ["fornecedor_id"]
+            isOneToOne: false
+            referencedRelation: "fornecedores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_pagamentos_pedido_compra_id_fkey"
+            columns: ["pedido_compra_id"]
+            isOneToOne: false
+            referencedRelation: "pedidos_compra"
             referencedColumns: ["id"]
           },
           {
@@ -1028,6 +1229,59 @@ export type Database = {
           },
         ]
       }
+      fornecedores: {
+        Row: {
+          ativo: boolean
+          clinica_id: string
+          cnpj: string | null
+          condicoes_pagamento: string | null
+          contato: string | null
+          created_at: string
+          email: string | null
+          id: string
+          nome_fantasia: string | null
+          prazo_entrega_dias: number
+          razao_social: string
+          telefone: string | null
+        }
+        Insert: {
+          ativo?: boolean
+          clinica_id: string
+          cnpj?: string | null
+          condicoes_pagamento?: string | null
+          contato?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          nome_fantasia?: string | null
+          prazo_entrega_dias?: number
+          razao_social: string
+          telefone?: string | null
+        }
+        Update: {
+          ativo?: boolean
+          clinica_id?: string
+          cnpj?: string | null
+          condicoes_pagamento?: string | null
+          contato?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          nome_fantasia?: string | null
+          prazo_entrega_dias?: number
+          razao_social?: string
+          telefone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fornecedores_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       horarios_profissional: {
         Row: {
           clinica_id: string
@@ -1089,6 +1343,7 @@ export type Database = {
           created_by: string | null
           dente: string
           diametro: number | null
+          estoque_lote_id: string | null
           id: string
           instalado_em: string | null
           lote: string | null
@@ -1106,6 +1361,7 @@ export type Database = {
           created_by?: string | null
           dente: string
           diametro?: number | null
+          estoque_lote_id?: string | null
           id?: string
           instalado_em?: string | null
           lote?: string | null
@@ -1123,6 +1379,7 @@ export type Database = {
           created_by?: string | null
           dente?: string
           diametro?: number | null
+          estoque_lote_id?: string | null
           id?: string
           instalado_em?: string | null
           lote?: string | null
@@ -1140,10 +1397,134 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "implantes_estoque_lote_id_fkey"
+            columns: ["estoque_lote_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_lotes"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "implantes_paciente_id_fkey"
             columns: ["paciente_id"]
             isOneToOne: false
             referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventario_itens: {
+        Row: {
+          clinica_id: string
+          diferenca: number | null
+          id: string
+          inventario_id: string
+          item_id: string
+          lote_id: string
+          quantidade_contada: number | null
+          quantidade_sistema: number
+        }
+        Insert: {
+          clinica_id: string
+          diferenca?: number | null
+          id?: string
+          inventario_id: string
+          item_id: string
+          lote_id: string
+          quantidade_contada?: number | null
+          quantidade_sistema: number
+        }
+        Update: {
+          clinica_id?: string
+          diferenca?: number | null
+          id?: string
+          inventario_id?: string
+          item_id?: string
+          lote_id?: string
+          quantidade_contada?: number | null
+          quantidade_sistema?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventario_itens_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventario_itens_inventario_id_fkey"
+            columns: ["inventario_id"]
+            isOneToOne: false
+            referencedRelation: "inventarios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventario_itens_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_itens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventario_itens_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_saldo_itens"
+            referencedColumns: ["item_id"]
+          },
+          {
+            foreignKeyName: "inventario_itens_lote_id_fkey"
+            columns: ["lote_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_lotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventarios: {
+        Row: {
+          aberto_por: string | null
+          clinica_id: string
+          created_at: string
+          finalizado_em: string | null
+          id: string
+          motivo: string | null
+          status: string
+          unidade_id: string | null
+        }
+        Insert: {
+          aberto_por?: string | null
+          clinica_id: string
+          created_at?: string
+          finalizado_em?: string | null
+          id?: string
+          motivo?: string | null
+          status?: string
+          unidade_id?: string | null
+        }
+        Update: {
+          aberto_por?: string | null
+          clinica_id?: string
+          created_at?: string
+          finalizado_em?: string | null
+          id?: string
+          motivo?: string | null
+          status?: string
+          unidade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventarios_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventarios_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
             referencedColumns: ["id"]
           },
         ]
@@ -1811,6 +2192,118 @@ export type Database = {
           },
         ]
       }
+      paciente_lotes_aplicados: {
+        Row: {
+          agendamento_id: string | null
+          aplicado_em: string
+          clinica_id: string
+          created_by: string | null
+          dente: string | null
+          id: string
+          implante_id: string | null
+          item_id: string
+          lote_id: string
+          paciente_id: string
+          procedimento_id: string | null
+          profissional_id: string | null
+          quantidade: number
+        }
+        Insert: {
+          agendamento_id?: string | null
+          aplicado_em?: string
+          clinica_id: string
+          created_by?: string | null
+          dente?: string | null
+          id?: string
+          implante_id?: string | null
+          item_id: string
+          lote_id: string
+          paciente_id: string
+          procedimento_id?: string | null
+          profissional_id?: string | null
+          quantidade: number
+        }
+        Update: {
+          agendamento_id?: string | null
+          aplicado_em?: string
+          clinica_id?: string
+          created_by?: string | null
+          dente?: string | null
+          id?: string
+          implante_id?: string | null
+          item_id?: string
+          lote_id?: string
+          paciente_id?: string
+          procedimento_id?: string | null
+          profissional_id?: string | null
+          quantidade?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "paciente_lotes_aplicados_agendamento_id_fkey"
+            columns: ["agendamento_id"]
+            isOneToOne: false
+            referencedRelation: "agendamentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paciente_lotes_aplicados_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paciente_lotes_aplicados_implante_id_fkey"
+            columns: ["implante_id"]
+            isOneToOne: false
+            referencedRelation: "implantes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paciente_lotes_aplicados_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_itens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paciente_lotes_aplicados_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_saldo_itens"
+            referencedColumns: ["item_id"]
+          },
+          {
+            foreignKeyName: "paciente_lotes_aplicados_lote_id_fkey"
+            columns: ["lote_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_lotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paciente_lotes_aplicados_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paciente_lotes_aplicados_procedimento_id_fkey"
+            columns: ["procedimento_id"]
+            isOneToOne: false
+            referencedRelation: "procedimentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paciente_lotes_aplicados_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pacientes: {
         Row: {
           anamnese: Json
@@ -1960,6 +2453,132 @@ export type Database = {
           },
         ]
       }
+      pedido_compra_itens: {
+        Row: {
+          clinica_id: string
+          created_at: string
+          custo_unitario: number
+          id: string
+          item_id: string
+          pedido_id: string
+          quantidade: number
+          quantidade_recebida: number
+        }
+        Insert: {
+          clinica_id: string
+          created_at?: string
+          custo_unitario?: number
+          id?: string
+          item_id: string
+          pedido_id: string
+          quantidade: number
+          quantidade_recebida?: number
+        }
+        Update: {
+          clinica_id?: string
+          created_at?: string
+          custo_unitario?: number
+          id?: string
+          item_id?: string
+          pedido_id?: string
+          quantidade?: number
+          quantidade_recebida?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pedido_compra_itens_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pedido_compra_itens_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_itens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pedido_compra_itens_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_saldo_itens"
+            referencedColumns: ["item_id"]
+          },
+          {
+            foreignKeyName: "pedido_compra_itens_pedido_id_fkey"
+            columns: ["pedido_id"]
+            isOneToOne: false
+            referencedRelation: "pedidos_compra"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pedidos_compra: {
+        Row: {
+          cancelado_motivo: string | null
+          clinica_id: string
+          created_at: string
+          created_by: string | null
+          fornecedor_id: string
+          id: string
+          numero: number
+          observacao: string | null
+          previsao_entrega: string | null
+          status: string
+          unidade_id: string | null
+        }
+        Insert: {
+          cancelado_motivo?: string | null
+          clinica_id: string
+          created_at?: string
+          created_by?: string | null
+          fornecedor_id: string
+          id?: string
+          numero?: number
+          observacao?: string | null
+          previsao_entrega?: string | null
+          status?: string
+          unidade_id?: string | null
+        }
+        Update: {
+          cancelado_motivo?: string | null
+          clinica_id?: string
+          created_at?: string
+          created_by?: string | null
+          fornecedor_id?: string
+          id?: string
+          numero?: number
+          observacao?: string | null
+          previsao_entrega?: string | null
+          status?: string
+          unidade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pedidos_compra_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pedidos_compra_fornecedor_id_fkey"
+            columns: ["fornecedor_id"]
+            isOneToOne: false
+            referencedRelation: "fornecedores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pedidos_compra_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       periogramas: {
         Row: {
           autor_id: string | null
@@ -2036,6 +2655,62 @@ export type Database = {
             columns: ["clinica_id"]
             isOneToOne: false
             referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      procedimento_insumos: {
+        Row: {
+          clinica_id: string
+          created_at: string
+          id: string
+          item_id: string
+          procedimento_id: string
+          quantidade: number
+        }
+        Insert: {
+          clinica_id: string
+          created_at?: string
+          id?: string
+          item_id: string
+          procedimento_id: string
+          quantidade: number
+        }
+        Update: {
+          clinica_id?: string
+          created_at?: string
+          id?: string
+          item_id?: string
+          procedimento_id?: string
+          quantidade?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procedimento_insumos_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "procedimento_insumos_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_itens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "procedimento_insumos_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_saldo_itens"
+            referencedColumns: ["item_id"]
+          },
+          {
+            foreignKeyName: "procedimento_insumos_procedimento_id_fkey"
+            columns: ["procedimento_id"]
+            isOneToOne: false
+            referencedRelation: "procedimentos"
             referencedColumns: ["id"]
           },
         ]
@@ -2492,9 +3167,103 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      estoque_saldo_itens: {
+        Row: {
+          ativo: boolean | null
+          categoria: string | null
+          clinica_id: string | null
+          custo_medio: number | null
+          estoque_minimo: number | null
+          item_id: string | null
+          nome: string | null
+          proxima_validade: string | null
+          saldo: number | null
+          unidade_medida: string | null
+          valor: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estoque_itens_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      estoque_saldos: {
+        Row: {
+          clinica_id: string | null
+          item_id: string | null
+          proxima_validade: string | null
+          saldo: number | null
+          unidade_id: string | null
+          valor: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estoque_lotes_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_lotes_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_itens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estoque_lotes_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "estoque_saldo_itens"
+            referencedColumns: ["item_id"]
+          },
+          {
+            foreignKeyName: "estoque_lotes_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
+      _estoque_entrada: {
+        Args: {
+          p_custo: number
+          p_fornecedor: string
+          p_item: string
+          p_lote: string
+          p_motivo: string
+          p_nota: string
+          p_qtd: number
+          p_ref?: string
+          p_tipo: Database["public"]["Enums"]["estoque_mov_tipo"]
+          p_unidade: string
+          p_validade: string
+        }
+        Returns: string
+      }
+      _estoque_mov: {
+        Args: {
+          p_agendamento?: string
+          p_delta: number
+          p_lote: string
+          p_motivo: string
+          p_paciente?: string
+          p_procedimento?: string
+          p_profissional?: string
+          p_ref?: string
+          p_tipo: Database["public"]["Enums"]["estoque_mov_tipo"]
+        }
+        Returns: string
+      }
+      abrir_inventario: { Args: { p_unidade: string }; Returns: string }
       aceitar_convite: { Args: { p_token: string }; Returns: string }
       aceitar_orcamento_link: {
         Args: {
@@ -2541,6 +3310,14 @@ export type Database = {
       atualizar_item_tratamento: {
         Args: { p_item: string; p_observacao?: string; p_status: string }
         Returns: undefined
+      }
+      atualizar_status_pedido: {
+        Args: { p_motivo?: string; p_pedido: string; p_status: string }
+        Returns: undefined
+      }
+      baixar_insumos_atendimento: {
+        Args: { p_agendamento: string; p_insumos?: Json }
+        Returns: Json
       }
       calcular_alertas: {
         Args: { p_perguntas: Json; p_respostas: Json }
@@ -2609,10 +3386,28 @@ export type Database = {
         }
         Returns: string
       }
+      criar_pedido_compra: {
+        Args: {
+          p_fornecedor: string
+          p_itens: Json
+          p_observacao: string
+          p_previsao: string
+          p_unidade: string
+        }
+        Returns: string
+      }
       current_clinica_id: { Args: never; Returns: string }
       enviar_anamnese_link: {
         Args: { p_respostas: Json; p_token: string }
         Returns: undefined
+      }
+      finalizar_atendimento: {
+        Args: { p_agendamento: string; p_cobrar?: boolean; p_insumos?: Json }
+        Returns: Json
+      }
+      finalizar_inventario: {
+        Args: { p_inventario: string; p_motivo: string }
+        Returns: number
       }
       gerar_link_aceite_orcamento: {
         Args: { p_orcamento: string }
@@ -2651,6 +3446,15 @@ export type Database = {
         Args: { p_agendamento: string; p_cobrar?: boolean }
         Returns: Json
       }
+      receber_pedido: {
+        Args: {
+          p_itens: Json
+          p_nota: string
+          p_pedido: string
+          p_vencimento?: string
+        }
+        Returns: string
+      }
       registrar_aceite_orcamento: {
         Args: {
           p_assinatura: string
@@ -2659,6 +3463,45 @@ export type Database = {
           p_orcamento: string
         }
         Returns: undefined
+      }
+      registrar_contagem: {
+        Args: { p_inventario_item: string; p_quantidade: number }
+        Returns: undefined
+      }
+      registrar_entrada_estoque: {
+        Args: {
+          p_custo_unitario: number
+          p_fornecedor?: string
+          p_item: string
+          p_lote: string
+          p_motivo?: string
+          p_nota?: string
+          p_quantidade: number
+          p_unidade: string
+          p_validade: string
+        }
+        Returns: string
+      }
+      registrar_movimento_estoque: {
+        Args: {
+          p_lote: string
+          p_motivo: string
+          p_quantidade: number
+          p_tipo: string
+        }
+        Returns: string
+      }
+      relatorio_custo_procedimentos: {
+        Args: { p_fim: string; p_inicio: string }
+        Returns: {
+          atendimentos: number
+          custo_estimado: number
+          custo_medio: number
+          custo_total: number
+          procedimento: string
+          procedimento_id: string
+          valor: number
+        }[]
       }
       responder_confirmacao: {
         Args: { p_confirmar: boolean; p_token: string }
@@ -2672,9 +3515,34 @@ export type Database = {
         Args: { p_clinica: string }
         Returns: undefined
       }
+      sugestao_compra: {
+        Args: never
+        Returns: {
+          consumo_diario: number
+          custo_medio: number
+          estoque_minimo: number
+          fornecedor: string
+          fornecedor_id: string
+          item_id: string
+          nome: string
+          prazo_dias: number
+          saldo: number
+          sugerido: number
+          unidade_medida: string
+        }[]
+      }
       tem_papel: {
         Args: { _roles: Database["public"]["Enums"]["app_role"][] }
         Returns: boolean
+      }
+      transferir_estoque: {
+        Args: {
+          p_lote: string
+          p_motivo?: string
+          p_quantidade: number
+          p_unidade_destino: string
+        }
+        Returns: string
       }
       ver_anamnese_link: {
         Args: { p_token: string }
@@ -2718,6 +3586,14 @@ export type Database = {
         | "estoque"
         | "marketing"
       conta_tipo: "receita" | "despesa"
+      estoque_mov_tipo:
+        | "entrada"
+        | "saida_uso"
+        | "ajuste"
+        | "perda"
+        | "vencido"
+        | "transferencia"
+        | "devolucao"
       lancamento_status: "pendente" | "pago" | "atrasado" | "cancelado"
       orcamento_status:
         | "pendente"
@@ -2872,6 +3748,15 @@ export const Constants = {
         "marketing",
       ],
       conta_tipo: ["receita", "despesa"],
+      estoque_mov_tipo: [
+        "entrada",
+        "saida_uso",
+        "ajuste",
+        "perda",
+        "vencido",
+        "transferencia",
+        "devolucao",
+      ],
       lancamento_status: ["pendente", "pago", "atrasado", "cancelado"],
       orcamento_status: [
         "pendente",
