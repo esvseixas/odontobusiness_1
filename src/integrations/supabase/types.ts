@@ -4282,6 +4282,24 @@ export type Database = {
         }
         Returns: string
       }
+      criar_lancamentos_parcelados: {
+        Args: {
+          p_conta?: string
+          p_descricao: string
+          p_dia_vencimento: number
+          p_forma?: string
+          p_origem_id?: string
+          p_origem_tipo?: string
+          p_paciente?: string
+          p_parcelas: number
+          p_primeiro_vencimento: string
+          p_profissional?: string
+          p_tipo: string
+          p_unidade?: string
+          p_valor: number
+        }
+        Returns: string[]
+      }
       criar_ordem_laboratorio: {
         Args: {
           p_cor: string

@@ -113,6 +113,13 @@
       "when": 1791212558883,
       "tag": "0015_fase3_baixas_recorrencias_caixa",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1791212590146,
+      "tag": "0016_fase3_parcelamento_e_atrasos",
+      "breakpoints": true
     }
   ]
 }
