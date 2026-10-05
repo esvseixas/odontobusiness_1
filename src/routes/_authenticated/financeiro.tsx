@@ -16,6 +16,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { brl, dataBR, isoDia } from "@/lib/format";
+import { mensagemErro } from "@/lib/erros";
+import { CancelarComMotivo } from "@/components/cancelar-dialog";
 
 export const Route = createFileRoute("/_authenticated/financeiro")({
   head: () => ({
@@ -68,7 +70,7 @@ function Financeiro() {
   });
 
   const total = (rows: { valor: number; status: string }[] | undefined, status?: string) =>
-    (rows ?? []).filter((r) => !status || r.status === status).reduce((s, r) => s + Number(r.valor), 0);
+    (rows ?? []).filter((r) => r.status !== "cancelado" && (!status || r.status === status)).reduce((s, r) => s + Number(r.valor), 0);
 
   const receitaRecebida = total(dados.data?.receber as never, "pago");
   const despesaPaga = total(dados.data?.pagar as never, "pago");
@@ -92,6 +94,16 @@ function Financeiro() {
       queryClient.invalidateQueries({ queryKey: ["financeiro"] });
     },
   });
+
+  const cancelar = useMutation({
+    mutationFn: async ({ tipo, id, motivo }: { tipo: "receber" | "pagar"; id: string; motivo: string; fechar: () => void }) => {
+      const { error } = await supabase.rpc("cancelar_lancamento", { p_tipo: tipo, p_id: id, p_motivo: motivo });
+      if (error) throw error;
+    },
+    onSuccess: (_, v) => { v.fechar(); toast.success("Lançamento cancelado."); queryClient.invalidateQueries({ queryKey: ["financeiro"] }); },
+    onError: (e) => toast.error(mensagemErro(e)),
+  });
+  const podeCancelar = sessao?.tem("owner", "admin", "financeiro") ?? false;
 
   const criarDespesa = useMutation({
     mutationFn: async () => {
@@ -231,7 +243,7 @@ function Financeiro() {
                 <p className="py-6 text-center text-sm text-muted-foreground">Nenhum lançamento neste mês.</p>
               ) : (
                 dados.data?.receber.map((r) => {
-                  const atrasado = r.status === "pendente" && r.vencimento < isoDia(hoje);
+                  const atrasado = r.status === "atrasado" || (r.status === "pendente" && r.vencimento < isoDia(hoje));
                   return (
                     <div key={r.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3">
                       <div>
@@ -242,16 +254,21 @@ function Financeiro() {
                         <p className="text-xs text-muted-foreground">
                           {r.pacientes?.nome ?? "—"} · venc. {dataBR(r.vencimento)} · {r.forma_pagamento ?? "—"}
                         </p>
+                        {r.status === "cancelado" && <p className="text-xs text-destructive">Cancelado: {r.cancelado_motivo}</p>}
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-semibold">{brl(Number(r.valor))}</span>
-                        <Badge variant={r.status === "pago" ? "default" : atrasado ? "destructive" : "secondary"}>
+                        <Badge variant={r.status === "pago" ? "default" : atrasado ? "destructive" : r.status === "cancelado" ? "outline" : "secondary"}>
                           {atrasado ? "atrasado" : r.status}
                         </Badge>
-                        {r.status !== "pago" && (
+                        {(r.status === "pendente" || r.status === "atrasado") && (
                           <Button size="sm" variant="outline" onClick={() => quitar.mutate({ tabela: "financeiro_recebimentos", id: r.id })}>
                             Receber
                           </Button>
+                        )}
+                        {podeCancelar && (r.status === "pendente" || r.status === "atrasado") && (
+                          <CancelarComMotivo titulo="Cancelar recebimento" descricao={`${r.descricao} · ${brl(Number(r.valor))}`}
+                            pendente={cancelar.isPending} onConfirmar={(motivo, fechar) => cancelar.mutate({ tipo: "receber", id: r.id, motivo, fechar })} />
                         )}
                       </div>
                     </div>
@@ -308,14 +325,19 @@ function Financeiro() {
                       <p className="text-xs text-muted-foreground">
                         {r.fornecedor ?? "—"} · {r.plano_contas?.nome ?? "sem categoria"} · venc. {dataBR(r.vencimento)}
                       </p>
+                      {r.status === "cancelado" && <p className="text-xs text-destructive">Cancelado: {r.cancelado_motivo}</p>}
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="font-semibold">{brl(Number(r.valor))}</span>
-                      <Badge variant={r.status === "pago" ? "default" : "secondary"}>{r.status}</Badge>
-                      {r.status !== "pago" && (
+                      <Badge variant={r.status === "pago" ? "default" : r.status === "cancelado" ? "outline" : "secondary"}>{r.status}</Badge>
+                      {(r.status === "pendente" || r.status === "atrasado") && (
                         <Button size="sm" variant="outline" onClick={() => quitar.mutate({ tabela: "financeiro_pagamentos", id: r.id })}>
                           Pagar
                         </Button>
+                      )}
+                      {podeCancelar && (r.status === "pendente" || r.status === "atrasado") && (
+                        <CancelarComMotivo titulo="Cancelar conta a pagar" descricao={`${r.descricao} · ${brl(Number(r.valor))}`}
+                          pendente={cancelar.isPending} onConfirmar={(motivo, fechar) => cancelar.mutate({ tipo: "pagar", id: r.id, motivo, fechar })} />
                       )}
                     </div>
                   </div>
