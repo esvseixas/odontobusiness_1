@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { mensagemErro } from "@/lib/erros";
 import { brl, dataBR } from "@/lib/format";
 import { AssinaturaPad } from "@/components/paciente/assinatura";
+import { CancelarComMotivo } from "@/components/cancelar-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -153,6 +154,16 @@ function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
     onError: (e) => toast.error(mensagemErro(e)),
   });
 
+  const cancelar = useMutation({
+    mutationFn: async ({ motivo }: { motivo: string; fechar: () => void }) => {
+      const { error } = await supabase.rpc("cancelar_orcamento", { p_orcamento: o.id, p_motivo: motivo });
+      if (error) throw error;
+    },
+    onSuccess: (_, v) => { v.fechar(); toast.success("Orçamento cancelado."); onChange(); },
+    onError: (e) => toast.error(mensagemErro(e)),
+  });
+  const cancelado = !!o.cancelado_em;
+
   const concluidos = o.orcamento_itens.filter((i) => i.aprovado && i.status === "concluido").length;
   const totalAprov = o.orcamento_itens.filter((i) => i.aprovado && i.status !== "recusado").length;
 
@@ -169,7 +180,7 @@ function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
         <div className="flex flex-wrap items-center gap-2">
           {vencido && <Badge variant="destructive">vencido</Badge>}
           {o.aceito_em && <Badge variant="outline">aceito pelo paciente</Badge>}
-          <Badge variant={pendente ? "secondary" : "default"}>{STATUS_ORC[o.status] ?? o.status}</Badge>
+          <Badge variant={cancelado ? "destructive" : pendente ? "secondary" : "default"}>{cancelado ? "Cancelado" : STATUS_ORC[o.status] ?? o.status}</Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
@@ -248,6 +259,15 @@ function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
               <Printer className="mr-1 h-4 w-4" /> Imprimir / PDF
             </Link>
           </Button>
+          {!cancelado && ["pendente", "aprovado", "em_execucao"].includes(o.status) && (
+            <CancelarComMotivo
+              rotulo="Cancelar orçamento"
+              titulo={`Cancelar orçamento v${o.versao}`}
+              descricao="Parcelas em aberto deste orçamento também serão canceladas no financeiro. Procedimentos já em execução impedem o cancelamento."
+              pendente={cancelar.isPending}
+              onConfirmar={(motivo, fechar) => cancelar.mutate({ motivo, fechar })}
+            />
+          )}
           {!o.aceito_em && o.status !== "recusado" && (
             <>
               <AceiteTela orcamentoId={o.id} onOk={onChange} />
@@ -257,6 +277,11 @@ function CardPlano({ o, onChange }: { o: Plano; onChange: () => void }) {
             </>
           )}
         </div>
+        {cancelado && (
+          <p className="rounded-md bg-destructive/10 p-2 text-xs text-destructive">
+            Cancelado em {dataBR(o.cancelado_em!)} — {o.cancelado_motivo}
+          </p>
+        )}
         {o.orcamento_aceites.map((a) => (
           <p key={a.id} className="text-xs text-muted-foreground">
             Aceite de {a.nome} ({a.canal === "tela" ? "assinado na clínica" : "por link"}) em {dataBR(a.created_at)}
