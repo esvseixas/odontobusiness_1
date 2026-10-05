@@ -9,3 +9,4 @@
 - Treatment plans: orçamento generation, adjustment, approval, item status and patient acceptance run only through SECURITY DEFINER RPCs; item status changes sync the linked odontogram marking.
 - Schedule rules beyond conflicts (working hours, blocks) are enforced by the `validar_agendamento` trigger; creation, recurrence, "atendido" billing and public booking/confirmation go through SECURITY DEFINER RPCs.
 - Document templates use `{{var}}` placeholders resolved client-side before emission; emitted documents are immutable.
+- Cancellations (orçamentos, lançamentos) go through `cancelar_orcamento` / `cancelar_lancamento` RPCs that require a reason; records are never deleted and cancelled entries are excluded from totals.

@@ -22,7 +22,7 @@
 - [x] RLS por papel; exclusões clínicas bloqueadas; auditoria por trigger.
 - [x] aprovar_orcamento transacional; resumo por IA valida papel na clínica atual.
 - [x] Menu e páginas filtrados por papel.
-- [ ] Telas de cancelamento com motivo para orçamentos e lançamentos (colunas já criadas).
+- [x] Cancelamento com motivo para orçamentos (cancela parcelas em aberto) e lançamentos a receber/pagar.
 
 ## Fase 1 — Núcleo clínico e agenda
 - [x] 1. Pacientes: novos campos, busca pg_trgm, anamnese versionada com modelos, alertas, link público, edição de dados
