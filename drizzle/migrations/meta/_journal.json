@@ -64,6 +64,13 @@
       "when": 1791208257799,
       "tag": "0008_fase1_especialidades_documentos_agenda",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1791209053755,
+      "tag": "0009_fase0_cancelamentos_com_motivo",
+      "breakpoints": true
     }
   ]
 }

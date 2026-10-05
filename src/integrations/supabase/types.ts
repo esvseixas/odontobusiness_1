@@ -2546,6 +2546,14 @@ export type Database = {
         Args: { p_perguntas: Json; p_respostas: Json }
         Returns: string[]
       }
+      cancelar_lancamento: {
+        Args: { p_id: string; p_motivo: string; p_tipo: string }
+        Returns: undefined
+      }
+      cancelar_orcamento: {
+        Args: { p_motivo: string; p_orcamento: string }
+        Returns: undefined
+      }
       criar_agendamentos: {
         Args: {
           p_cadeira: string
