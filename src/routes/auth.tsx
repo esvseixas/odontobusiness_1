@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Stethoscope } from "lucide-react";
+import { ArrowLeft, KeyRound, Stethoscope } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,8 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
+  const [recuperando, setRecuperando] = useState(false);
+  const [recuperacaoEnviada, setRecuperacaoEnviada] = useState(false);
 
   function irPara(padrao: "/dashboard" | "/onboarding") {
     const convite = sessionStorage.getItem("convite_pendente");
@@ -68,6 +70,17 @@ function AuthPage() {
     irPara("/onboarding");
   }
 
+  async function recuperarSenha(e: React.FormEvent) {
+    e.preventDefault();
+    setCarregando(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setCarregando(false);
+    if (error) return toast.error("Não foi possível enviar o link. Tente novamente em instantes.");
+    setRecuperacaoEnviada(true);
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-secondary px-4 py-10">
       <div className="w-full max-w-md">
@@ -79,11 +92,59 @@ function AuthPage() {
         </Link>
         <Card>
           <CardHeader>
-            <CardTitle>Acesse sua clínica</CardTitle>
-            <CardDescription>Gestão completa: agenda, prontuário e financeiro.</CardDescription>
+            <CardTitle>{recuperando ? "Recuperar senha" : "Acesse sua clínica"}</CardTitle>
+            <CardDescription>
+              {recuperando
+                ? "Informe seu e-mail para receber um link seguro de redefinição."
+                : "Gestão completa: agenda, prontuário e financeiro."}
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="entrar">
+            {recuperando ? (
+              recuperacaoEnviada ? (
+                <div className="space-y-5 text-center">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent text-accent-foreground">
+                    <KeyRound className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-medium">Confira sua caixa de entrada</p>
+                    <p className="text-sm text-muted-foreground">
+                      Se houver uma conta vinculada a esse e-mail, você receberá as instruções para criar uma nova senha.
+                    </p>
+                  </div>
+                  <Button
+                    className="w-full"
+                    variant="outline"
+                    onClick={() => {
+                      setRecuperando(false);
+                      setRecuperacaoEnviada(false);
+                    }}
+                  >
+                    <ArrowLeft /> Voltar para entrar
+                  </Button>
+                </div>
+              ) : (
+                <form className="space-y-4" onSubmit={recuperarSenha}>
+                  <div className="space-y-2">
+                    <Label htmlFor="email-recuperacao">E-mail</Label>
+                    <Input
+                      id="email-recuperacao"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <Button className="w-full" disabled={carregando}>
+                    {carregando ? "Enviando..." : "Enviar link de recuperação"}
+                  </Button>
+                  <Button className="w-full" type="button" variant="ghost" onClick={() => setRecuperando(false)}>
+                    <ArrowLeft /> Voltar para entrar
+                  </Button>
+                </form>
+              )
+            ) : <Tabs defaultValue="entrar">
               <TabsList className="mb-4 grid w-full grid-cols-2">
                 <TabsTrigger value="entrar">Entrar</TabsTrigger>
                 <TabsTrigger value="criar">Criar conta</TabsTrigger>
@@ -99,6 +160,14 @@ function AuthPage() {
                     <Input id="senha" type="password" required value={senha} onChange={(e) => setSenha(e.target.value)} />
                   </div>
                   <Button className="w-full" disabled={carregando}>Entrar</Button>
+                  <Button
+                    className="h-auto w-full py-1"
+                    type="button"
+                    variant="link"
+                    onClick={() => setRecuperando(true)}
+                  >
+                    Esqueci minha senha
+                  </Button>
                 </form>
               </TabsContent>
               <TabsContent value="criar">
@@ -118,7 +187,7 @@ function AuthPage() {
                   <Button className="w-full" disabled={carregando}>Criar conta</Button>
                 </form>
               </TabsContent>
-            </Tabs>
+            </Tabs>}
           </CardContent>
         </Card>
       </div>
