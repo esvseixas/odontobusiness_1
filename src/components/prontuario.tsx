@@ -10,6 +10,8 @@ import { AlertasClinicos } from "@/components/paciente/alertas";
 import { AnamnesePaciente } from "@/components/paciente/anamnese";
 import { ArquivosPaciente } from "@/components/paciente/arquivos";
 import { PacienteDados } from "@/components/paciente/dados";
+import { DocumentosPaciente } from "@/components/paciente/documentos";
+import { Especialidades } from "@/components/paciente/especialidades";
 import { PlanoTratamento } from "@/components/paciente/plano-tratamento";
 import { mensagemErro } from "@/lib/erros";
 import { useSessao } from "@/hooks/useSessao";
@@ -33,6 +35,7 @@ const SECOES = [
   { valor: "odontograma", rotulo: "Odontograma" },
   { valor: "orcamentos", rotulo: "Orçamentos" },
   { valor: "evolucao", rotulo: "Evolução clínica" },
+  { valor: "especialidades", rotulo: "Especialidades" },
   { valor: "documentos", rotulo: "Documentos" },
   { valor: "historico", rotulo: "Histórico" },
   { valor: "arquivos", rotulo: "Arquivos e imagens" },
@@ -50,7 +53,6 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
   const [denteSel, setDenteSel] = useState<string | null>(null);
   const [marca, setMarca] = useState({ face: "oclusal", condicao: "Cárie", procedimento_id: "", status: "planejado", observacao: "" });
   const [evolucao, setEvolucao] = useState("");
-  const [doc, setDoc] = useState({ tipo: "atestado", titulo: "", conteudo: "" });
   const [anotacoesResumo, setAnotacoesResumo] = useState("");
   const [resumoGerado, setResumoGerado] = useState("");
   const gerarResumo = useServerFn(gerarResumoClinico);
@@ -176,25 +178,6 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
       queryClient.invalidateQueries({ queryKey: ["prontuario", id] });
     },
     onError: (error: Error) => toast.error(error.message),
-  });
-
-  const emitirDoc = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.from("documentos_emitidos").insert({
-        clinica_id: clinicaId!,
-        paciente_id: id,
-        tipo: doc.tipo,
-        titulo: doc.titulo,
-        conteudo: doc.conteudo,
-        autor_id: sessao?.user.id,
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      setDoc({ tipo: "atestado", titulo: "", conteudo: "" });
-      toast.success("Documento emitido e registrado no histórico.");
-      queryClient.invalidateQueries({ queryKey: ["prontuario", id] });
-    },
   });
 
   if (!p) {
@@ -379,51 +362,11 @@ export function Prontuario({ id, secao }: { id: string; secao: SecaoProntuario }
         </TabsContent>
 
         <TabsContent value="documentos">
-          <Card>
-            <CardHeader><CardTitle className="text-base">Emitir documento</CardTitle></CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label>Tipo</Label>
-                  <Select value={doc.tipo} onValueChange={(v) => setDoc({ ...doc, tipo: v })}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="atestado">Atestado</SelectItem>
-                      <SelectItem value="receituario">Receituário</SelectItem>
-                      <SelectItem value="orientacao">Orientação pós-operatória</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Título</Label>
-                  <Input value={doc.titulo} onChange={(e) => setDoc({ ...doc, titulo: e.target.value })} />
-                </div>
-              </div>
-              <Textarea
-                rows={5}
-                placeholder={`Atesto para os devidos fins que ${p.nome} esteve em atendimento odontológico nesta data…`}
-                value={doc.conteudo}
-                onChange={(e) => setDoc({ ...doc, conteudo: e.target.value })}
-              />
-              <Button disabled={!doc.titulo || !doc.conteudo} onClick={() => emitirDoc.mutate()}>
-                <FileText className="mr-2 h-4 w-4" /> Emitir e registrar
-              </Button>
-            </CardContent>
-          </Card>
-          <div className="mt-4 space-y-2">
-            {dados.data?.documentos.map((d) => (
-              <Card key={d.id}>
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium">{d.titulo}</p>
-                    <Badge variant="secondary">{d.tipo}</Badge>
-                  </div>
-                  <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">{d.conteudo}</p>
-                  <p className="mt-2 text-xs text-muted-foreground">{dataBR(d.created_at)}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <DocumentosPaciente paciente={p} />
+        </TabsContent>
+
+        <TabsContent value="especialidades">
+          <Especialidades pacienteId={id} />
         </TabsContent>
 
         <TabsContent value="historico">

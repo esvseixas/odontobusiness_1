@@ -26,6 +26,9 @@ const TITULOS: Record<string, { titulo: string; descricao: string }> = {
   unidades: { titulo: "Unidades", descricao: "Endereços e unidades da rede." },
   procedimentos: { titulo: "Procedimentos", descricao: "Tabela de serviços e valores." },
   "tabelas-preco": { titulo: "Tabelas de preço", descricao: "Preços particulares, por convênio e por plano interno." },
+  agenda: { titulo: "Agenda e horários", descricao: "Salas, expediente dos profissionais, bloqueios e agendamento online." },
+  modelos: { titulo: "Modelos de documentos", descricao: "Atestados, receituários, termos e contratos com variáveis." },
+  laboratorios: { titulo: "Laboratórios", descricao: "Laboratórios de prótese parceiros." },
   convenios: { titulo: "Convênios", descricao: "Planos e convênios aceitos." },
   equipe: { titulo: "Equipe", descricao: "Profissionais e usuários com acesso." },
   "plano-contas": {
