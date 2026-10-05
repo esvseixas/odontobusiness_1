@@ -43,3 +43,9 @@
 - [x] 5. Inventário por lote com ajuste na finalização; transferência atômica entre unidades
 - [x] 6. Alertas (mínimo, vencendo 30/60/90, vencidos com baixa) no painel e no estoque; relatórios com CSV
 - [x] 7. Estoque como menu principal com 8 submenus
+
+## Landing page e administração da plataforma
+- [ ] Redesenhar a landing page com apresentação profissional e benefícios detalhados.
+- [ ] Definir período de teste, planos e valores para clínica única e redes.
+- [ ] Criar área exclusiva do administrador geral para gerenciar clientes assinantes.
+- [ ] Validar isolamento, permissões e fluxos administrativos no navegador.
