@@ -59,4 +59,4 @@
 - [x] 5. Relatórios gerenciais: DRE, fluxo de caixa e indicadores por filtros.
 - [x] 6. Conciliação, NFS-e plugável e exportação mensal para o contador.
 - [x] 7. Interface financeira com submenus, permissões por papel e paginação no servidor.
-- [ ] Validar isolamento, cálculos, vencimentos, permissões e responsividade; remover dados de teste.
+- [x] Validar isolamento, cálculos, vencimentos, permissões e responsividade; remover dados de teste.
