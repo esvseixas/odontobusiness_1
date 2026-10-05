@@ -16,6 +16,8 @@ import { AppShell, PageHeader } from "@/components/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { brl, horaBR, isoDia } from "@/lib/format";
+import { ResumoAlertasEstoque } from "@/components/estoque/alertas";
+import { podeAcessar } from "@/lib/permissoes";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -123,6 +125,8 @@ function Dashboard() {
           );
         })}
       </div>
+
+      {podeAcessar("/estoque", sessao?.papeis ?? []) && <ResumoAlertasEstoque />}
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
         <Card>

@@ -30,6 +30,12 @@ import {
   CalendarClock,
   FileSignature,
   FlaskConical,
+  Boxes,
+  ArrowLeftRight,
+  ShoppingCart,
+  Truck,
+  ClipboardCheck,
+  BarChart3,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -56,6 +62,17 @@ const PACIENTE_NAV = [
   { to: "/pacientes/$id/dados", slug: "dados", label: "Dados e anamnese", icon: UserRound },
 ] as const;
 
+const ESTOQUE_NAV = [
+  { to: "/estoque", label: "Visão geral", icon: LayoutDashboard },
+  { to: "/estoque/itens", label: "Itens", icon: PackageOpen },
+  { to: "/estoque/lotes", label: "Lotes", icon: Boxes },
+  { to: "/estoque/movimentacoes", label: "Movimentações", icon: ArrowLeftRight },
+  { to: "/estoque/compras", label: "Compras", icon: ShoppingCart },
+  { to: "/estoque/fornecedores", label: "Fornecedores", icon: Truck },
+  { to: "/estoque/inventario", label: "Inventário", icon: ClipboardCheck },
+  { to: "/estoque/relatorios", label: "Relatórios", icon: BarChart3 },
+] as const;
+
 const CONFIG_NAV = [
   { to: "/configuracoes/clinica", label: "Clínica", icon: Building2 },
   { to: "/configuracoes/unidades", label: "Unidades", icon: MapPin },
@@ -67,7 +84,6 @@ const CONFIG_NAV = [
   { to: "/configuracoes/convenios", label: "Convênios", icon: HeartHandshake },
   { to: "/configuracoes/equipe", label: "Equipe", icon: UserCog },
   { to: "/configuracoes/plano-contas", label: "Plano de contas", icon: ListTree },
-  { to: "/configuracoes/estoque", label: "Estoque", icon: PackageOpen },
   { to: "/configuracoes/auditoria", label: "Auditoria", icon: ShieldCheck },
 ] as const;
 
@@ -85,6 +101,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pacientesAtiva = pathname.startsWith("/pacientes");
   const pacienteId = pathname.match(/^\/pacientes\/([^/]+)/)?.[1];
   const [pacientesAberta, setPacientesAberta] = useState(pacientesAtiva);
+  const mostrarEstoque = podeAcessar("/estoque", papeis);
+  const estoqueAtiva = pathname.startsWith("/estoque");
+  const [estoqueAberta, setEstoqueAberta] = useState(estoqueAtiva);
   const configuracoesAtiva = pathname.startsWith("/configuracoes");
   const [configuracoesAberta, setConfiguracoesAberta] = useState(configuracoesAtiva);
 
@@ -206,6 +225,44 @@ export function AppShell({ children }: { children: ReactNode }) {
                     })}
                   </>
                 ) : null}
+              </div>
+            ) : null}
+          </div>
+          <div className={cn(!mostrarEstoque && "hidden")}>
+            <Button
+              type="button"
+              variant="ghost"
+              className={cn(
+                "h-9 w-full justify-start gap-3 px-3 text-sm font-medium",
+                estoqueAtiva ? "bg-secondary text-foreground" : "text-muted-foreground",
+              )}
+              aria-expanded={estoqueAberta}
+              onClick={() => setEstoqueAberta((valor) => !valor)}
+            >
+              <Boxes className="h-4 w-4" />
+              <span className="flex-1 text-left">Estoque</span>
+              <ChevronDown className={cn("h-4 w-4 transition-transform", estoqueAberta && "rotate-180")} />
+            </Button>
+            {estoqueAberta ? (
+              <div className="ml-5 mt-1 space-y-0.5 border-l pl-2">
+                {ESTOQUE_NAV.filter((item) => podeAcessar(item.to, papeis)).map((item) => {
+                  const Icon = item.icon;
+                  const ativo = pathname === item.to || pathname === item.to + "/";
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setAberto(false)}
+                      className={cn(
+                        "flex items-center gap-2 rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
+                        ativo ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                      )}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
               </div>
             ) : null}
           </div>
